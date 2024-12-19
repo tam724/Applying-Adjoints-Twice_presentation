@@ -28,7 +28,7 @@
 				text-align: left;
 			}
 			.reveal .slides{
-				border-style: hidden;
+				border-style: solid;
 				border-color: gray;
 				border-width: 1px;
 			}
@@ -44,12 +44,13 @@
 				<section class="center">
 					<div class="r-stretch"></div> 
 					<h3 style="margin-bottom: 100px;">
-						Applying Adjoints Twice: An Efficient Gradient Implementation for Models with Linear Structure with Applications in Reconstruction for EPMA
+						Applying Adjoints Twice: Efficient Gradients for Inverse Modeling with Radiative Transfer in EPMA
 					</h3>
 					<p style="margin-bottom:50px; "><strong>Tamme Claus</strong><sup>1</sup>, Gaurav Achuda<sup>2</sup>, Silvia Richter<sup>2</sup>, Manuel Torrilhon<sup>1</sup></p>
 					<p><sup>1</sup> ACoM, Applied and Computational Mathematics, RWTH Aachen University</p>
 					<p><sup>2</sup> GFE, Central Facility for Electron Microscopy, RWTH Aachen University</p>
-					<p style="margin-top:50px; "><em>Computational Methods for Inverse Problems, ECCOMAS 2024</em></p>
+					<p style="margin-top:50px; "><em>IGPM Seminar 2025, RWTH Aachen</em></p>
+					<p style="margin-top:50px; "><em>23.01.2025</em></p>
 					<div style=" margin-top:300px; text-align: right;">
 						<img src="figures/gfe_logo.svg" height="290px"> 
 						<img src="figures/rwth_acom_en_cmyk.svg" height="300px">
@@ -129,7 +130,46 @@
 							</div>
 						</div>
 					</section>
+					
+					<!-- Gradients in Inverse Problems-->
+					<section style="text-align: left;">
+						<h3>Gradients in Inverse Problems</h3>
+						<span><em>"Determine the model parameters $p$ such that the model $\Sigma(p)$ produces the observed data $\tilde{\Sigma}$."</em></span>
+						<div style="display:flex;">
+							<div style="flex:2 ;">
+								<h4 style="margin-top: 50px;">classical approach</h4>
+								\begin{align*}
+									p^* = \underset{p \in P}{\text{arg min}} || \Sigma(p)  - \tilde{\Sigma} ||^2
+								\end{align*}
+								<ul>
+									<li>iterative approximation of the minimum based on the gradient of the objective function $p \mapsto ||\Sigma(p) - \tilde{\Sigma}||^2$</li>
+									<li>Gradient Descent, CG, BFGS, ...</li>
+									<li>regularization: addition of a penalty term $p \mapsto ||\Sigma(p) - \tilde{\Sigma}||^2 + \mathcal{R}(p)$</li>
+									<li>we will do: $\Sigma = \Sigma \circ \gamma$</li>
+								</ul>
+							</div>
+							<div style="flex:1; ">
+								<img src="figures/gd.png" width="500px">
+							</div>
+						</div>
+						<div style="display:flex;">
+							<div style="flex:1; ">
+								<img src="figures/hmc.png" width="500px">
+							</div>
+							<div style="flex:2">
+								<h4 style="margin-top: 50px;">bayesian approach</h4>
+								<ul>
+									<li>approximate the posterior $\pi(p|\tilde{\Sigma})$ (typically: iterative sampling, MCMC)</li>
+									<li>Hamiltonian Monte-Carlo (based on the gradient of the target density)</li>
+								</ul>
+							</div>
+						</div>
+						</ul>
+						<p style="text-align: center;"><em>Efficient evaluation of the objective function and its gradient is crucial!</em></p>
+					</section>
+				</section>
 
+				<section>
 					<!-- Motivation -->
 					<section style="text-align: left">
 						<h3>
@@ -262,78 +302,41 @@
 								\color{white}{\Bigg)}
 							\]</span> -->
 						</div>
-						<p>where to bracket?</p>
+						<h4>Where to bracket?</h4>
 						<p style="text-align: center" class="fragment fade-in" data-fragment-index="4">
 							different computational costs: $\color{red}{I\times N^2 + IJ\times N} \text{ or } \color{blue}{J\times N^2 + IJ\times N}$
 						</p>
 						<span class="fragment fade-in" data-fragment-index="5">
+							<h4>Generalizations: </h4>
 							<ul>
 								<li>
-									what happens if $\boldsymbol A$ is more general, e.g. "solution of a linear system / (linear, linearized) weak form" instead of "matrix multiplication"?
+									$\boldsymbol A$ is e.g. "solution of a linear system / (linear, linearized) weak form"?
 									\[
 										\boldsymbol A g^{(i)} = \{u \in V \, | \, a(u, v) + \langle g^{(i)}, v \rangle = 0 \quad \forall v \in V\}
 									\]
 								</li>
 								<li>
-									what happens if $\boldsymbol A$ is a derivative (structure: chain rule, product rule, ...)?
+									$\boldsymbol A$ is a directional derivative (structure: chain rule, product rule, ...)?
 									\[
-										\boldsymbol A g^{(i)} = \frac{\partial f(h(w))}{\partial v}\frac{\partial h(w)}{\partial w}g^{(i)}
+										\boldsymbol A g^{(i)} = \frac{\partial f(y(x))}{\partial x} g^{(i)} = \frac{\partial f(y(x))}{\partial y}\frac{\partial y(x)}{\partial x}g^{(i)}
 									\]
 								</li>
 							</ul>
 						</span>
 						<span class="fragment fade-in" data-fragment-index="6">
-							In general (reduced cost, if $J < I$):
-							\[
-								\underbrace{\Sigma^T}_{I \times J} = \underbrace{G^T}_{I \times \infty} \cdot{}  \underbrace{A^*}_{\infty \times \infty} \cdot{} \underbrace{H^T}_{\infty \times J}
-							\]
-							where $\boldsymbol A ^* $is the <em>adjoint </em> operator.
+							<p><h4 style="display:inline;">Two equivalent formulations</h4> using the <em>adjoint</em> operator $\boldsymbol A ^*$</p>
+								\[
+								\underbrace{\Sigma}_{J \times I} = \underbrace{H}_{J \times N} \cdot{}  \underbrace{\boldsymbol A}_{N \times N} \cdot{} \underbrace{G}_{N \times I} \quad \Leftrightarrow \quad \underbrace{\Sigma^T}_{I \times J} = \underbrace{G^T}_{I \times N} \cdot{}  \underbrace{\boldsymbol A^*}_{N \times N} \cdot{} \underbrace{H^T}_{N \times J}
+								\]
+							
 						</span>
-					</section>
-					
-					<!-- Gradients in Inverse Problems-->
-					<section style="text-align: left;">
-						<h3>Gradients in Inverse Problems</h3>
-						<span><em>"Determine the model parameters $p$ such that the model $\Sigma(p)$ produces the observed data $\tilde{\Sigma}$."</em></span>
-						<div style="display:flex;">
-							<div style="flex:2 ;">
-								<h4 style="margin-top: 50px;">classical approach</h4>
-								\begin{align*}
-									p^* = \underset{p \in P}{\text{arg min}} || \Sigma(p)  - \tilde{\Sigma} ||^2
-								\end{align*}
-								<ul>
-									<li>iterative approximation of the minimum based on the gradient of the objective function $p \mapsto ||\Sigma(p) - \tilde{\Sigma}||^2$</li>
-									<li>Gradient Descent, CG, BFGS, ...</li>
-									<li>regularization: addition of a penalty term $p \mapsto ||\Sigma(p) - \tilde{\Sigma}||^2 + \mathcal{R}(p)$</li>
-									<li>we will do: $\Sigma = \Sigma \circ \gamma$</li>
-								</ul>
-							</div>
-							<div style="flex:1; ">
-								<img src="figures/gd.png" width="500px">
-							</div>
-						</div>
-						<div style="display:flex;">
-							<div style="flex:1; ">
-								<img src="figures/hmc.png" width="500px">
-							</div>
-							<div style="flex:2">
-								<h4 style="margin-top: 50px;">bayesian approach</h4>
-								<ul>
-									<li>approximate the posterior $\pi(p|\tilde{\Sigma})$ (typically: iterative sampling, MCMC)</li>
-									<li>Hamiltonian Monte-Carlo (based on the gradient of the target density)</li>
-								</ul>
-							</div>
-						</div>
-						</ul>
-						<p style="text-align: center;"><em>Efficient evaluation of the objective function and its gradient is crucial!</em></p>
 					</section>
 				</section>
 
 				<!-- An adjoint method -->
 				<section style="text-align: left;">
 					<section style="text-align: left";>
-						<h3>Applying Adjoints Twice: Ingredients</h3>
-						<h4>An adjoint method</h4>
+						<h3>Applying Adjoints Twice: An abstract adjoint method</h3>
 						<p>
 							Definition of the <em>Adjoint</em> ($H, G$ Hilbert spaces, $A: G \to H$ continuous, linear)
 							\[
