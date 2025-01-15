@@ -170,7 +170,7 @@
 				</section>
 
 				<section>
-					<!-- Motivation -->
+					<!-- Matrix Product Bracketing -->
 					<section style="text-align: left">
 						<h3>
 							Motivation: Matrix Product Bracketing
@@ -310,13 +310,13 @@
 							<h4>Generalizations: </h4>
 							<ul>
 								<li>
-									$\boldsymbol A$ is e.g. "solution of a linear system / (linear, linearized) weak form"?
+									$\boldsymbol A$ is solution of a linear system / linear (partial?) differential equation?
 									\[
 										\boldsymbol A g^{(i)} = \{u \in V \, | \, a(u, v) + \langle g^{(i)}, v \rangle = 0 \quad \forall v \in V\}
 									\]
 								</li>
 								<li>
-									$\boldsymbol A$ is a directional derivative (structure: chain rule, product rule, ...)?
+									$\boldsymbol A$ is a (Frechet-) derivative (structure: chain rule, product rule, ...)?
 									\[
 										\boldsymbol A g^{(i)} = \frac{\partial f(y(x))}{\partial x} g^{(i)} = \frac{\partial f(y(x))}{\partial y}\frac{\partial y(x)}{\partial x}g^{(i)}
 									\]
@@ -326,44 +326,43 @@
 						<span class="fragment fade-in" data-fragment-index="6">
 							<p><h4 style="display:inline;">Two equivalent formulations</h4> using the <em>adjoint</em> operator $\boldsymbol A ^*$</p>
 								\[
-								\underbrace{\Sigma}_{J \times I} = \underbrace{H}_{J \times N} \cdot{}  \underbrace{\boldsymbol A}_{N \times N} \cdot{} \underbrace{G}_{N \times I} \quad \Leftrightarrow \quad \underbrace{\Sigma^T}_{I \times J} = \underbrace{G^T}_{I \times N} \cdot{}  \underbrace{\boldsymbol A^*}_{N \times N} \cdot{} \underbrace{H^T}_{N \times J}
+								\underbrace{\Sigma}_{J \times I} = \underbrace{H}_{J \times \infty} \cdot{}  \underbrace{\boldsymbol A}_{\infty \times \infty} \cdot{} \underbrace{G}_{\infty \times I} \quad \Leftrightarrow \quad \underbrace{\Sigma^T}_{I \times J} = \underbrace{G^T}_{I \times \infty} \cdot{}  \underbrace{\boldsymbol A^*}_{\infty \times \infty} \cdot{} \underbrace{H^T}_{\infty \times J}
 								\]
 							
 						</span>
 					</section>
 				</section>
 
-				<!-- An adjoint method -->
+				<!-- An abstract adjoint method -->
 				<section style="text-align: left;">
 					<section style="text-align: left";>
-						<h3>Applying Adjoints Twice: An abstract adjoint method</h3>
+						<h3>An Abstract Adjoint Method in a Computational Context</h3>
 						<p>
-							Definition of the <em>Adjoint</em> ($H, G$ Hilbert spaces, $A: G \to H$ continuous, linear)
+							Definition of the <b>Adjoint</b> ($H, G$ Hilbert spaces, $A: G \to H$ continuous, linear)
 							\[
-								\langle h, A(g) \rangle_H := \langle A^*(h), g \rangle_G \quad \forall h \in H \, \forall g \in G
+								\langle h, A(g) \rangle_H = \langle A^*(h), g \rangle_G \quad \forall h \in H \,,  g \in G
 							\]
 						</p>
 						<div class="fragment fade-in">
 							<ul>
-								<li>given multiple $g^{(1)}, ... g^{(I)} \in G$, $h^{(1)}, ... h^{(J)} \in H$ we want to compute
-								</li>
+								<li>given multiple $g^{(1)}, ... g^{(I)} \in G$ and $h^{(1)}, ... h^{(J)} \in H$ we want to compute</li>
 							</ul>
 							\[
-							\Sigma^{(ji)} = \langle h^{(j)}, A(g^{(i)}) \rangle_H = \langle A^*(h^{(j)}), g^{(i)} \rangle_G \quad \forall i=1, ...I \, j=1, ...J
+							\Sigma^{(ji)} = \langle h^{(j)}, A(g^{(i)}) \rangle_H = \langle A^*(h^{(j)}), g^{(i)} \rangle_G \quad \forall i=1, ...I\, j=1, ...J
 							\]
 							<table style="text-align: left;">
 								<tr style="border-style: hidden;">
-									<td style="padding:0px; "</td>
-										<h4>non-adjoint implementation($\color{green}{J} > \color{orange}{I}$)</h4>
+									<td style="padding:10px; "</td>
+										<h4>Non-adjoint Implementation</h4>
 									</td>
 									<td style="width:100px; "></td>
-									<td style="padding:0px; ">
-										<h4>adjoint implementation ($\color{orange}{I} > \color{green}{J}$)</h4>
+									<td style="padding:10px; ">
+										<h4>Adjoint Implementation</h4>
 									</td>
 								</tr>
 								<tr style="border-style: hidden;">
 									<td style="vertical-align: top; padding:0px;">
-										<div style="margin-top: -30px;">
+										<div style="margin-top: -20px;">
 											\begin{align*}
 												&\text{foreach } \color{orange}{i = 1, ..., I} \text{ do} \\
 												&\qquad \color{orange}{v^{(i)} \leftarrow A(g^{(i)})}\\
@@ -376,7 +375,7 @@
 									</td>
 									<td style="width:50px; "></td>
 									<td style="vertical-align: top; padding:0px; ">
-										<div style="margin-top: -30px;">
+										<div style="margin-top: -20px;">
 											\begin{align*}
 												&\text{foreach } \color{green}{j = 1, ..., J} \text{ do} \\
 												&\qquad \color{green}{\lambda^{(j)} \leftarrow A^*(h^{(j)})}\\
@@ -404,6 +403,18 @@
 								</tr>
 							</table>
 						</div>
+						<div class="fragment fade-in" style="margin-top:30px;">
+							<ul>
+								<li>typically: $\mathcal{C}(A) \approx \mathcal{C}(A^*)$ and $\mathcal{C}(\langle \cdot{}, \cdot{} \rangle_G) \approx \mathcal{C}(\langle \cdot{}, \cdot{} \rangle_H)$ and $\mathcal{C}(A) \gg \mathcal{C}(\langle \cdot{}, \cdot{} \rangle_G)$ </li>
+								<ul>
+									<li>$\color{green}{J} > \color{orange}{I}$: non-adjoint implementation</li>
+									<li>$\color{orange}{I} > \color{green}{J}$: adjoint implementation</li>
+								</ul>
+							</ul>
+						</div>
+						<div class="fragment fade-in" style="background-color: lightgray; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 5px; font-size: 100%; margin:30px;"> 
+							<em>"Instead of computing/approximating the "solution" $v^{(i)}= A(g^{(i)})$, we approximate the <b>Riesz representation</b> $\lambda^{(j)}$ of $\cdot \mapsto \langle h^{(j)}, A(\cdot{}) \rangle_H$"</em>
+						</div>
 						<!-- <div style="background-color: lightgray; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 5px; font-size: 80%;">
 							Notation: $f_{(\cdot{})}: X \to Y$ non-linear, differentiable
 							<ul>
@@ -413,26 +424,6 @@
 								<li><em>adjoint variables</em> $\bar{x}, \bar{y}$, where $\bar{x} = \bar{f}_x(\bar{y})$</li>
 							</ul>
 						</div> -->
-
-						<div style="display:flex; margin-left: 15%; width:80%; margin-top:30px;" class="fragment fade-in">
-							<div style="background-color: rgb(235, 235, 235); border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 5px; font-size: 100%;">
-								<h4>The adjoint $A^*$ of the solution operator $A$ of a linear weak form</h4>
-								$A: G \to H$ ($U, G, H$ Hilbert spaces: $U \subseteq G, H$)
-								<p>
-									<ul>
-										<li>
-											$\color{orange}{A(g) = (u \in U | a(u, v) + b(v) = 0\, \forall v \in U)}$ where $b(v) = \langle v, g\rangle_G$
-										</li>
-										<li>
-											$\color{green}{A^*(h) = (\lambda \in U | a(v, \lambda) + c(v) = 0 \, \forall v \in U)}$ where $c(\lambda) = \langle h, \lambda \rangle_H$
-										</li>
-										<!-- <li>
-											switching trial and test function is the continuous analog to solving the transposed system
-										</li> -->
-									</ul>
-								</p>
-							</div>
-						</div>
 					</section>
 
 					<section style="text-align: left;">
@@ -735,89 +726,176 @@
 				</section>
 
 				<section style="text-align: left">
+					<h3>Abstract Adjoint: Algorithmic Differentiation (AD)</h3>
+					<ul>
+						<li>
+							consider $f: \mathcal{X} \to Y, x \mapsto f(x) =: y$ with open $\mathcal{X} \subseteq X $ 
+						</li>
+						<li>define the (Frechet-) derivative (or tangent operator) $\dot{f}_x: T_xX \to T_yY$ by
+							\begin{equation}
+							\lim_{||\dot{x}|| \to 0} \frac{||f(x + \dot{x}) - f(x) - \dot{f}_x(\dot{x})||}{||\dot{x}||} \quad \text{with } \dot{x} \in T_xX
+							\end{equation}
+						</li>
+						<li>assuming that the tangent operator is continuous and $T_xX$, $T_yY$ are Hilbert spaces:
+							\begin{equation}
+							\langle \bar{y}, \dot{f}_x(\dot{x}) \rangle_{T_y Y} = \langle \bar{f}_x(\bar{y}), \dot{x} \rangle_{T_x X} \quad \forall \dot{x} \in T_xX, \bar{y} \in T_yY
+							\end{equation}
+							<div style="font-size:60%; width:100%; text-align: right; margin-top:-30px;">(notation adopted from AD)</div>
+						</li>
+						<li>Choose cartesian unit vectors for $\bar{y}$ and $\dot{x}$ (seeding), then (glossing over details): 
+							<ul>
+								<li>Non-Adjoint Implementation = tangent mode of AD</li>
+								<li>Adjoint Implementation = adjoint mode of AD</li>
+							</ul>
+						</li>
+					</ul>
+
+					<h4>Special Case: Implicit Algorithmic Differentiation</h4>
+					<ul>
+						<li>
+							consider $f: \mathcal{X} \to Y, x \mapsto (y \in Y : F(x, y) = 0)$
+						</li>
+						<li>$\dot{f}_x(\dot{x}) = (\dot{y} \in T_yY : \dot{v} = -\dot{F}^{(1)}_{x, y}(\dot{x}) \land  \dot{F}^{(2)}_{x, y}(\dot{y}) = \dot{v} )$
+						</li>
+						<li>$\bar{f}_x(\bar{y}) = (\bar{x} \in T_xX : \bar{F}^{(1)}_{x, y}(\bar{v}) = \bar{x} \land \bar{y} = -\bar{F}^{(2)}_{x, y}(\bar{v}) )$
+						</li>
+					</ul>
+					
+					<div class="r-stretch"></div>
+					<ul style="font-size:60%; ">
+						<li>Griewank, A., & Walther, A. (2008). <b>Evaluating Derivatives</b>. <a href="https://doi.org/10.1137/1.9780898717761">doi:10.1137/1.9780898717761</a></li>
+						<li>Naumann, U. (2011). <b>The Art of Differentiating Computer Programs</b>. <a href="https://doi.org/10.1137/1.9781611972078">doi:10.1137/1.9781611972078</a></li>
+
+						<li>Pearlmutter, B. A., & Siskind, J. M. (2008). <b>Reverse-mode AD in a functional framework</b>. <a href="https://doi.org/10.1145/1330017.1330018">doi:10.1145/1330017.1330018</a></li>
+					</ul>
+				</section>
+
+				<section style="text-align: left">
+					<h3>Abstract Adjoint: Dual/Adjoint Consistency</h3>
+					A <b>discretization</b> is dual consistent, if:
+					<div style="text-align: center;">
+						<em>"The adjoint of the discretized problem is a consistent discretization of the adjoint of the continuous problem."</em>
+					</div>
+					<ul>
+						<li>with $h \in H$, $g \in G$ vectors, $A: G \to H$ continuous operator, $\cdot{}_\Delta$ the "discretization"</li>
+						<li>if the discretization if dual consistent, the following diagram commutes:</li>
+					</ul>
+					\begin{equation}
+						\begin{matrix}
+							\langle h, A(g) \rangle_H & \leftrightarrow & \langle A^*(h), g \rangle_G \\
+							\downarrow_{\Delta} & & \downarrow_{\Delta}\\
+							\langle h_\Delta, A_\Delta \cdot{} g_\Delta \rangle_{H_{\Delta}} & \leftrightarrow & \langle A^T_{\Delta}\cdot{} h_{\Delta}, g_{\Delta} \rangle_{G_{\Delta}}
+						\end{matrix}
+					\end{equation}
+					<ul>
+						<li>
+							interpretability of the "adjoint solution" $A_\Delta^T \cdot{} h_\Delta$ as the solution of the continuous adjoint equation
+						</li>
+						<li>
+							"superconvergence" of linear functionals $\langle \cdot{}, g_\Delta\rangle_{G_\Delta}$ (convergence order doubling)
+						</li>
+					</ul>
+
+					<div style="background-color: lightgray; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 10px; font-size: 80%; margin:30px;">
+						<h5>"optimize-then-discretize" vs. "discretize-then-optimize"</h5>
+						<h5>"continuous adjoint method" vs. "discrete adjoint method"</h5>
+						<ul>
+							<li>related concepts from optimization/optimal control literature</li>
+							<li>for a dual consistent discretization both approaches are identical</li>
+						</ul>
+					</div>
+					<div class="r-stretch"></div>
+
+					<ul style="font-size:60%">
+						<li>Hicken, J. E., & Zingg, D. W. (2014). <b>Dual consistency and functional accuracy: a finite-difference perspective</b>. <a href="https://doi.org/10.1016/j.jcp.2013.08.014">doi:10.1016/j.jcp.2013.08.014</a> 
+						</li>
+						<li>Oliver, T. A., & Darmofal, D. L. (2009). <b>Analysis of Dual Consistency for Discontinuous Galerkin Discretizations of Source Terms</b>. <a href="https://doi.org/10.1137/080721467">doi:10.1137/080721467</a> 
+						</li>
+						<li>Hartmann, R. (2007). <b>Adjoint Consistency Analysis of Discontinuous Galerkin Discretizations</b>. <a href="https://doi.org/10.1137/060665117">doi:10.1137/060665117</a> 
+						</li>
+						<li>Giles, M. B., & Pierce, N. A. (2003). <b>Adjoint Error Correction for Integral Outputs</b>. <a href="https://doi.org/10.1007/978-3-662-05189-4_2">doi:10.1007/978-3-662-05189-4_2</a> 
+						</li>
+					</ul>
+				</section>
+
+				<section style="text-align: left">
 					<h3>Applying Adjoints Twice</h3>
 					<div style="display:flex;">
-						<div style="flex: 4;">
+						<div style="flex: 4; font-size:80%">
 							<ul>
-								<li>parameters $p \in \mathbb{R}^N$</li>
-								<li>domain $\mathcal{R}$</li>
-								<li>system $a_p \in \text{Bil}(U(\mathcal{R}) \times U(\mathcal{R}), \mathbb{R})$ </li>
-								<li>excitations $\boldsymbol{b} = (b^{(1)}, ... b^{(I)})^T \in L(U(\mathcal{R}), \mathbb{R}^I)$</li>
-								<li>extraction $c \in L(U(\mathcal{R}), \mathbb{R})$</li>
-								<li>measurements $\boldsymbol{\Sigma} = (\Sigma^{(1)}, ..., \Sigma^{(I)})^T \in \mathbb{R}^I$</li>
-								<li>discrepancy $g: \mathbb{R}^I \to \mathbb{R}$</li>
-								<li>$N, I \gg 1$, ($J=1$)</li>
+								<li>parameters $p \in P$</li>
+								<li>parameter-dependent bilinear form $a_p: U \times V (\times P) \to \mathbb{R}$ </li>
+								<li>excitations $b^{(i)} : V \to \mathbb{R}$</li>
+								<li>extractions $c^{(j)}: U \to \mathbb{R}$</li>
+								<li>observables $\Sigma^{(ji)} \in \mathbb{R}$</li>
 							</ul>
 						</div>
-						<div style="flex: 3">
-							<div style="background-color: lightgray; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 5px; font-size: 80%;">
-								Notation: $f_{(\cdot{})}: X \to Y$ non-linear, differentiable
-								<ul>
-									<li><em>tangent operator</em> $\dot{f}_x(\dot{x}) = \lim_{h \to 0} \frac{f_{x+h\dot{x}} - f_x}{h}$</li>
-									<li><em>adjoint operator</em> $\bar{f}_x: \langle \bar{y}, \dot{f}_x(\dot{x}) \rangle_Y = \langle \bar{f}_x(\bar{y}), \dot{x}\rangle_X \, \forall \bar{y}, \dot{x}$</li>
-									<li><em>tangent variables</em> $\dot{x}, \dot{y}$, where $\dot{y} = \dot{f}_x(\dot{x})$</li>
-									<li><em>adjoint variables</em> $\bar{x}, \bar{y}$, where $\bar{x} = \bar{f}_x(\bar{y})$</li>
-								</ul>
-							</div>
+						<div style="flex: 3; font-size:80%">
+							<ul>
+								<li>tangent of $a_p$ $\dot{a}_p: U \times V \times P \to \mathbb{R}$</li>
+								<li>corres. adjoint $\bar{a}_p: U \times V \times \mathbb{R} \to P$</li>
+								<li>tangent spaces = spaces (?)</li>
+								<li>given tangent/adjoint vectors $\dot{p}$ and $\bar{\Sigma}^{(ji)}$ resp.</li>
+							</ul>
 						</div>
 					</div>
 					<table style="width: 100%; margin-top: 50px;">
 						<tr style="border-style: hidden;">
 							<td style="text-align: left">
-								<h4>Model ($u^{(i)} \in U(\mathcal{R}))$:</h4>
+								<h4>Model ($u^{(i)} \in U)$:</h4>
 								\begin{align*}
-									a_p(u^{(i)}, v) + b^{(i)}(v) &= 0 \quad \forall v \in U(\mathcal{R}) \\
-									\Sigma^{(i)} &= c(u^{(i)}) \\
-									C &= g_{\boldsymbol \Sigma} \\
+									a_p(u^{(i)}, v) + b^{(i)}(v) &= 0 \quad \forall v \in V \\
+									\Sigma^{(ji)} &= c^{(j)}(u^{(i)})
 								\end{align*}
 							</td>
 							<td class="fragment fade-in" data-fragment-index="1">
-								<h4>1st "adjoint method" ($\lambda \in U(\mathcal{R})$):</h4>
+								<h4>1st "adjoint method" ($\lambda^{(j)} \in V$):</h4>
 									\begin{align*}
-										a_p(v, \lambda) + c(v) &= 0 \quad \forall v \in U(\mathcal{R}) \\
-										\Sigma^{(i)} &= b^{(i)}(\lambda) \\
-										C &= g_{\boldsymbol \Sigma}
+										a_p(v, \lambda^{(j)}) + c^{(j)}(v) &= 0 \quad \forall v \in U \\
+										\Sigma^{(ji)} &= b^{(i)}(\lambda^{(j)}) \\
 									\end{align*}
 							</td>
 						</tr>
-						<tr>
+						<tr style="border-style: hidden;">
 							<td class="fragment fade-in" data-fragment-index="2">
-								<h4>Tangent model/sensitivity ($\dot{\lambda}^{(n)} \in U(\mathcal{R})$):</h4>
+								<h4>Tangent/sensitivity model ($\dot{\lambda}^{(j)} \in V)$):</h4>
 								<div class="r-stack">
-									<div class="fragment fade-out" data-fragment-index="3" style="margin-top: 20px;"> 
+									<div class="fragment fade-in" data-fragment-index="2"> 
 										\begin{align*}
-											a_p(v, \dot{\lambda}^{(n)}) + \dot{a}_p(v, \lambda, e^{(n)}) &= 0 \quad \forall v \in U(\mathcal{R})\\
-											\dot{C}^{(n)} &= \dot{g}_{\boldsymbol \Sigma}(\boldsymbol b(\dot{\lambda}^{(n)}))
-										\end{align*}
-									</div>
-									<div class="fragment fade-in" data-fragment-index="3" style="margin-top: -50px;">
-										\begin{align*}
-											a_p(v, \dot{\lambda}^{(n)}) + \overbrace{\dot{a}_p(v, \lambda, e^{(n)})}^{=\beta^{(n)}(v)} &= 0 \quad \forall v \in U(\mathcal{R})\\
-											\dot{C}^{(n)} &= \underbrace{\dot{g}_{\boldsymbol \Sigma}(\boldsymbol b(\dot{\lambda}^{(n)}))}_{=\alpha(\dot{\lambda}^{(n)})}
+											a_p(v, \dot{\lambda}^{(j)}) + \dot{a}_p(v, \lambda^{(j)}, \dot{p}) &= 0 \quad \forall v \in U\\
+											\dot{\Sigma}^{(ji)} &= b^{(i)}(\dot{\lambda}^{(j)})
 										\end{align*}
 									</div>
 								</div>
 								
 							</td>
 							<td class="fragment fade-in" data-fragment-index="4">
-								<h4>2nd (continuous) "adjoint method" ($\bar{\lambda} \in U(\mathcal{R})$):</h4>
+								<h4>2nd "adjoint method" ($\bar{\lambda}^{(j)} \in U$):</h4>
 								<div class="r-stack">
 									<div class="fragment fade-out" data-fragment-index="5">
-										\begin{align*}
-											a_p(\bar{\lambda}, v) + \dot{g}_{\boldsymbol \Sigma}(\boldsymbol b(v)) &= 0 \quad \forall v \in U(\mathcal{R})\\
-											\dot{C}^{(n)} &= \dot{a}_p(\bar{\lambda}, \lambda, e^{(n)})
-										\end{align*}
+										\begin{align}
+											a_p(\bar{\lambda}^{(j)}, v) + \bar{\Sigma}^{(ji)} b^{(i)}(v) &= 0 \quad \forall v \in V \\
+											\bar{\Sigma}^{(ji)} \dot{\Sigma}^{(ji)} &= \dot{a}_p(\bar{\lambda}^{(j)}, \lambda^{(j)}, \dot{p})
+										\end{align}
 									</div>
-									<div class="fragment fade-in" data-fragment-index="5">
-										\begin{align*}
-											\bar{\Sigma} &= \bar{g}_{\boldsymbol \Sigma}(\bar{C})\\
-											a_p(\bar{\lambda}, v) + \bar{\boldsymbol \Sigma}^T \boldsymbol b(v) &= 0 \quad \forall v \in U(\mathcal{R})\\
-											\bar{p} &= \bar{a}_p(\bar{\lambda}, \lambda, \bar{C})\\
-											\nabla_p C &= \bar{p}
-										\end{align*}
+									<div class="fragment fade-in" data-fragment-index="5"> 
+										\begin{align}
+											a_p(\bar{\lambda}^{(j)}, v) + \bar{\Sigma}^{(ji)} b^{(i)}(v) &= 0 \quad \forall v \in V \\
+											\bar{\Sigma}^{(ji)} \dot{\Sigma}^{(ji)} &= \langle \bar{a}_p(\bar{\lambda}^{(j)}, \lambda^{(j)}, 1), \dot{p} \rangle
+										\end{align}
 									</div>
 								</div>
-								
+							</td>
+						</tr>
+						<tr style="border-style: hidden;">
+							<td colspan=2 style="text-align: center;">
+								<div class="fragment fade-in" data-fragment-index="3" style="display: inline-block; text-align: left;">
+									<h4>Algorithmic Differentiation ($\langle \bar{\Sigma}, \dot{\Sigma} \rangle = \langle \bar{p}, \dot{p} \rangle$):</h4>
+									\begin{align}
+										a_p(\bar{\Sigma}^{(ji)} v, \dot{\lambda}^{(j)}) + \dot{a}_p(\bar{\Sigma}^{(ji)} v, \lambda^{(j)}, \dot{p}) &= 0 \quad \forall v \in U \\
+										\bar{\Sigma}^{(ji)} \dot{\Sigma}^{(ji)} &= \bar{\Sigma}^{(ji)} b^{(i)}(\dot{\lambda}^{(j)})
+									\end{align}
+								</div>
 							</td>
 						</tr>
 					</table>
@@ -829,46 +907,47 @@
 					<table>
 						<tr style="border-style: hidden;">
 							<td style="text-align: center; ">
-								<h4>adjoint forward + adjoint derivative</h4>
+								<h4>non-adjoint forward + tangent derivative</h4>
 							</td>
 							<td style="text-align: center; ">
-								<h4>non-adjoint forward + tangent derivative</h4>
+								<h4>adjoint forward + adjoint derivative</h4>
 							</td>
 						</tr>
 						<tr>
 							<td style="text-align: center; ">
-								\begin{align}
-								a_p(u, \lambda) + c(u) &= 0 \quad \forall u \in V(\mathcal{R})\\
-								\boldsymbol \Sigma &= \boldsymbol b(\lambda) \\
-								C &= g_{\boldsymbol \Sigma} \\
-								\bar{\boldsymbol \Sigma} &= \bar{g}_{\boldsymbol \Sigma}(\bar{C})\\
-								a_p(\bar{\lambda}, \dot{\lambda}) + \bar{\boldsymbol{\Sigma}}^T \boldsymbol b(\dot{\lambda}) &= 0 \quad \forall \dot{\lambda} \in V(\mathcal{R}) \\
-								\bar{p} &= \bar{a}_p(\bar{\lambda}, \lambda, \bar{C})\\ 
-								(\nabla_p C)^{(n)} &= \bar{p}^{(n)} 
-							\end{align}
+								\begin{align*}
+									a_p(u^{(i)}, v) + b^{(i)}(v) &= 0 \quad \forall v \in V \\
+									\Sigma^{(ji)} &= c^ {(j)}(u^{(i)}) \\
+									C &= g(\Sigma^{(\cdot{}\cdot{})}) \\
+									a_p(\dot{u}^{(in)}, v) + \dot{a}_p(u^{(i)}, v, e^{(n)}) &= 0 \quad \forall v \in V\\
+									\dot{\Sigma}^{(jin)} &= c^{(jin)}(\dot{u}^{(in)}) \\
+									(\nabla_p C)^{(n)} &= \dot{g}_{\Sigma^{(\cdot{}\cdot{})}}(\dot{\Sigma}^{(\cdot{}\cdot{}n)})
+								\end{align*}
 							</td>
 							<td style="text-align: center; ">
-								\begin{align*}
-								a_p(u^{(i)}, v) + b^{(i)}(v) &= 0 \quad \forall v \in V(\mathcal{R}) \\
-								\Sigma^{(i)} &= c(u^{(i)}) \\
-								C &= g_{\boldsymbol \Sigma} \\
-								a_p(\dot{u}^{(i, n)}, v) + \dot{a}_p(u^{(i)}, v, e^{(n)}) &= 0 \quad \forall v \in V(\mathcal{R})\\
-								\dot{\Sigma}^{(i, n)} &= c(\dot{u}^{(i, n)}) \\
-								(\nabla_p C)^{(n)} &= \dot{g}_{\boldsymbol \Sigma}(\dot{\boldsymbol \Sigma}^{(n)})
-							\end{align*}
+								\begin{align}
+									a_p(v, \lambda^{(j)}) + c^{(j)}(v) &= 0 \quad \forall v \in U\\
+									\Sigma^{(ji)} &= b^{(i)}(\lambda^{(j)}) \\
+									C &= g(\Sigma^{(\cdot{}\cdot{})}) \\
+									\bar{\Sigma}^{(\cdot{}\cdot{})} &= \bar{g}_{\Sigma^{(\cdot{}\cdot{})}}(\bar{C})\\
+									a_p(\bar{\lambda}^{(j)}, v) + \bar{\Sigma}^{(ji)} b^{(i)}(v) &= 0 \quad \forall v \in V \\
+									(\nabla_p C)^{(n)} &= \langle \bar{a}_p(\bar{\lambda}^{(j)}, \lambda^{(j)}, 1), e^{(n)}\rangle
+								\end{align}
 							</td>
 						</tr>
 					</table>
-					<h4>Generalizations:</h4>
-					<ul>
-						<li>$p$-dependent excitations $b^{(i)}(v) \rightsquigarrow b_p^{(i)}(v)$</li>
-						<li>$p$-dependent extractions $c(u) \rightsquigarrow c_p(u)$</li>
-						<li>multiple extractions $c_p(u) \rightsquigarrow c^{(j)}_p(u)$ ($I, N \gg J$)</li>
+					<h4>Generalization:</h4>
+					<ul style="width: 100%;">
+						<li>parameter-dependent $b_p^{(i)}(v)$ and $c_p^{(j)}(u)$</li>
+						\begin{equation}
+						\bar{p} = \bar{a}_p(\bar{\lambda}^{(j)}, \lambda^{(j)}, 1) + \bar{c}_p^{(j)}(\lambda^{(j)}, 1) + \bar{b}^{(i)}_p(\lambda^{(j)}, \bar{\Sigma}^{(ji)})
+						\end{equation}
 					</ul>
 					<h4 style="margin-top: 20px;">Assumptions:</h4>
 					<ul>
-						<li>the cost $\mathcal{C}(a)$ of solving $a(\cdot{}, \cdot{}) + ... = 0$ dominates over $\mathcal{C}(\langle \cdot{} \rangle)$</li>
-						<li>$a(\cdot{}, \cdot{})$ cannot be solved directly (e.g. LU)</li>
+						<li>$\mathcal{C}(\text{"solving" } a_p(\cdot{}, \cdot{})) \gg \mathcal{C}(\text{"integrating" } b^{(i)}, c^{(j)}, ...)$ </li>
+						<li>$a_p(\cdot{}, \cdot{})$ cannot be solved directly (e.g. LU)</li>
+						<li>$I > J$, $N > J$, $C \in \mathbb{R}$</li>
 					</ul>
 					<h4 style="margin-top: 20px;">Costs:</h4>
 					<ul>
