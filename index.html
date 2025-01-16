@@ -413,7 +413,7 @@
 							</ul>
 						</div>
 						<div class="fragment fade-in" style="background-color: lightgray; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 5px; font-size: 100%; margin:30px;"> 
-							<em>"Instead of computing/approximating the "solution" $v^{(i)}= A(g^{(i)})$, we approximate the <b>Riesz representation</b> $\lambda^{(j)}$ of $\cdot \mapsto \langle h^{(j)}, A(\cdot{}) \rangle_H$"</em>
+							<em>Instead of computing/approximating the "solution" $v^{(i)}= A(g^{(i)})$, we approximate the <b>Riesz representation</b> $\lambda^{(j)}$ of $\cdot \mapsto \langle h^{(j)}, A(\cdot{}) \rangle_H$</em>
 						</div>
 						<!-- <div style="background-color: lightgray; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 5px; font-size: 80%;">
 							Notation: $f_{(\cdot{})}: X \to Y$ non-linear, differentiable
@@ -750,22 +750,33 @@
 						</li>
 					</ul>
 
-					<h4>Special Case: Implicit Algorithmic Differentiation</h4>
-					<ul>
-						<li>
-							consider $f: \mathcal{X} \to Y, x \mapsto (y \in Y : F(x, y) = 0)$
-						</li>
-						<li>$\dot{f}_x(\dot{x}) = (\dot{y} \in T_yY : \dot{v} = -\dot{F}^{(1)}_{x, y}(\dot{x}) \land  \dot{F}^{(2)}_{x, y}(\dot{y}) = \dot{v} )$
-						</li>
-						<li>$\bar{f}_x(\bar{y}) = (\bar{x} \in T_xX : \bar{F}^{(1)}_{x, y}(\bar{v}) = \bar{x} \land \bar{y} = -\bar{F}^{(2)}_{x, y}(\bar{v}) )$
-						</li>
-					</ul>
+					<div style="display: flex;">
+						<div class="fragment fade-in" style="flex:3; background-color: lightgray; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 5px; font-size: 100%; margin:30px;">
+							<h4>AD Notation</h4>
+							<ul>
+								<li>tangent vectors: $\dot{y} = \dot{f}_x(\dot{x})$</li>
+								<li>adjoint vectors: $\bar{x} = \bar{f}_x(\bar{y})$</li>
+							</ul>
+						</div>
+						<div  class="fragment fade-in" style="flex: 3; background-color: lightgray; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 5px; font-size: 100%; margin:30px;">
+							<h4>Special Case: Implicit Algorithmic Differentiation</h4>
+							<ul>
+								<li>
+									consider $f: \mathcal{X} \to Y, x \mapsto (y \in Y : F(x, y) = 0)$
+								</li>
+								<li>$\dot{f}_x(\dot{x}) = (\dot{y} \in T_yY : \dot{v} = -\dot{F}^{(1)}_{x, y}(\dot{x}) \land  \dot{F}^{(2)}_{x, y}(\dot{y}) = \dot{v} )$
+								</li>
+								<li>$\bar{f}_x(\bar{y}) = (\bar{x} \in T_xX : \bar{F}^{(1)}_{x, y}(\bar{v}) = \bar{x} \land \bar{y} = -\bar{F}^{(2)}_{x, y}(\bar{v}) )$
+								</li>
+							</ul>
+						</div>
+					</div>
+					
 					
 					<div class="r-stretch"></div>
 					<ul style="font-size:60%; ">
 						<li>Griewank, A., & Walther, A. (2008). <b>Evaluating Derivatives</b>. <a href="https://doi.org/10.1137/1.9780898717761">doi:10.1137/1.9780898717761</a></li>
 						<li>Naumann, U. (2011). <b>The Art of Differentiating Computer Programs</b>. <a href="https://doi.org/10.1137/1.9781611972078">doi:10.1137/1.9781611972078</a></li>
-
 						<li>Pearlmutter, B. A., & Siskind, J. M. (2008). <b>Reverse-mode AD in a functional framework</b>. <a href="https://doi.org/10.1145/1330017.1330018">doi:10.1145/1330017.1330018</a></li>
 					</ul>
 				</section>
@@ -940,7 +951,7 @@
 					<ul style="width: 100%;">
 						<li>parameter-dependent $b_p^{(i)}(v)$ and $c_p^{(j)}(u)$</li>
 						\begin{equation}
-						\bar{p} = \bar{a}_p(\bar{\lambda}^{(j)}, \lambda^{(j)}, 1) + \bar{c}_p^{(j)}(\lambda^{(j)}, 1) + \bar{b}^{(i)}_p(\lambda^{(j)}, \bar{\Sigma}^{(ji)})
+						\bar{p} = \bar{a}_p(\bar{\lambda}^{(j)}, \lambda^{(j)}, 1) + \bar{c}_p^{(j)}(\bar{\lambda}^{(j)}, 1) + \bar{b}^{(i)}_p(\lambda^{(j)}, \bar{\Sigma}^{(ji)})
 						\end{equation}
 					</ul>
 					<h4 style="margin-top: 20px;">Assumptions:</h4>
@@ -981,7 +992,8 @@
 											\[a(u^{(i)}, v) + b^{(i)}(v) = 0 \quad \forall v \in H^1_h(\mathcal{R})\]
 										</li>
 										<li>$I, N \gg J$ (many bc $g^{(i)}$, many parameters $p \in \mathbb{R}^N$, some extractions $h^{(j)}$)</li>
-										<li>here: $I=800$, $N=757$, $J=7$</li>
+										<li>here: $I=200$, $N=2972$, $J=7$</li>
+										<li>FE-framework: Gridap.jl, linsol: gmres + ilu</li>
 									</ul>
 								</td>
 							</tr>
@@ -989,21 +1001,20 @@
 						<table style="text-align: center;">
 							<tr style="border-style: hidden;">
 								<td style="text-align: center; padding: 0px; vertical-align:top;"><h4>forward solutions $u^{(i)}$</h4></td>
-								<td style="width: 200px; "></td>
+								<td style="width: 100px; "></td>
 								<td style="text-align: center; padding: 0px; vertical-align:top;"><h4>measurements $\Sigma^{(i, j)}$</h4></td>
 							</tr>
 							<tr>
 								<td style="text-align: center; padding: 0px; vertical-align:top;">  
-									<video data-autoplay loop style="width: 800px; margin-top: 00px;">
-										<source data-src="figures/poisson/forward_animated.webm" type="video/webm">
+									<video data-autoplay loop style="width: 900px; margin-top: 00px;">
+										<source data-src="figures/upd_poisson/mp4s/forward.mp4" type="video/mp4">
 									</video>
 								</td>
 								<td></td>
 								<td style="text-align: center; padding: 0px; vertical-align:top;">
-									<img style="width: 700px; " src="figures/poisson/all_measurements_forward.svg">
-								</td> 
+									<img style="width: 900px; " src="figures/upd_poisson/measurements.png">
+								</td>
 							</tr> 
-
 						</table>
 					</section>
 
@@ -1061,6 +1072,128 @@
 						\end{align*}
 					</section>
 				</section>
+
+				<section style="text-align: left;">
+					<h3>Example: An inverse problem based on the Poisson equation</h3>
+					<table>
+						<tr style="border-style: hidden;">
+							<td>
+								<h4>forward (strong form)</h4>
+								<div style="margin-top:-20px; font-size: 70%;">
+									\begin{align*}
+										&\begin{cases}
+											-\nabla \cdot{} m \nabla u^{(i)} = 0 \quad &\forall x \in \mathcal{R}\\
+											u^{(i)} = g^{(i)} \quad &\forall x \in \partial\mathcal{R}
+											\end{cases}\\
+										&\Sigma^{(ji)} = \int_{\mathcal{R}} h^{(j)} u^{(i)} dx\\
+										&C = \frac{1}{2 IJ}\sum_{i, j=1}^{I,J} (\Sigma^{(ji)} - \tilde{\Sigma}^{(ji)})^2  
+									\end{align*}
+								</div>
+							</td>
+							<td>
+								<h4>adjoint forward (strong form)</h4>
+								<div style="margin-top: -20px; font-size: 70%; ">
+									\begin{align*}
+										&\begin{cases}
+											-\nabla \cdot{} m \nabla \lambda^{(j)} = -h^{(j)} &\forall x \in \mathcal{R} \\
+											\lambda^{(j)} = 0 \quad &\forall x \in \partial \mathcal{R}
+										\end{cases}\\
+										&\Sigma^{(ji)} = \int_{\partial \mathcal{R}} \nabla_n \lambda^{(j)} g^{(i)} \, d x\\
+										&C = \frac{1}{2 I J} \sum_{i, j}^{I, J} (\Sigma^{(ji)} - \tilde{\Sigma}^{(ji)})^2
+									\end{align*}
+								</div>
+							</td>
+						</tr>
+						<tr style="border-style: hidden;">
+							<td>
+								<h5>forward solution $u^{(i)}$</h5>
+								<img style="width:600px; " src="figures/upd_poisson/forward_main.png">
+							</td>
+							<td>
+								<div style="display: flex;">
+									<div style="flex:1;">
+										<h5>adjoint solution $\lambda^{(j)}$</h5>
+										<img style="width:600px; " src="figures/upd_poisson/adjoint_forward_1.png">
+									</div>
+									<div style="flex:1;">
+										<h5>riesz representation $\nabla_n \lambda^{(j)}$</h5>
+										<img style="width:600px; " src="figures/upd_poisson/boundary_projections.png">
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								$\approx 100ms \approx 200\times 0.5ms$
+							</td>
+							<td>
+								$\approx 6ms \approx 7\times 0.5ms$
+							</td>
+						</tr>
+					</table>
+				</section>
+
+				<section style="text-align: left;">
+					<h3>Example: An inverse problem based on the Poisson equation</h3>
+					<table>
+						<tr style="border-style: hidden;">
+							<td>
+								<h4>sensitivity (strong form)</h4>
+								<div style="margin-top:-20px; font-size: 70%;">
+									\begin{align*}
+										&\begin{cases}
+										-\nabla \cdot{} m \nabla \dot{\lambda}^{(j)} - \nabla \cdot{} \dot{m} \nabla \lambda^{(j)} = 0 &\forall x \in \mathcal{R} \\
+											\dot{\lambda}^{(j)} = 0 \quad &\forall x \in \partial \mathcal{R}
+											\end{cases}\\
+										&\dot{\Sigma}^{(ji)} = \int_{\partial \mathcal{R}} \nabla_n \dot{\lambda}^{(j)} g^{(i)} \, d x\\
+										&\dot{C} = \frac{1}{IJ} \sum_{i, j=1}^{I,J} (\Sigma^{(ji)} - \tilde{\Sigma}^{(ji)})\dot{\Sigma}^{(ji)}
+									\end{align*}
+								</div>
+							</td>
+							<td>
+								<h4>adjoint sensitivity (strong form)</h4>
+								<div style="margin-top: -20px; font-size: 70%; ">
+									\begin{align*}
+										&\bar{\Sigma}^{(ji)} = \frac{1}{I J} (\Sigma^{(ji)} - \tilde{\Sigma}^{(ji)}) \bar{C} \\
+										&\begin{cases}
+											-\nabla \cdot{} m \nabla \bar{\lambda}^{(j)} = 0 &\forall x \in \mathcal{R} \\
+											\bar{\lambda}^{(j)} = \sum_{i=1}^{I} \bar{\Sigma}^{(ji)} g^{(i)} \quad &\forall x \in \partial \mathcal{R}
+										\end{cases}\\
+										&\bar{m} = \bar{C} \sum_{j=1}^{J} \nabla \bar{\lambda}^{(j)} \cdot{} \nabla \lambda^{(j)} \\
+
+									\end{align*}
+								</div>
+							</td>
+						</tr>
+						<tr style="border-style: hidden;">
+							<td>
+								<h5>tangent sensitivity $\dot{\lambda}^{(j)}$</h5>
+								<img style="width:600px; " src="figures/upd_poisson/tangent_gradient/gradient_tangent_1_9.png">
+							</td>
+							<td>
+								<div style="display: flex;">
+									<div style="flex:1;">
+										<h5>adjoint sensitivity $\bar{\lambda}^{(j)}$</h5>
+										<img style="width:900px; " src="figures/upd_poisson/adjoint_gradient/adjoint_solution_1.png">
+									</div>
+									<div style="flex:1;">
+										<h5>Taylor remainder </h5>
+										<img style="width:600px; " src="figures/upd_poisson/taylor_remainder.png">
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								$\approx 100ms \approx 200\times 0.5ms$
+							</td>
+							<td>
+								$\approx 6ms \approx 7\times 0.5ms$
+							</td>
+						</tr>
+					</table>
+				</section>
+				
 
 				<section style="text-align: left;">
 					<section style="text-align: left;">
