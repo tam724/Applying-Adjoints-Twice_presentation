@@ -9,3 +9,6 @@ The latest version is on `main` ([view here](https://tam724.github.io/Applying-A
 $ git checkout <branch>
 ```
 and have a look at `index.html` with your webbrowser.
+
+# 
+Built using the HTML Presentation Framework [reveal.jl](https://revealjs.com/)
