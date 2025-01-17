@@ -329,11 +329,11 @@
 							\]
 						
 					</span>
-					<div class="r-stretch"></div>
+					<!-- <div class="r-stretch"></div>
 					<ul style="font-size:60%; ">
 						<li>Naumann, U. (2020). <b>Optimization of Generalized Jacobian Chain Products without Memory Constraints</b>. <a href="https://doi.org/10.48550/ARXIV.2003.05755">doi:10.48550/ARXIV.2003.05755</a></li>
 						<li>Claus, T. (2020). <b>Optimization of Sparse Generalized Jacobian Chain Products</b> <a href="https://www.acom.rwth-aachen.de/media/claus_opti_sparse_jac_chain_2020_SS.pdf">(unpublished)</a></li>
-					</ul>
+					</ul> -->
 				</section>
 
 				<!-- An abstract adjoint method -->
@@ -1239,29 +1239,32 @@
 					</ul>
 				</section>
 
+				<!--Material Reconstruction in EPMA-->
 				<section style="text-align: left;">
 					<h3>Material Reconstruction in EPMA</h3>
-					<h5>coupled system of radiative transfer equations</h5>
-					($\psi$ electron fluence, $\phi$ photon fluence)
-					\begin{align*}
-						\Omega \cdot{} \nabla_x \psi + \Sigma^{\text{tot}} \psi &= \int_{\mathbb{R}^+} \int_{S^2} \Sigma^{\text{scat}} \psi \, d\Omega' \, d\epsilon' \quad \forall (x, \epsilon, \Omega) \in \mathcal{R} \times \mathcal{E} \times S^2 \\
-						\Omega_{\text{det.}} \cdot{} \nabla_x \phi + \Sigma^{\text{abs}} \phi &= \int_{\mathcal{E}} \int_{S^2} \Sigma^{\text{ion}} \psi \, d \Omega \, d \epsilon \quad \forall x \in \mathcal{R}
-					\end{align*}
-					\begin{align*}
-						\psi = g_{\text{beam}}^{(i)} \quad \forall n\cdot{}\Omega < 0 \\
-						k^{(ji)} = \int_{\partial\mathcal{R}} \phi_j \, d \Gamma
-					\end{align*}
-					\begin{equation}
-					\end{equation}
+					<h5 style="display:inline; ">coupled system of radiative transfer equations</h5> ($\psi^{(i)}$: electron fluence, $\phi^{(ji)}$: photon fluence)
+					<div style="font-size:80%">
+						\begin{align*}
+							\Omega \cdot{} \nabla_x \psi + \Sigma^{\text{tot}} \psi &= \int_{\mathbb{R}^+} \int_{S^2} \Sigma^{\text{scat}} \psi \, d\Omega' \, d\epsilon' \quad \forall (x, \epsilon, \Omega) \in \mathcal{R} \times \mathcal{E} \times S^2 \\
+							\Omega_{\text{det.}} \cdot{} \nabla_x \phi + \Sigma^{\text{abs}} \phi &= \int_{\mathcal{E}} \int_{S^2} \Sigma^{\text{ion}} \psi \, d \Omega \, d \epsilon \quad \forall x \in \mathcal{R}
+						\end{align*}
+						\begin{align*}
+							\psi &= g_{\text{beam}}^{(i)} \quad \forall n\cdot{}\Omega < 0 \\
+							k^{(ji)} &= \int_{\partial\mathcal{R}} \phi^{(ji)} \, d \Gamma
+						\end{align*}
+					</div>
+
 					additivity approximation
-					\begin{equation}
-						\Sigma(x, \epsilon, \epsilon', \Omega, \Omega') = \sum_{e=1}^{n_e} \mathcal{N}_e(x) \sigma_e(\epsilon, \epsilon', \Omega, \Omega')
-					\end{equation}
+					<div style="font-size:80%">
+						\begin{equation}
+							\Sigma^{\times}(x, \epsilon, \epsilon', \Omega, \Omega') = \sum_{e=1}^{n_e} \mathcal{N}_e(x) \sigma_e^{\times}(\epsilon, \epsilon', \Omega, \Omega')
+						\end{equation}
+					</div>
 					<div class="r-stretch"></div>
 
 					<ul style="font-size:60%">
 						<li>Egger, H., & Schlottbom, M. (2012). A Mixed Variational Framework For The Radiative Transfer Equation. <a href="https://doi.org/10.1142/s021820251150014x">doi:10.1142/s021820251150014x</a></li>
-						<li>Egger, H., & Schlottbom, M. (2014). Numerical methods for parameter identification in stationary radiative transfer. <a href="https://doi.org/10.1007/s10589-014-9657-9">doi:10.1007/s10589-014-9657-9</a</li>
+						<li>Egger, H., & Schlottbom, M. (2014). Numerical methods for parameter identification in stationary radiative transfer. <a href="https://doi.org/10.1007/s10589-014-9657-9">doi:10.1007/s10589-014-9657-9</a></li>
 					</ul>
 				</section>
 
