@@ -36,7 +36,6 @@
 				border-style: none;
 			}
 		  </style>
-		  
 	</head>
 	<body>
 		<div class="reveal">
@@ -50,172 +49,11 @@
 					<p style="margin-bottom:50px; "><strong>Tamme Claus</strong><sup>1</sup>, Gaurav Achuda<sup>2</sup>, Silvia Richter<sup>2</sup>, Manuel Torrilhon<sup>1</sup></p>
 					<p><sup>1</sup> ACoM, Applied and Computational Mathematics, RWTH Aachen University</p>
 					<p><sup>2</sup> GFE, Central Facility for Electron Microscopy, RWTH Aachen University</p>
-					<p style="margin-top:50px; "><em>May 2024</em></p>
+					<p style="margin-top:50px; "><em>Computational Methods for Inverse Problems, ECCOMAS 2024</em></p>
 					<div style=" margin-top:300px; text-align: right;">
 						<img src="figures/gfe_logo.svg" height="290px"> 
 						<img src="figures/rwth_acom_en_cmyk.svg" height="300px">
 					</div>
-				</section>
-				
-				<!-- Motivation -->
-				<section style="text-align: left">
-					<h3>
-						Motivation: Matrix Product Bracketing
-					</h3>
-					Consider Matrix Multiplication ($N \gg I, J$):
-					<div class="r-stack">
-						<span class="fragment fade-out" data-fragment-index="1">\[
-							\underbrace{\begin{pmatrix}
-							&   &   \\
-							& \Sigma^{(ji)} &   \\
-							&   &   \end{pmatrix}^{\color{white}{T}}}_{J \times I} = 
-							\color{white}{\Bigg(}
-							\underbrace{\begin{pmatrix}
-							— & h^{(1)} & — \\
-							— & h^{(j)} & — \\
-							— & h^{(J)} & — \\
-							\end{pmatrix}}_{J \times N} 
-							\cdot{}
-							\color{white}{\Bigg(}
-							\underbrace{\boldsymbol{A}^{\color{white}{*}}}_{N \times N}
-							\color{white}{\Bigg)
-							}
-							\cdot{}
-							\underbrace{
-							\begin{pmatrix}
-								| & | & | \\
-								g^{(1)} &  g^{(i)} & g^{(I)} \\
-								| & | & | \\
-							\end{pmatrix}}_{N \times I}
-							\color{white}{\Bigg)}
-						\]</span>
-						<span class="fragment fade-in-then-out" data-fragment-index="1">\[
-							\underbrace{\begin{pmatrix}
-							&   &   \\
-							& \Sigma^{(ji)} &   \\
-							&   &   \end{pmatrix}^{\color{white}{T}}}_{J \times I} = 
-							\color{blue}{\Bigg(}
-							\underbrace{\begin{pmatrix}
-							— & h^{(1)} & — \\
-							— & h^{(j)} & — \\
-							— & h^{(J)} & — \\
-							\end{pmatrix}}_{J \times N} 
-							\cdot{}
-							\color{white}{\Bigg(}
-							\underbrace{\boldsymbol{A}^{\color{white}{*}}}_{N \times N}
-							\color{blue}{\Bigg)
-							}
-							\cdot{}
-							\underbrace{
-							\begin{pmatrix}
-								| & | & | \\
-								g^{(1)} &  g^{(i)} & g^{(I)} \\
-								| & | & | \\
-							\end{pmatrix}}_{N \times I}
-							\color{white}{\Bigg)}
-						\]</span>
-						<span class="fragment fade-in-then-out" data-fragment-index="2">\[
-							\underbrace{\begin{pmatrix}
-							&   &   \\
-							& \Sigma^{(ji)} &   \\
-							&   &   \end{pmatrix}^{\color{white}{T}}}_{J \times I} = 
-							\color{white}{\Bigg(}
-							\underbrace{\begin{pmatrix}
-							— & h^{(1)} & — \\
-							— & h^{(j)} & — \\
-							— & h^{(J)} & — \\
-							\end{pmatrix}}_{J \times N} 
-							\cdot{}
-							\color{red}{\Bigg(}
-							\underbrace{\boldsymbol{A}^{\color{white}{*}}}_{N \times N}
-							\color{white}{\Bigg)
-							}
-							\cdot{}
-							\underbrace{
-							\begin{pmatrix}
-								| & | & | \\
-								g^{(1)} &  g^{(i)} & g^{(I)} \\
-								| & | & | \\
-							\end{pmatrix}}_{N \times I}
-							\color{red}{\Bigg)}
-						\]</span>
-						<span class="fragment fade-in" data-fragment-index="3">\[
-							\underbrace{\begin{pmatrix}
-							&   &   \\
-							& \Sigma^{(ji)} &   \\
-							&   &   \end{pmatrix}^{\color{white}{T}}}_{J \times I} = 
-							\color{blue}{\Bigg(}
-							\underbrace{\begin{pmatrix}
-							— & h^{(1)} & — \\
-							— & h^{(j)} & — \\
-							— & h^{(J)} & — \\
-							\end{pmatrix}}_{J \times N} 
-							\cdot{}
-							\color{red}{\Bigg(}
-							\underbrace{\boldsymbol{A}^{\color{white}{*}}}_{N \times N}
-							\color{blue}{\Bigg)
-							}
-							\cdot{}
-							\underbrace{
-							\begin{pmatrix}
-								| & | & | \\
-								g^{(1)} &  g^{(i)} & g^{(I)} \\
-								| & | & | \\
-							\end{pmatrix}}_{N \times I}
-							\color{red}{\Bigg)}
-						\]</span>
-						<!-- <span style="background-color:#fff;" class="fragment fade-in" data-fragment-index="6">\[
-							\underbrace{\begin{pmatrix}
-							&   &   \\
-							& \Sigma^{(ij)} &   \\
-							&   &   \end{pmatrix}^{\color{black}{T}}}_{J \times I} = 
-							\color{white}{\Bigg(}
-							\underbrace{\begin{pmatrix}
-							— & g^{(1)} & — \\
-							— & g^{(j)} & — \\
-							— & g^{(J)} & — \\
-							\end{pmatrix}}_{J \times N}
-							\cdot{}
-							\color{white}{\Bigg(}
-							\underbrace{\boldsymbol{A}^*}_{N \times N}
-							\color{white}{\Bigg)}
-							\cdot{}
-							\underbrace{
-							\begin{pmatrix}
-								| & | & | \\
-								h^{(1)} &  h^{(i)} & h^{(I)} \\
-								| & | & | \\
-							\end{pmatrix}}_{N \times I}
-							\color{white}{\Bigg)}
-						\]</span> -->
-					</div>
-					<p>where to bracket?</p>
-					<p style="text-align: center" class="fragment fade-in" data-fragment-index="4">
-						different computational costs: $\color{red}{I\times N^2 + IJ\times N} \text{ or } \color{blue}{J\times N^2 + IJ\times N}$
-					</p>
-					<span class="fragment fade-in" data-fragment-index="5">
-						<ul>
-							<li>
-								what happens if $\boldsymbol A$ is more general, e.g. "solution of a linear system / (linear, linearized) weak form" instead of "matrix multiplication"?
-								\[
-									\boldsymbol A g^{(i)} = \{u \in V \, | \, a(u, v) + \langle g^{(i)}, v \rangle = 0 \quad \forall v \in V\}
-								\]
-							</li>
-							<li>
-								what happens if $\boldsymbol A$ is a derivative (structure: chain rule, product rule, ...)?
-								\[
-									\boldsymbol A g^{(i)} = \frac{\partial f(h(w))}{\partial v}\frac{\partial h(w)}{\partial w}g^{(i)}
-								\]
-							</li>
-						</ul>
-					</span>
-					<span class="fragment fade-in" data-fragment-index="6">
-						In general (reduced cost, if $J < I$):
-						\[
-							\underbrace{\Sigma^T}_{I \times J} = \underbrace{G^T}_{I \times \infty} \cdot{}  \underbrace{A^*}_{\infty \times \infty} \cdot{} \underbrace{H^T}_{\infty \times J}
-						\]
-						where $\boldsymbol A ^* $is the <em>adjoint </em> operator.
-					</span>
 				</section>
 				
 				<section>
@@ -247,25 +85,25 @@
 										<source data-src="figures/02_forward.webm" type="video/webm">
 									</video>
 								</div>
-								<div class="fragment fade-in-then-out" data-fragment-index="3">
+								<!-- <div class="fragment fade-in-then-out" data-fragment-index="3">
 									<video loop data-autoplay  width="700px" style="margin-top: 40px;">
 										<source data-src="figures/03_ionization.webm" type="video/webm">
 									</video>
-								</div>
-								<div class="fragment fade-in-then-out" data-fragment-index="4">
+								</div> -->
+								<div class="fragment fade-in-then-out" data-fragment-index="3">
 									<img src="figures/04_interaction_volume.jpg" alt="Interaction Volume"  width="700px" style="margin-top: 60px;">
 								</div>
-								<div class="fragment fade-in-then-out" data-fragment-index="5">
+								<div class="fragment fade-in-then-out" data-fragment-index="4">
 									<video loop data-autoplay  width="700px" style="margin-top: 40px;">
 										<source data-src="figures/05_linescan.webm" type="video/webm">
 									</video>
 								</div>
-								<div class="fragment fade-in-then-out" data-fragment-index="6">
+								<div class="fragment fade-in-then-out" data-fragment-index="5">
 									<video loop data-autoplay width="700px" style="margin-top: 40px;">
 										<source data-src="figures/06_linescan.webm" type="video/webm">
 									</video>
 								</div>
-								<div class="fragment fade-in" data-fragment-index="7">
+								<div class="fragment fade-in" data-fragment-index="6">
 									<video data-autoplay width="700px" style="margin-top: 40px;">
 										<source data-src="figures/07_linescan.webm" type="video/webm">
 									</video>
@@ -276,28 +114,183 @@
 									<li class="fragment fade-in" data-fragment-index="1">Example Material: two-phase (<span style="color: orange">A</span>, <span style="color: green;">B</span>)</li>
 									<li class="fragment fade-in" data-fragment-index="2"><span style="color:blue">Electron</span> propagation affected by scattering (animated: different energies) </li>
 									<li class="fragment fade-in" data-fragment-index="3">Ionization and emission of characteristic x-rays (wavelength of <span style="color:orange">A-rays</span> and <span style="color:green">B-rays</span> differ)</li>
-									<li class="fragment fade-in" data-fragment-index="4">Measure wavelength-dispersive x-ray intensity</li>
-									<li class="fragment fade-in" data-fragment-index="5">Spatial information gained via different beam positions (linescan), <span class="fragment fade-in" data-fragment-index="6">beam angles </span> <span class="fragment fade-in" data-fragment-index="7">and beam energies</span></li>
-									<li class="fragment fade-in" data-fragment-index="8"><em>inverse problem of material reconstruction</em>
-										<div class="r-stack">
-											<span class="fragment fade-in-then-out" data-fragment-index="8">
-												\begin{equation}
-													p^* = \underset{p \in P}{\text{arg min}} \underbrace{|| \Sigma(p)  - \tilde{\Sigma} ||^2}_{=C(p)}
-												\end{equation}
-											</span>
-											<span class="fragment fade-in" data-fragment-index="9">
-												\begin{equation}
-													p^* = \underset{p \in P}{\text{arg min}} \underbrace{|| (\Sigma \circ \gamma)(p)  - \tilde{\Sigma} ||^2}_{=C(p)}
-												\end{equation}
-											</span>
-										</div>
+									<!-- <li class="fragment fade-in" data-fragment-index="4">Measure wavelength-dispersive x-ray intensity</li> -->
+									<li class="fragment fade-in" data-fragment-index="4">Spatial information gained via different beam positions (linescan), <span class="fragment fade-in" data-fragment-index="5">beam angles </span> <span class="fragment fade-in" data-fragment-index="6">and beam energies</span></li>
+									<li class="fragment fade-in" data-fragment-index=7"><em>inverse problem of material reconstruction</em>
+										<span class="fragment fade-in" data-fragment-index="7">
+											\begin{equation}
+												p^* = \underset{p \in P}{\text{arg min}} \underbrace{|| \Sigma(p)  - \tilde{\Sigma} ||^2}_{=C(p)}
+											\end{equation}
+										</span>
 									</li>
-									<li class="fragment fade-in" data-fragment-index="10">gradient-based iterative methods (Steepest Descent, BFGS, or HMC)</li>
-									<li class="fragment fade-in" data-fragment-index="11"><em>we focus on computing $\nabla_p C(p)$ efficiently via adjoints</em></li>
+									<li class="fragment fade-in" data-fragment-index="8">gradient-based iterative methods (Steepest Descent, BFGS, or HMC)</li>
+									<li class="fragment fade-in" data-fragment-index="9"><em>we focus on computing $\nabla_p C(p)$ efficiently via adjoints</em></li>
 								</ul>
 							</div>
 						</div>
 					</section>
+
+					<!-- Motivation -->
+					<section style="text-align: left">
+						<h3>
+							Motivation: Matrix Product Bracketing
+						</h3>
+						Consider Matrix Multiplication ($N \gg I, J$):
+						<div class="r-stack">
+							<span class="fragment fade-out" data-fragment-index="1">\[
+								\underbrace{\begin{pmatrix}
+								&   &   \\
+								& \Sigma^{(ji)} &   \\
+								&   &   \end{pmatrix}^{\color{white}{T}}}_{J \times I} = 
+								\color{white}{\Bigg(}
+								\underbrace{\begin{pmatrix}
+								— & h^{(1)} & — \\
+								— & h^{(j)} & — \\
+								— & h^{(J)} & — \\
+								\end{pmatrix}}_{J \times N} 
+								\cdot{}
+								\color{white}{\Bigg(}
+								\underbrace{\boldsymbol{A}^{\color{white}{*}}}_{N \times N}
+								\color{white}{\Bigg)
+								}
+								\cdot{}
+								\underbrace{
+								\begin{pmatrix}
+									| & | & | \\
+									g^{(1)} &  g^{(i)} & g^{(I)} \\
+									| & | & | \\
+								\end{pmatrix}}_{N \times I}
+								\color{white}{\Bigg)}
+							\]</span>
+							<span class="fragment fade-in-then-out" data-fragment-index="1">\[
+								\underbrace{\begin{pmatrix}
+								&   &   \\
+								& \Sigma^{(ji)} &   \\
+								&   &   \end{pmatrix}^{\color{white}{T}}}_{J \times I} = 
+								\color{blue}{\Bigg(}
+								\underbrace{\begin{pmatrix}
+								— & h^{(1)} & — \\
+								— & h^{(j)} & — \\
+								— & h^{(J)} & — \\
+								\end{pmatrix}}_{J \times N} 
+								\cdot{}
+								\color{white}{\Bigg(}
+								\underbrace{\boldsymbol{A}^{\color{white}{*}}}_{N \times N}
+								\color{blue}{\Bigg)
+								}
+								\cdot{}
+								\underbrace{
+								\begin{pmatrix}
+									| & | & | \\
+									g^{(1)} &  g^{(i)} & g^{(I)} \\
+									| & | & | \\
+								\end{pmatrix}}_{N \times I}
+								\color{white}{\Bigg)}
+							\]</span>
+							<span class="fragment fade-in-then-out" data-fragment-index="2">\[
+								\underbrace{\begin{pmatrix}
+								&   &   \\
+								& \Sigma^{(ji)} &   \\
+								&   &   \end{pmatrix}^{\color{white}{T}}}_{J \times I} = 
+								\color{white}{\Bigg(}
+								\underbrace{\begin{pmatrix}
+								— & h^{(1)} & — \\
+								— & h^{(j)} & — \\
+								— & h^{(J)} & — \\
+								\end{pmatrix}}_{J \times N} 
+								\cdot{}
+								\color{red}{\Bigg(}
+								\underbrace{\boldsymbol{A}^{\color{white}{*}}}_{N \times N}
+								\color{white}{\Bigg)
+								}
+								\cdot{}
+								\underbrace{
+								\begin{pmatrix}
+									| & | & | \\
+									g^{(1)} &  g^{(i)} & g^{(I)} \\
+									| & | & | \\
+								\end{pmatrix}}_{N \times I}
+								\color{red}{\Bigg)}
+							\]</span>
+							<span class="fragment fade-in" data-fragment-index="3">\[
+								\underbrace{\begin{pmatrix}
+								&   &   \\
+								& \Sigma^{(ji)} &   \\
+								&   &   \end{pmatrix}^{\color{white}{T}}}_{J \times I} = 
+								\color{blue}{\Bigg(}
+								\underbrace{\begin{pmatrix}
+								— & h^{(1)} & — \\
+								— & h^{(j)} & — \\
+								— & h^{(J)} & — \\
+								\end{pmatrix}}_{J \times N} 
+								\cdot{}
+								\color{red}{\Bigg(}
+								\underbrace{\boldsymbol{A}^{\color{white}{*}}}_{N \times N}
+								\color{blue}{\Bigg)
+								}
+								\cdot{}
+								\underbrace{
+								\begin{pmatrix}
+									| & | & | \\
+									g^{(1)} &  g^{(i)} & g^{(I)} \\
+									| & | & | \\
+								\end{pmatrix}}_{N \times I}
+								\color{red}{\Bigg)}
+							\]</span>
+							<!-- <span style="background-color:#fff;" class="fragment fade-in" data-fragment-index="6">\[
+								\underbrace{\begin{pmatrix}
+								&   &   \\
+								& \Sigma^{(ij)} &   \\
+								&   &   \end{pmatrix}^{\color{black}{T}}}_{J \times I} = 
+								\color{white}{\Bigg(}
+								\underbrace{\begin{pmatrix}
+								— & g^{(1)} & — \\
+								— & g^{(j)} & — \\
+								— & g^{(J)} & — \\
+								\end{pmatrix}}_{J \times N}
+								\cdot{}
+								\color{white}{\Bigg(}
+								\underbrace{\boldsymbol{A}^*}_{N \times N}
+								\color{white}{\Bigg)}
+								\cdot{}
+								\underbrace{
+								\begin{pmatrix}
+									| & | & | \\
+									h^{(1)} &  h^{(i)} & h^{(I)} \\
+									| & | & | \\
+								\end{pmatrix}}_{N \times I}
+								\color{white}{\Bigg)}
+							\]</span> -->
+						</div>
+						<p>where to bracket?</p>
+						<p style="text-align: center" class="fragment fade-in" data-fragment-index="4">
+							different computational costs: $\color{red}{I\times N^2 + IJ\times N} \text{ or } \color{blue}{J\times N^2 + IJ\times N}$
+						</p>
+						<span class="fragment fade-in" data-fragment-index="5">
+							<ul>
+								<li>
+									what happens if $\boldsymbol A$ is more general, e.g. "solution of a linear system / (linear, linearized) weak form" instead of "matrix multiplication"?
+									\[
+										\boldsymbol A g^{(i)} = \{u \in V \, | \, a(u, v) + \langle g^{(i)}, v \rangle = 0 \quad \forall v \in V\}
+									\]
+								</li>
+								<li>
+									what happens if $\boldsymbol A$ is a derivative (structure: chain rule, product rule, ...)?
+									\[
+										\boldsymbol A g^{(i)} = \frac{\partial f(h(w))}{\partial v}\frac{\partial h(w)}{\partial w}g^{(i)}
+									\]
+								</li>
+							</ul>
+						</span>
+						<span class="fragment fade-in" data-fragment-index="6">
+							In general (reduced cost, if $J < I$):
+							\[
+								\underbrace{\Sigma^T}_{I \times J} = \underbrace{G^T}_{I \times \infty} \cdot{}  \underbrace{A^*}_{\infty \times \infty} \cdot{} \underbrace{H^T}_{\infty \times J}
+							\]
+							where $\boldsymbol A ^* $is the <em>adjoint </em> operator.
+						</span>
+					</section>
+					
 					<!-- Gradients in Inverse Problems-->
 					<section style="text-align: left;">
 						<h3>Gradients in Inverse Problems</h3>
@@ -339,70 +332,158 @@
 				<!-- An adjoint method -->
 				<section style="text-align: left;">
 					<section style="text-align: left";>
-						<h3>An Adjoint Method</h3>
+						<h3>Applying Adjoints Twice: Ingredients</h3>
+						<h4>An adjoint method</h4>
 						<p>
 							Definition of the <em>Adjoint</em> ($H, G$ Hilbert spaces, $A: G \to H$ continuous, linear)
 							\[
 								\langle h, A(g) \rangle_H := \langle A^*(h), g \rangle_G \quad \forall h \in H \, \forall g \in G
 							\]
 						</p>
-						<ul>
-							<li>given multiple $g^{(1)}, ... g^{(I)} \in G$, $h^{(1)}, ... h^{(J)} \in H$ we want to compute
-							</li>
-						</ul>
-						\[
-						\Sigma^{(ji)} = \langle h^{(j)}, A(g^{(i)}) \rangle_H = \langle A^*(h^{(j)}), g^{(i)} \rangle_G \quad \forall i=1, ...I \, j=1, ...J
-						\]
-						<table style="text-align: left;">
-							<tr style="border-style: hidden;">
-								<td>
-									<h4>non-adjoint implementation</h4>
-								</td>
-								<td style="width:300px; "></td>
-								<td>
-									<h4>adjoint implementation</h4>
-								</td>
-							</tr>
-							<tr style="border-style: hidden;">
-								<td>
-									\begin{align*}
-										&\text{foreach } \color{orange}{i = 1, ..., I} \text{ do} \\
-										&\qquad \color{orange}{v^{(i)} \leftarrow A(g^{(i)})}\\
-										&\qquad \text{foreach } \color{green}{j = 1, ..., J} \text{ do}\\
-										&\qquad \qquad \Sigma^{(ji)} \leftarrow \langle \color{green}{h^{(j)}}, \color{orange}{v^{(i)}} \rangle_H\\
-										&\qquad \text{end}\\
-										&\text{end}
-									\end{align*}
-								</td>	
-								<td style="width:50px; "></td>
-								<td>
-									\begin{align*}
-										&\text{foreach } \color{green}{j = 1, ..., J} \text{ do} \\
-										&\qquad \color{green}{\lambda^{(j)} \leftarrow A^*(h^{(j)})}\\
-										&\qquad \text{foreach } \color{orange}{i = 1, ..., I} \text{ do}\\
-										&\qquad \qquad \Sigma^{(ji)} \leftarrow \langle \color{green}{\lambda^{(j)}}, \color{orange}{g^{(i)}} \rangle_G\\
-										&\qquad \text{end}\\
-										&\text{end}
-									\end{align*}
-								</td>
-							</tr>
-							<tr style="border-style: hidden;">
-								<td>
+						<div class="fragment fade-in">
+							<ul>
+								<li>given multiple $g^{(1)}, ... g^{(I)} \in G$, $h^{(1)}, ... h^{(J)} \in H$ we want to compute
+								</li>
+							</ul>
+							\[
+							\Sigma^{(ji)} = \langle h^{(j)}, A(g^{(i)}) \rangle_H = \langle A^*(h^{(j)}), g^{(i)} \rangle_G \quad \forall i=1, ...I \, j=1, ...J
+							\]
+							<table style="text-align: left;">
+								<tr style="border-style: hidden;">
+									<td style="padding:0px; "</td>
+										<h4>non-adjoint implementation($\color{green}{J} > \color{orange}{I}$)</h4>
+									</td>
+									<td style="width:100px; "></td>
+									<td style="padding:0px; ">
+										<h4>adjoint implementation ($\color{orange}{I} > \color{green}{J}$)</h4>
+									</td>
+								</tr>
+								<tr style="border-style: hidden;">
+									<td style="vertical-align: top; padding:0px;">
+										<div style="margin-top: -30px;">
+											\begin{align*}
+												&\text{foreach } \color{orange}{i = 1, ..., I} \text{ do} \\
+												&\qquad \color{orange}{v^{(i)} \leftarrow A(g^{(i)})}\\
+												&\qquad \text{foreach } \color{green}{j = 1, ..., J} \text{ do}\\
+												&\qquad \qquad \Sigma^{(ji)} \leftarrow \langle \color{green}{h^{(j)}}, \color{orange}{v^{(i)}} \rangle_H\\
+												&\qquad \text{end}\\
+												&\text{end}
+											\end{align*}
+										</div>
+									</td>
+									<td style="width:50px; "></td>
+									<td style="vertical-align: top; padding:0px; ">
+										<div style="margin-top: -30px;">
+											\begin{align*}
+												&\text{foreach } \color{green}{j = 1, ..., J} \text{ do} \\
+												&\qquad \color{green}{\lambda^{(j)} \leftarrow A^*(h^{(j)})}\\
+												&\qquad \text{foreach } \color{orange}{i = 1, ..., I} \text{ do}\\
+												&\qquad \qquad \Sigma^{(ji)} \leftarrow \langle \color{green}{\lambda^{(j)}}, \color{orange}{g^{(i)}} \rangle_G\\
+												&\qquad \text{end}\\
+												&\text{end}
+											\end{align*}
+										</div>
+									</td>
+								</tr>
+								<tr style="border-style: hidden;">
+									<td>
+										<ul>
+											<li>cost: $\color{orange}{I} \times \mathcal{C}(A) + \color{orange}{I}\color{green}{J} \times \mathcal{C}(\langle \cdot{}, \cdot{} \rangle_H)$</li>
+										</ul>
+									</td>
+									<td style="width:100px; "></td>
+									<td>
+										<ul>
+											<li>cost: $\color{green}{J} \times \mathcal{C}(A^*) + \color{orange}{I}\color{green}{J} \times \mathcal{C}(\langle \cdot{}, \cdot{} \rangle_G)$
+											</li>
+										</ul>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<!-- <div style="background-color: lightgray; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 5px; font-size: 80%;">
+							Notation: $f_{(\cdot{})}: X \to Y$ non-linear, differentiable
+							<ul>
+								<li><em>tangent operator</em> $\dot{f}_x(\dot{x}) = \lim_{h \to 0} \frac{f_{x+h\dot{x}} - f_x}{h}$</li>
+								<li><em>adjoint operator</em> $\bar{f}_x: \langle \bar{y}, \dot{f}_x(\dot{x}) \rangle_Y = \langle \bar{f}_x(\bar{y}), \dot{x}\rangle_X \, \forall \bar{y}, \dot{x}$</li>
+								<li><em>tangent variables</em> $\dot{x}, \dot{y}$, where $\dot{y} = \dot{f}_x(\dot{x})$</li>
+								<li><em>adjoint variables</em> $\bar{x}, \bar{y}$, where $\bar{x} = \bar{f}_x(\bar{y})$</li>
+							</ul>
+						</div> -->
+
+						<div style="display:flex; margin-left: 15%; width:80%; margin-top:30px;" class="fragment fade-in">
+							<div style="background-color: rgb(235, 235, 235); border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 5px; font-size: 100%;">
+								<h4>The adjoint $A^*$ of the solution operator $A$ of a linear weak form</h4>
+								$A: G \to H$ ($U, G, H$ Hilbert spaces: $U \subseteq G, H$)
+								<p>
 									<ul>
-										<li>cost: $\color{orange}{I} \times \mathcal{C}(A) + \color{orange}{I}\color{green}{J} \times \mathcal{C}(\langle \cdot{}, \cdot{} \rangle_H)$</li>
-										<li>use if $\color{green}{J} > \color{orange}{I}$</li>
-									</ul>
-								</td>
-								<td style="width:100px; "></td>
-								<td>
-									<ul>
-										<li>cost: $\color{green}{J} \times \mathcal{C}(A^*) + \color{orange}{I}\color{green}{J} \times \mathcal{C}(\langle \cdot{}, \cdot{} \rangle_G)$
+										<li>
+											$\color{orange}{A(g) = (u \in U | a(u, v) + b(v) = 0\, \forall v \in U)}$ where $b(v) = \langle v, g\rangle_G$
 										</li>
-										<li>use if $\color{orange}{I} > \color{green}{J} $</li>
+										<li>
+											$\color{green}{A^*(h) = (\lambda \in U | a(v, \lambda) + c(v) = 0 \, \forall v \in U)}$ where $c(\lambda) = \langle h, \lambda \rangle_H$
+										</li>
+										<!-- <li>
+											switching trial and test function is the continuous analog to solving the transposed system
+										</li> -->
 									</ul>
-								</td>
-							</tr>
-						</table>
+								</p>
+							</div>
+						</div>
+					</section>
+
+					<section style="text-align: left;">
+						<h3>The adjoint of the solution of a linear weak form (linear pde)</h3>
+						$A: G \to H$ is the solution operator of a linear weak form ($U, G, H$ Hilbert spaces: $U \subseteq G, H$)
+						<p>
+							<ul>
+								<li>
+									$\color{orange}{A(g) = (u \in U | a(u, v) + b(v) = 0\, \forall v \in U)}$ where $b(v) = \langle v, g\rangle_G$
+								</li>
+								<li>
+									$\color{green}{A^*(h) =}$ <span class="fragment custom blur" data-fragment-index="2">$ \color{green}{(\lambda \in U | a(v, \lambda) + c(v) = 0 \, \forall v \in U)}$ where $c(\lambda) = \langle h, \lambda \rangle_H$</span>
+								</li>
+							</ul>
+						</p>
+						<p class="fragment fade-in" data-fragment-index="1">
+							Derivation: we introduce $\lambda \in U$ (in continuous adjoint method (for $\partial_p$): "Lagrange-multiplier")
+							\begin{align*}
+							\langle h, A(g) \rangle_H = \langle h, u \rangle_H &= c(u) \\
+							&=c(u) + \color{orange}{\underbrace{a(u, \lambda) + b(\lambda)}_{=0 \, \forall \lambda \in U}} \\
+							&=\color{green}{\underbrace{c(u) + a(u, \lambda)}_{=0 \, \forall u \in U}} + b(\lambda) \\
+							& \hphantom{= c(u) + a(u, \lambda)} = b(\lambda) = \langle \lambda, g \rangle_G = \langle A^*(h), g \rangle_G
+							\end{align*}
+						</p>
+						<div style="margin-top: 30px;" class="fragment fade-in" data-fragment-index="3" >
+							<ul><li>given multiple $g^{(i)} \in G$ ($b^{(i)} \in L(G, \mathbb{R})$) and $h^{(j)} \in H$ ($c^{(j)} \in L(H, \mathbb{R})$)</li></ul>
+							<div style="display:flex; margin-top: 30px;">
+								 <div style="flex: 1;">
+									<h4>non-adjoint implementation</h4>
+										\begin{align*}
+											&\text{foreach } \color{orange}{i = 1, ... I} \\
+											&\qquad \color{orange}{\text{solve } a(u^{(i)}, v) + b^{(i)}(v) = 0 \quad \forall v \in U}\\
+											&\qquad \text{foreach } \color{green}{j = 1, ...J}\\
+											&\qquad \qquad \Sigma^{(ij)} = \color{green}{c^{(j)}}(\color{orange}{u^{(i)}})\\
+											&\qquad \text{end}\\
+											&\text{end} 
+										\end{align*}
+								</div>
+								<div style="flex: 1;">
+									<h4>adjoint implementation</h4>
+										\begin{align*}
+											&\text{foreach } \color{green}{j = 1, ...J} \\
+											&\qquad \color{green}{\text{solve } a(v, \lambda^{(j)}) + c^{(j)} = 0 \quad \forall v \in U}\\
+											&\qquad \text{foreach } \color{orange}{i = 1, ...I}\\
+											&\qquad \qquad \Sigma^{(ij)} = \color{orange}{b^{(i)}}(\color{green}{\lambda^{(j)}})\\
+											&\qquad \text{end}\\
+											&\text{end}
+										\end{align*}
+								</div>
+							</div>
+							<ul>
+								<li>switching trial and test function is the continuous analog to solving the transposed system</li>
+							</ul>
+						</div>
 					</section>
 
 				<!-- Riesz Representation Theorem/Def Adjoint -->
@@ -650,60 +731,6 @@
 					</section>
 				</section>
 
-				<section style="text-align: left;">
-					<h3>The adjoint of the solution of a linear weak form (linear pde)</h3>
-					$A: G \to H$ is the solution operator of a linear weak form ($U, G, H$ Hilbert spaces: $U \subseteq G, H$)
-					<p>
-						<ul>
-							<li>
-								$\color{orange}{A(g) = (u \in U | a(u, v) + b(v) = 0\, \forall v \in U)}$ where $b(v) = \langle v, g\rangle_G$
-							</li>
-							<li>
-								$\color{green}{A^*(h) =}$ <span class="fragment custom blur" data-fragment-index="2">$ \color{green}{(\lambda \in U | a(v, \lambda) + c(v) = 0 \, \forall v \in U)}$ where $c(\lambda) = \langle h, \lambda \rangle_H$</span>
-							</li>
-						</ul>
-					</p>
-					<p class="fragment fade-in" data-fragment-index="1">
-						Derivation: we introduce $\lambda \in U$ (in continuous adjoint method (for $\partial_p$): "Lagrange-multiplier")
-						\begin{align*}
-						\langle h, A(g) \rangle_H = \langle h, u \rangle_H &= c(u) \\
-						&=c(u) + \color{orange}{\underbrace{a(u, \lambda) + b(\lambda)}_{=0 \, \forall \lambda \in U}} \\
-						&=\color{green}{\underbrace{c(u) + a(u, \lambda)}_{=0 \, \forall u \in U}} + b(\lambda) \\
-						& \hphantom{= c(u) + a(u, \lambda)} = b(\lambda) = \langle \lambda, g \rangle_G = \langle A^*(h), g \rangle_G
-						\end{align*}
-					</p>
-					<div style="margin-top: 30px;" class="fragment fade-in" data-fragment-index="3" >
-						<ul><li>given multiple $g^{(i)} \in G$ ($b^{(i)} \in L(G, \mathbb{R})$) and $h^{(j)} \in H$ ($c^{(j)} \in L(H, \mathbb{R})$)</li></ul>
-						<div style="display:flex; margin-top: 30px;">
-	 						<div style="flex: 1;">
-								<h4>non-adjoint implementation</h4>
-									\begin{align*}
-										&\text{foreach } \color{orange}{i = 1, ... I} \\
-										&\qquad \color{orange}{\text{solve } a(u^{(i)}, v) + b^{(i)}(v) = 0 \quad \forall v \in U}\\
-										&\qquad \text{foreach } \color{green}{j = 1, ...J}\\
-										&\qquad \qquad \Sigma^{(ij)} = \color{green}{c^{(j)}}(\color{orange}{u^{(i)}})\\
-										&\qquad \text{end}\\
-										&\text{end} 
-									\end{align*}
-							</div>
-							<div style="flex: 1;">
-								<h4>adjoint implementation</h4>
-									\begin{align*}
-										&\text{foreach } \color{green}{j = 1, ...J} \\
-										&\qquad \color{green}{\text{solve } a(v, \lambda^{(j)}) + c^{(j)} = 0 \quad \forall v \in U}\\
-										&\qquad \text{foreach } \color{orange}{i = 1, ...I}\\
-										&\qquad \qquad \Sigma^{(ij)} = \color{orange}{b^{(i)}}(\color{green}{\lambda^{(j)}})\\
-										&\qquad \text{end}\\
-										&\text{end}
-									\end{align*}
-							</div>
-						</div>
-						<ul>
-							<li>switching trial and test function is the continuous analog to solving the transposed system</li>
-						</ul>
-					</div>
-				</section>
-
 				<section style="text-align: left">
 					<h3>Applying Adjoints Twice</h3>
 					<div style="display:flex;">
@@ -770,7 +797,7 @@
 								
 							</td>
 							<td class="fragment fade-in" data-fragment-index="4">
-								<h4>2nd "adjoint method" ($\bar{\lambda} \in U(\mathcal{R})$):</h4>
+								<h4>2nd (continuous) "adjoint method" ($\bar{\lambda} \in U(\mathcal{R})$):</h4>
 								<div class="r-stack">
 									<div class="fragment fade-out" data-fragment-index="5">
 										\begin{align*}
@@ -795,7 +822,7 @@
 
 
 				<section style="text-align: left;">
-					<h3>Summary: Applying Adjoints Twice</h3>
+					<h3>Applying Adjoints Twice: Summary</h3>
 					<table>
 						<tr style="border-style: hidden;">
 							<td style="text-align: center; ">
@@ -855,7 +882,6 @@
 									<h4>forward (strong form)</h4>
 									<div style="margin-top:-30px">
 										\begin{align*}
-											&m = \gamma_p\\
 											&\begin{cases}
 												-\nabla \cdot{} m \nabla u^{(i)} = 0 \quad &\forall x \in \mathcal{R}\\
 												u^{(i)} = g^{(i)} \quad &\forall x \in \partial\mathcal{R}
@@ -866,115 +892,39 @@
 									</div>
 								</td>
 								<td style="text-align: center; vertical-align: top; padding: 0px;">
-									<div class="r-stack">
-										<ul class="fragment fade-out" data-fragment-index="2" style="margin-left: 50px; ">
-											<li>$\gamma: \mathbb{R}^N \to L^{(2)}(\mathcal{R})$</li>
-											<li>$m, h^{(j)} \in L^2(\mathcal{R})$, $g^{(i)} \in L^2(\partial \mathcal{R})$</li>
-											<li>weak enforcement of boundary conditions $u, v \in H^1_h(\mathcal{R})$</li>
-											<li>Aubin-Nitsche trick: stable bilinear form
-												\[a(u^{(i)}, v) + b^{(i)}(v) = 0 \quad \forall v \in H^1_h(\mathcal{R})\]
-											</li>
-											<li>$I, N \gg J$ (many bc $g^{(i)}$, many parameters $p \in \mathbb{R}^N$, some extractions $h^{(j)}$)</li>
-											<li>here: $I=800$, $N=757$, $J=7$</li>
-										</ul>
-										<div class="fragment fade-in" data-fragment-index="2">
-											<h4>adjoint forward (strong form)</h4>
-											<div style="margin-top: -30px;">
-												\begin{align*}
-													& m = \gamma_p\\ 
-													&\begin{cases}
-														-\nabla \cdot{} m \nabla \lambda^{(j)} &= -h^{(j)} &\forall x \in \mathcal{R} \\
-														\lambda^{(j)} &= 0 \quad &\forall x \in \partial \mathcal{R}
-													\end{cases}\\
-													&\Sigma^{(i, j)} = \int_{\partial \mathcal{R}} \nabla_n \lambda^{(j)} g^{(i)} \, d x\\
-													&C = \frac{1}{2 I J} \sum_{i, j}^{I, J} (\Sigma^{(i, j)} - \tilde{\Sigma}^{(i, j)})^2
-												\end{align*}
-											</div>
-										</div>
-									</div>
+									<ul style="margin-left: 50px; ">
+										<li>$m, h^{(j)} \in L^2(\mathcal{R})$, $g^{(i)} \in L^2(\partial \mathcal{R})$</li>
+										<li>weak enforcement of boundary conditions $u, v \in H^1_h(\mathcal{R})$</li>
+										<li>Aubin-Nitsche trick: stable bilinear form
+											\[a(u^{(i)}, v) + b^{(i)}(v) = 0 \quad \forall v \in H^1_h(\mathcal{R})\]
+										</li>
+										<li>$I, N \gg J$ (many bc $g^{(i)}$, many parameters $p \in \mathbb{R}^N$, some extractions $h^{(j)}$)</li>
+										<li>here: $I=800$, $N=757$, $J=7$</li>
+									</ul>
 								</td>
 							</tr>
 						</table>
-						<div class="r-stack" style="margin-top: -20px;">
-							<div class="fragment fade-out" data-fragment-index="1">
-								<table style="text-align: center">
-									<tr style="border-style: hidden;">
-										<td style="text-align: center; padding: 0px;"><h5>forward solution $u^{(i)}$</h5></td>
-										<td style="text-align: center; padding: 0px;"><h5>extraction $h^{(j)}$</h5></td>
-										<td style="text-align: center; padding: 0px;"><h5>measurement $\Sigma^{(i, j)}$</h5></td>
-									</tr>
-									<tr>
-										<td style="text-align: center; padding: 0px;">
-											<img src="figures/poisson/forward_solution/100.svg" width="600px"/>
-										</td>
-										<td style="text-align: center; padding: 0px;">
-											<img src="figures/poisson/extractions/7.svg" width="600px"/>
-										</td>
-										<td style="text-align: center; padding: 0px;">
-											<img src="figures/poisson/measurements/7.svg" height="600px"/>
-										</td>
-									</tr>
-									<tr style="border-style: hidden;">
-										<td style="text-align: center; padding: 0px;"></td>
-										<td style="text-align: center; padding: 0px;"></td>
-										<td style="text-align: center; padding: 0px;">$\hphantom{\sim 10 ns}$</td>
-									</tr>
-								</table>
-							</div>
-							<div class="fragment fade-in" data-fragment-index="1">
-								<table style="text-align: center;">
-									<tr style="border-style: hidden;">
-										<td style="text-align: center; padding: 0px;"><h5>forward solution $u^{(i)}$</h5></td>
-										<td style="text-align: center; padding: 0px;"><h5>extraction $h^{(j)}$</h5></td>
-										<td style="text-align: center; padding: 0px;">
-											<div class="r-stack">
-												<div class="fragment fade-out" data-fragment-index="3">
-													<h5>measurement $\Sigma^{(i, j)}$</h5>
-												</div>
-												<div class="fragment fade-in" data-fragment-index="3">
-													<h5>measurement $\Sigma^{(i, j)}$ (naive)</h5>
-												</div>
-											</div>
-										</td>
-									</tr>
-									<tr style="border-style: hidden; padding: 0px;">
-										<td style="text-align: center; padding: 0px;">
-											<img src="figures/poisson/forward_solution/500.svg" width="600px"/>
-										</td>
-										<td style="text-align: center; padding: 0px;">
-											<img src="figures/poisson/extractions/3.svg" width="600px"/>
-										</td>
-										<td style="text-align: center; padding: 0px;">
-											<div class="r-stack">
-												<div class="fragment fade-out" data-fragment-index="2">
-													<img src="figures/poisson/all_measurements.svg" height="600px"/>
-												</div>
-												<div class="fragment fade-in" data-fragment-index="2">
-													<img src="figures/poisson/all_measurements_forward.svg" height="600px"/>
-												</div>
-											</div>
-										</td>
-									</tr>
-									<tr style="border-style: hidden;">
-										<td style="text-align: center; padding: 0px;">
-											<div class="fragment fade-in" data-fragment-index="2">
-												$\sim 7ms$
-											</div></td>
-										<td style="text-align: center; padding: 0px;"></td>
-										<td style="text-align: center; padding: 0px;">
-											<div class="r-stack">
-												<div class="fragment fade-in-then-out" data-fragment-index="2" style="background-color: green;">
-													$\sim 55ms \approx 7 \times 7ms$
-												</div>
-												<div class="fragment fade-in" data-fragment-index="3" style="background-color: red;">
-													$\sim 5.3s \approx 800 \times 7ms$
-												</div>
-											</div></td>
-									</tr>
-								</table>
-							</div>
-						</div>
+						<table style="text-align: center;">
+							<tr style="border-style: hidden;">
+								<td style="text-align: center; padding: 0px; vertical-align:top;"><h4>forward solutions $u^{(i)}$</h4></td>
+								<td style="width: 200px; "></td>
+								<td style="text-align: center; padding: 0px; vertical-align:top;"><h4>measurements $\Sigma^{(i, j)}$</h4></td>
+							</tr>
+							<tr>
+								<td style="text-align: center; padding: 0px; vertical-align:top;">  
+									<video data-autoplay loop style="width: 800px; margin-top: 00px;">
+										<source data-src="figures/poisson/forward_animated.webm" type="video/webm">
+									</video>
+								</td>
+								<td></td>
+								<td style="text-align: center; padding: 0px; vertical-align:top;">
+									<img style="width: 700px; " src="figures/poisson/all_measurements_forward.svg">
+								</td> 
+							</tr> 
+
+						</table>
 					</section>
+
 					<section>
 						<h3>Example: Derivation</h3>
 						<h4>weak forms</h4>
@@ -1031,171 +981,203 @@
 				</section>
 
 				<section style="text-align: left;">
-					<h3>Example: An inverse problem based on the Poisson equation</h3>
-					<table>
-						<tr style="border-style: hidden;">
-							<!-- <td style="text-align: center; "><h5>adjoint forward (strong form)</h5></td> -->
-							<td style="text-align: center; vertical-align: top; "><h4>adjoint forward (strong form)</h4> </td>
-							<td style="text-align: center; vertical-align: top; "><h4>adjoint derivative (strong form)</h4></td>
-						</tr>
-						<tr>
-							<!-- <td style="text-align: center; ">
-								\begin{align*}
-									& m = \gamma_p\\ 
-									&\begin{cases}
-										-\nabla \cdot{} m \nabla \lambda^{(j)} &= -h^{(j)} &\forall x \in \mathcal{R} \\
-										\lambda^{(j)} &= 0 \quad &\forall x \in \partial \mathcal{R}
-									\end{cases}\\
-									&\Sigma^{(i, j)} = \int_{\partial \mathcal{R}} \nabla_n \lambda^{(j)} g^{(i)} \, d x\\
-									&C = \frac{1}{2 I J} \sum_{i, j}^{I, J} (\Sigma^{(i, j)} - \tilde{\Sigma}^{(i, j)})^2
-								\end{align*}
-							</td> -->
-							<td style="text-align: left; vertical-align: top; ">
-								<!-- <ul>
-									<li>$\lambda^{(j)}$: heat source $\mu^{(j)}$</li>
-									<li>$\bar{\lambda}^{(j)}$: adjoint augmented excitations</li>
-
-								</ul>-->
-								<div style="margin-top: -30px;">
-									\begin{align*}
-										& m = \gamma_p\\ 
-										&\begin{cases}
-											-\nabla \cdot{} m \nabla \lambda^{(j)} &= -h^{(j)} &\forall x \in \mathcal{R} \\
-											\lambda^{(j)} &= 0 \quad &\forall x \in \partial \mathcal{R}
-										\end{cases}\\
-										&\Sigma^{(i, j)} = \int_{\partial \mathcal{R}} \nabla_n \lambda^{(j)} g^{(i)} \, d x\\
-										&C = \frac{1}{2 I J} \sum_{i, j}^{I, J} (\Sigma^{(i, j)} - \tilde{\Sigma}^{(i, j)})^2
-									\end{align*}
-								</div>
-							</td>
-							<td style="text-align: center; vertical-align: top; ">
-								<div style="margin-top: -30px;">
-									\begin{align*}
-										&\bar{\Sigma}^{(i, j)} = \frac{1}{IJ} (\Sigma^{(i, j)} - \tilde{\Sigma}^{(i, j)}) \bar{C}\\
-										&\begin{cases}
-											-\nabla \cdot{} m \nabla \bar{\lambda}^{(j)}  &= 0 \quad  &\forall x \in \mathcal{R} \\
-											\bar{\lambda}^{(j)} &= \sum_{i=1}^{I} \bar{\Sigma}^{(i, j)} g^{(i)} \quad &\forall x \in \partial \mathcal{R}\\
-										\end{cases} \\
-										&\bar{m} = \bar{C} \sum_{j=1}^{J} \nabla \bar{\lambda}^{(j)} \cdot{} \nabla \lambda^{(j)} \\
-										& (\nabla_p C)^{(n)} = (\bar{\gamma}_{p}(\bar{m}))^{(n)} = \int_{\mathcal{R}} \frac{\partial \gamma_p}{\partial p^{(n)}} \bar{m} \, d x\\
-									\end{align*}
-								</div>
-							</td>
-						</tr>
-					</table>
-					<div style="margin-top: 0px;">
-						<table style="text-align: center; padding: 0px; margin-top:-30px;">
+					<section style="text-align: left;">
+						<h3>Example: An inverse problem based on the Poisson equation</h3>
+						<table>
 							<tr style="border-style: hidden;">
-								<td style="text-align: center; padding: 0px"><h5>adjoint forward $\lambda^{(j)}$</h5></td>
-								<td style="text-align: center; padding: 0px"><h5>adjoint derivative $\bar{\lambda}^{(j)}$</h5></td>
-								<td style="text-align: center; padding: 0px">
-									<div class="r-stack">
-										<h5 class="fragment fade-out" data-fragment-index="2">gradient $\bar{m}$</h5>
-										<h5 class="fragment fade-in" data-fragment-index="2">gradient $\bar{m}$ (finite differences)</h5>
+								<!-- <td style="text-align: center; "><h5>adjoint forward (strong form)</h5></td> -->
+								<td style="text-align: center; vertical-align: top; ">
+									<h4>adjoint forward (strong form)</h4>
+									<div style="margin-top: -20px; font-size: 70%;">
+										\begin{align*}
+											&\begin{cases}
+												-\nabla \cdot{} m \nabla \lambda^{(j)} = -h^{(j)} &\forall x \in \mathcal{R} \\
+												\lambda^{(j)} = 0 \quad &\forall x \in \partial \mathcal{R}
+											\end{cases}\\
+											&\Sigma^{(i, j)} = \int_{\partial \mathcal{R}} \nabla_n \lambda^{(j)} g^{(i)} \, d x\\
+											&C = \frac{1}{2 I J} \sum_{i, j}^{I, J} (\Sigma^{(i, j)} - \tilde{\Sigma}^{(i, j)})^2
+										\end{align*}
 									</div>
+								</td>
+								<td style="text-align: center; vertical-align: top; ">
+									<h5>adjoint forward $\lambda^{(j)}$</h5>
+									<video data-autoplay loop style="width: 600px; margin-top: 0px;">
+										<source data-src="figures/poisson/forward_adjoint.webm" type="video/webm">
+									</video>
+								</td>
+								<td>
+									<ul>
+										<li>rhs: extractions $h^{(j)}$</li>
+										<li>numerical costs:
+											<ul>
+												<li style="background-color: lightgreen;">
+													(adjoint) $\sim 52ms \approx 7 \times 7ms$
+												</li>
+												<li style="background-color: lightcoral;">
+													(non-adjoint) $\sim 5.3s \approx 800 \times 7ms$
+												</li>
+											</ul>
+										</li>
+										<li>adjoint and non-adjoint measurements agree (numerical precision)</li>
+									</ul>
 								</td>
 							</tr>
-							<tr style="border-style: hidden;">
-								<td style="text-align: center; padding: 0px;">
-									<img src="figures/poisson/forward_adjoint/7.svg" style="width: 600px;"/>
-								</td>
-								<td style="text-align: center; padding: 0px;">
-									<img src="figures/poisson/derivative_adjoint/7.svg" style="width: 600px;"/>
-								</td>
-								<td style="text-align: center; padding: 0px;">
-									<div class="r-stack">
-										<div class="fragment fade-out" data-fragment-index="2" >
-											<img src="figures/poisson/gradient.svg" style="width: 600px;"/>
-										</div>
-										<div class="fragment fade-in" data-fragment-index="2" >
-											<img src="figures/poisson/gradient_fd.svg" style="width: 600px;"/>
-										</div>
+							<tr>
+								<td style="text-align: center; vertical-align: top; ">
+									<h4>adjoint derivative (strong form)</h4>
+									<div style="margin-top: -20px; font-size: 70%;">
+										\begin{align*}
+											&\bar{\Sigma}^{(i, j)} = \frac{1}{IJ} (\Sigma^{(i, j)} - \tilde{\Sigma}^{(i, j)}) \bar{C}\\
+											&\begin{cases}
+												-\nabla \cdot{} m \nabla \bar{\lambda}^{(j)}  = 0 \quad  &\forall x \in \mathcal{R} \\
+												\bar{\lambda}^{(j)} = \sum_{i=1}^{I} \bar{\Sigma}^{(i, j)} g^{(i)} \quad &\forall x \in \partial \mathcal{R}\\
+											\end{cases} \\
+											&\bar{m} = \bar{C} \sum_{j=1}^{J} \nabla \bar{\lambda}^{(j)} \cdot{} \nabla \lambda^{(j)} \\
+										\end{align*}
 									</div>
 								</td>
-							</tr>
-							<tr style="border-style: hidden;">
-								<td style="text-align: center; padding: 0px;"></td>
-								<td style="text-align: center; padding: 0px;"></td>
-								<td style="text-align: center; padding: 0px;">
-									<div class="r-stack" style="margin: -50px">
-										<div class="fragment fade-out" data-fragment-index="2" style="background-color: green;">
-											$\sim 92 ms \approx 2 \times 7 \times 7ms$
-										</div>
-										<div class="fragment fade-in-then-out" data-fragment-index="2" style="background-color: red;">
-											$\sim 45 s \approx 757 \times 55ms$
-										</div>
-										<div class="fragment fade-in" data-fragment-index="3" style="background-color: red;">
-											$\sim 1h\, 10min \approx 757 \times 800 \times 7ms$
-										</div>
-									</div>
+								<td style="text-align: center; vertical-align: top; ">
+									<h5>gradient $\bar{m}$</h5>
+									<img style="width:800px; " src="figures/poisson/gradient.svg">
+								</td> 
+								<td style="text-align: center; vertical-align: top; width:500px;">
+									<ul>
+										<li>rhs: augmented excitations $\bar{\boldsymbol \Sigma}^{(j)T}{\boldsymbol g}$</li>
+										<li>cost (adjoint):<br>
+											<ul>
+												<li  style="background-color: lightgreen;">
+													(adjoint) $\sim 98 ms \approx 2 \times 7 \times 7ms$
+												</li>
+												<li  style="background-color: lightcoral;">
+													(finite differences) $\sim 45 s \approx 757 \times 55ms$
+												</li>
+												<li  style="background-color: lightcoral;">
+													(finite differences + non-adjoint)$\sim 1h\, 10min \approx 757 \times 800 \times 7ms$
+												</li>
+											</ul>
+										</li>
+										<li>gradient agrees with finite differences (approximately)
+										</li>
+									</ul>
 								</td>
 							</tr>
 						</table>
-					</div>
-				</section>
+						<!-- <div style="margin-top: 0px;">
+							<table style="text-align: center; padding: 0px; margin-top:-30px;">
+								<tr style="border-style: hidden;">
+									<td style="text-align: center; padding: 0px"><h5>adjoint forward $\lambda^{(j)}$</h5></td>
+									<td style="text-align: center; padding: 0px"><h5>adjoint derivative $\bar{\lambda}^{(j)}$</h5></td>
+									<td style="text-align: center; padding: 0px">
+										<div class="r-stack">
+											<h5 class="fragment fade-out" data-fragment-index="2">gradient $\bar{m}$</h5>
+											<h5 class="fragment fade-in" data-fragment-index="2">gradient $\bar{m}$ (finite differences)</h5>
+										</div>
+									</td>
+								</tr>
+								<tr style="border-style: hidden;">
+									<td style="text-align: center; padding: 0px;">
+										<img src="figures/poisson/forward_adjoint/7.svg" style="width: 600px;"/>
+									</td>
+									<td style="text-align: center; padding: 0px;">
+										<img src="figures/poisson/derivative_adjoint/7.svg" style="width: 600px;"/>
+									</td>
+									<td style="text-align: center; padding: 0px;">
+										<div class="r-stack">
+											<div class="fragment fade-out" data-fragment-index="2" >
+												<img src="figures/poisson/gradient.svg" style="width: 600px;"/>
+											</div>
+											<div class="fragment fade-in" data-fragment-index="2" >
+												<img src="figures/poisson/gradient_fd.svg" style="width: 600px;"/>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr style="border-style: hidden;">
+									<td style="text-align: center; padding: 0px;"></td>
+									<td style="text-align: center; padding: 0px;"></td>
+									<td style="text-align: center; padding: 0px;">
+										<div class="r-stack" style="margin: -50px">
+											<div class="fragment fade-out" data-fragment-index="2" style="background-color: green;">
+												$\sim 92 ms \approx 2 \times 7 \times 7ms$
+											</div>
+											<div class="fragment fade-in-then-out" data-fragment-index="2" style="background-color: red;">
+												$\sim 45 s \approx 757 \times 55ms$
+											</div>
+											<div class="fragment fade-in" data-fragment-index="3" style="background-color: red;">
+												$\sim 1h\, 10min \approx 757 \times 800 \times 7ms$
+											</div>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div> -->
+					</section>
 
-				<section style="text-align: left;">
-					<h3>Example: An inverse problem based on the Poisson equation</h3>
-					\begin{align*}
-						m = \gamma_p = x \mapsto (0.1, 0.9, 0.4)^T \cdot{} \mathcal{NN}^{2 \to 20 \text{(tanh)} \to 20\text{(tanh)} \to 3\text{(softmax)}}_p(x)
-					\end{align*}
-					<ul>
-						<li>inverting on $m$ directly is ill-posed</li>
-						<li>motivated from SciML: use a $\mathcal{NN}$ as the parametrization $\gamma_p$</li>
-						<li>we use the parametrization $\gamma_p$ to "regularize" (here: phase classification)</li>
-						<li>number of parameters: $544$</li>
-						<li>coarser discretization for the inversion ($757$ material cells vs $2972$ for the true measurements)</li>
-						<li>$1$% random noise added to the true measurements</li>
-					</ul>
-					<table>
-						<tr style="border-style: hidden;">
-							<td style="text-align: center; " width="620px">
-								<h5>measurements $\Sigma^{(i, j)}$ and $\tilde{\Sigma}^{(i, j)}$</h5>
-							</td>
-							<td style="text-align: center; " width="580px">
-								<h5>optimized material $m$</h5>
-							</td>
-							<td style="text-align: center; " width="600px">
-								<div class="r-stack">
-									<h5 class="fragment fade-out" data-fragment-index="2">objective $\text{MSE}(\Sigma^{(i, j)}, \tilde{\Sigma}^{(i,j)})$</h5>
-									<h5 class="fragment fade-in" data-fragment-index="2">true material $\tilde{m}$</h5>
-								</div>
-							</td>
-						</tr>
-						<tr class="fragment highlight-red" data-fragment-index="1">
-							<td style="text-align: center; vertical-align: top;">
-								<video loop data-autoplay style="width=550px; margin-top: 20px;"> 
-									<source data-src="figures/poisson/optimization_measurements.webm" type="video/webm">
-								</video>
-							</td>
-							<td style="text-align: center; ">
-								<div class="fragment highlight-red" data-fragment-index="1">
-									<video loop data-autoplay style="width: 600px;">
-										<source data-src="figures/poisson/optimization_material.webm" type="video/webm">
+					<section style="text-align: left;">
+						<h3>Example: An inverse problem based on the Poisson equation</h3>
+						\begin{align*}
+							m = \gamma_p = x \mapsto (0.1, 0.9, 0.4)^T \cdot{} \mathcal{NN}^{2 \to 20 \text{(tanh)} \to 20\text{(tanh)} \to 3\text{(softmax)}}_p(x)
+						\end{align*}
+						<ul>
+							<li>inverting on $m$ directly is ill-posed</li>
+							<li>motivated from SciML: use a $\mathcal{NN}$ as the parametrization $\gamma_p$</li>
+							<li>we use the parametrization $\gamma_p$ to "regularize" (here: phase classification)</li>
+							<li>number of parameters: $544$</li>
+							<li>coarser discretization for the inversion ($757$ material cells vs $2972$ for the true measurements)</li>
+							<li>$1$% random noise added to the true measurements</li>
+						</ul>
+						<table>
+							<tr style="border-style: hidden;">
+								<td style="text-align: center; " width="620px">
+									<h5>measurements $\Sigma^{(i, j)}$ and $\tilde{\Sigma}^{(i, j)}$</h5>
+								</td>
+								<td style="text-align: center; " width="580px">
+									<h5>optimized material $m$</h5>
+								</td>
+								<td style="text-align: center; " width="600px">
+									<div class="r-stack">
+										<h5 class="fragment fade-out" data-fragment-index="2">objective $\text{MSE}(\Sigma^{(i, j)}, \tilde{\Sigma}^{(i,j)})$</h5>
+										<h5 class="fragment fade-in" data-fragment-index="2">true material $\tilde{m}$</h5>
+									</div>
+								</td>
+							</tr>
+							<tr class="fragment highlight-red" data-fragment-index="1">
+								<td style="text-align: center; vertical-align: top;">
+									<video loop data-autoplay style="width:550px; margin-top: 20px;"> 
+										<source data-src="figures/poisson/optimization_measurements.webm" type="video/webm">
 									</video>
-								</div>
-							</td>
-							<td style="text-align: center; vertical-align: top;">
-								<div class="r-stack">
-									<video loop data-autoplay style="width=550px; margin-top: 50px; "> 
-										<source data-src="figures/poisson/optimization_error.webm" type="video/webm">
-									</video>
-									<div class="fragment fade-in" data-fragment-index="2">
-										<video loop style="width: 600px;">
-											<source data-src="figures/poisson/true_material.webm" type="video/webm">
+								</td>
+								<td style="text-align: center; ">
+									<div class="fragment highlight-red" data-fragment-index="1">
+										<video loop data-autoplay style="width: 600px;">
+											<source data-src="figures/poisson/optimization_material.webm" type="video/webm">
 										</video>
 									</div>
-								</div>
-								
-							</td>
-						</tr>
-					</table>
-					<ul>
-						<li>convergence dependes in the inital guess (does not always converge)</li>
-						<li>optimizer: BFGS</li>
-						<li>taylor the parametrization $\gamma_p$ to a specific problem (layers, other geometry, phase values, e.g.)</li>
-					</ul>
+								</td>
+								<td style="text-align: center; vertical-align: top;">
+									<div class="r-stack">
+										<video loop data-autoplay style="width:550px; margin-top: 50px; "> 
+											<source data-src="figures/poisson/optimization_error.webm" type="video/webm">
+										</video>
+										<div class="fragment fade-in" data-fragment-index="2">
+											<video loop style="width: 600px;">
+												<source data-src="figures/poisson/true_material.webm" type="video/webm">
+											</video>
+										</div>
+									</div>
+									
+								</td>
+							</tr>
+						</table>
+						<ul>
+							<li>convergence dependes in the inital guess (does not always converge)</li>
+							<li>optimizer: BFGS</li>
+							<li>taylor the parametrization $\gamma_p$ to a specific problem (layers, other geometry, phase values, e.g.)</li>
+						</ul>
+					</section>
 				</section>
+
+				
 
 				<section>
 					<section style="text-align: left;">
@@ -1234,7 +1216,7 @@
 						</table>
 						<div style="display: flex;">
 							<div style="font-size: 60%; flex:2;">
-								<h4 style="margin-top: 100px; font-size: 150%;">References</h4>
+								<h4 style="margin-top: 150px; font-size: 150%;">References</h4>
 								<ul>
 									<li>J. Bünger: <em>Three-dimensional modelling of x-ray emission in electron probe microanalysis based on deterministic transport equations</em>. Phd thesis, RWTH Aachen University (2021)<br><a href="https://doi.org/10.18154/RWTH-2021-05180">doi:10.18154/RWTH-2021-05180</a></li>
 									<li>T. Bui-Tanh: <em>Adjoint and Its roles in Sciences, Engineering, and Mathematics: A Tutorial</em>. arXiv (2023)<br><a href="https://doi.org/10.48550/arXiv.2306.09917">doi:10.48550/arXiv.2306.09917</a></li>
@@ -1244,13 +1226,16 @@
 								</ul>
 							</div>
 							<div style="flex:1 ; font-size: 60%"> 
-								<h4 style="margin-top: 100px; ">Slides + Pluto.jl notebook (Poisson example)</h4>
+								<h4 style="margin-top: 150px; ">Slides + Pluto.jl notebook (Poisson example)</h4>
 								<a href="https://github.com/tam724/claus_applying_adjoints_twice_presentation">
 									<img src="figures/tam724_github_qr.png">
 									<br>
 									github.com/tam724
 								</a>
 							</div>
+						</div>
+						<div style="position: absolute; top:700px; left: 500px;">
+							<img src="figures/adjoint_visualization/measurements.svg" style="width:400px;">
 						</div>
 					</section>
 
