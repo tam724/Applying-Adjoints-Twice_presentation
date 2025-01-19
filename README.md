@@ -11,4 +11,4 @@ $ git checkout <branch>
 and have a look at `index.html` with your webbrowser.
 
 # 
-Built using the HTML Presentation Framework [reveal.jl](https://revealjs.com/)
+Built using the HTML Presentation Framework [reveal.js](https://revealjs.com/)
