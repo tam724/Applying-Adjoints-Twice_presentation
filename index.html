@@ -705,7 +705,7 @@
 						<li>Griewank, A., & Walther, A. (2008). <b>Evaluating Derivatives</b>. <a href="https://doi.org/10.1137/1.9780898717761">doi:10.1137/1.9780898717761</a></li>
 						<li>Naumann, U. (2011). <b>The Art of Differentiating Computer Programs</b>. <a href="https://doi.org/10.1137/1.9781611972078">doi:10.1137/1.9781611972078</a></li>
 						<li>Pearlmutter, B. A., & Siskind, J. M. (2008). <b>Reverse-mode AD in a functional framework</b>. <a href="https://doi.org/10.1145/1330017.1330018">doi:10.1145/1330017.1330018</a></li>
-						<li>Blondel, M., et. al. (2021). <b>Efficient and Modular Implicit Differentiation (Version 5)</b>. <a href="https://doi.org/10.48550/ARXIV.2105.15183">doi:10.48550/ARXIV.2105.15183</a></li>
+						<li>Blondel, M., et. al. (2021). <b>Efficient and Modular Implicit Differentiation</b>. <a href="https://doi.org/10.48550/ARXIV.2105.15183">doi:10.48550/ARXIV.2105.15183</a></li>
 					</ul>
 				</section>
 
@@ -747,7 +747,7 @@
 						<em>"The adjoint of the discretized problem is a consistent discretization of the adjoint of the continuous problem."</em>
 					</div>
 					<ul>
-						<li>with $h \in H$, $g \in G$ vectors, $A: G \to H$ continuous operator, $\cdot{}_\Delta$ the "discretization"</li>
+						<li>with $h \in H$, $g \in G$ vectors, $A: G \to H$ continuous operator, $\cdot{}_\Delta$ the consistent discretization</li>
 						<li>if the discretization if dual consistent, the following diagram commutes:</li>
 					</ul>
 					\begin{equation}
@@ -877,13 +877,13 @@
 					<table>
 						<tr style="border-style: hidden;">
 							<td style="text-align: center; ">
-								<h4>non-adjoint forward + tangent derivative</h4>
+								<h4>non-adjoint forward + non-adjoint derivative</h4>
 							</td>
 							<td style="text-align: center; ">
 								<h4>adjoint forward + adjoint derivative</h4>
 							</td>
 						</tr>
-						<tr>
+						<tr style="border-style: hidden;">
 							<td style="text-align: center; ">
 								\begin{align*}
 									a_p(u^{(i)}, v) + b^{(i)}(v) &= 0 \quad \forall v \in V \\
@@ -905,6 +905,18 @@
 								\end{align}
 							</td>
 						</tr>
+						<tr style="border-style: hidden;">
+							<td>
+								<ul>
+									<li>$(I + IN)\times \mathcal{C}(a_p(\cdot{}, \cdot{})) + ... $</li>
+								</ul>
+							</td>
+							<td>
+								<ul>
+									<li>$2J \times \mathcal{C}(a_p(\cdot{}, \cdot{})) + ... $</li>
+								</ul>
+							</td>
+						</tr>
 					</table>
 					<h4>Generalization:</h4>
 					<ul style="width: 100%;">
@@ -915,14 +927,10 @@
 					</ul>
 					<h4 style="margin-top: 20px;">Assumptions:</h4>
 					<ul>
-						<li>$\mathcal{C}(\text{"solving" } a_p(\cdot{}, \cdot{})) \gg \mathcal{C}(\text{"integrating" } b^{(i)}, c^{(j)}, ...)$ </li>
+						<li>$\mathcal{C}(a_p(\cdot{}, \cdot{})) \gg \mathcal{C}(b^{(i)}), \mathcal{C}(c^{(j)}), ...$ </li>
 						<li>$a_p(\cdot{}, \cdot{})$ cannot be solved directly (e.g. LU)</li>
 						<li>$I > J$, $N > J$, $C \in \mathbb{R}$</li>
 					</ul>
-					<h4 style="margin-top: 20px;">Costs:</h4>
-					<ul>
-						<li>non-adjoint forward + tangent derivative: $(I + IN)\times \mathcal{C}(a) + ... \mathcal{C}(\langle\cdot\rangle)$</li>
-						<li>adjoint forward + adjoint derivative: $2J \times \mathcal{C}(a) + ... \times \mathcal{C}(\langle\cdot\rangle)$</li>
 					</ul>
 				</section>
 
@@ -932,7 +940,7 @@
 						<table style="margin-top:30px;">
 							<tr>
 								<td style="text-align: center; vertical-align: top; padding: 0px;">
-									<h4>forward (strong form)</h4>
+									<h4>model</h4>
 									<div style="">
 										\begin{align*}
 											&\begin{cases}
@@ -960,7 +968,7 @@
 						</table>
 						<table style="text-align: center; margin-top: 80px;">
 							<tr style="border-style: hidden;">
-								<td style="text-align: center; padding: 0px; vertical-align:top;"><h4>forward solutions $u^{(i)}$</h4></td>
+								<td style="text-align: center; padding: 0px; vertical-align:top;"><h4>solutions $u^{(i)}$</h4></td>
 								<td style="width: 100px; "></td>
 								<td style="text-align: center; padding: 0px; vertical-align:top;"><h4>measurements $\Sigma^{(i, j)}$</h4></td>
 							</tr>
@@ -1041,7 +1049,7 @@
 					</div>
 					<div style="display:flex; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 10px; margin:20px;">
 						<div style="width:min-content; text-align: center;">
-							<h4>forward</h4>
+							<h4>non-adjoint model</h4>
 							<span style="font-size: 80%;">
 								\begin{align*}
 									&\begin{cases}
@@ -1058,7 +1066,7 @@
 							</ul>
 						</div>
 						<div style="text-align: center;">
-							<h4>forward solution $u^{(i)}$</h4>
+							<h4>solution $u^{(i)}$</h4>
 							<img style="width:600px; display: inline; " src="figures/upd_poisson/forward_trace_51.png">
 						</div>
 					</div>
@@ -1075,7 +1083,7 @@
 					</div>
 					<div style="display:flex; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 10px; margin:20px;">
 						<div style="width:min-content; text-align: center;">
-							<h4>adjoint forward</h4>
+							<h4>adjoint model</h4>
 							<span style="font-size: 80%;">
 								\begin{align*}
 									&\begin{cases}
@@ -1106,12 +1114,12 @@
 					<h3>Example: An inverse problem based on the Poisson equation</h3>
 
 					<div class="fragment fade-in" data-fragment-index="1" style="position:absolute; top:250px; left:1250px; background-color: white;border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; text-align: center; padding:10px; ">
-						<h5>gradient $\bar{m}$</h5>
+						<h5>gradient $\nabla_m C$</h5>
 						<img style="width:600px;" src="figures/upd_poisson/gradient.png">
 					</div>
 					<div style="display:flex; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 10px; margin:20px;">
 						<div style="width:min-content; text-align: center;">
-							<h4>sensitivity</h4>
+							<h4>non-adjoint derivative</h4>
 							<span style="font-size: 70%;">
 								\begin{align*}
 									&\begin{cases}
@@ -1129,7 +1137,7 @@
 							</ul>
 						</div>
 						<div style="text-align: center;">
-							<h5>tangent sensitivity $\dot{\lambda}^{(j)}$</h5>
+							<h5>tangent solution $\dot{\lambda}^{(j)}$</h5>
 							<img style="width:600px; display: inline; " src="figures/upd_poisson/tangent_gradient/gradient_tangent_1_9.png">
 						</div>
 					</div>
@@ -1147,7 +1155,7 @@
 					</div>
 					<div style="display:flex; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 10px; margin:20px;">
 						<div style="width:min-content; text-align: center;">
-							<h4>adjoint sensitivity</h4>
+							<h4>adjoint derivative</h4>
 							<span style="font-size: 70%;">
 								\begin{align*}
 									&\bar{\Sigma}^{(ji)} = \frac{1}{I J} (\Sigma^{(ji)} - \tilde{\Sigma}^{(ji)}) \bar{C} \\
@@ -1166,7 +1174,7 @@
 							</ul>
 						</div>
 						<div style="text-align: center;">
-							<h5>adjoint sensitivity $\bar{\lambda}^{(j)}$</h5>
+							<h5>adjoint solution $\bar{\lambda}^{(j)}$</h5>
 							<img style="width:600px; " src="figures/upd_poisson/adjoint_gradient/adjoint_solution_1.png">
 						</div>
 						<div style="text-align: center;">
@@ -1242,24 +1250,74 @@
 				<!--Material Reconstruction in EPMA-->
 				<section style="text-align: left;">
 					<h3>Material Reconstruction in EPMA</h3>
-					<h5 style="display:inline; ">coupled system of radiative transfer equations</h5> ($\psi^{(i)}$: electron fluence, $\phi^{(ji)}$: photon fluence)
-					<div style="font-size:80%">
-						\begin{align*}
-							\Omega \cdot{} \nabla_x \psi + \Sigma^{\text{tot}} \psi &= \int_{\mathbb{R}^+} \int_{S^2} \Sigma^{\text{scat}} \psi \, d\Omega' \, d\epsilon' \quad \forall (x, \epsilon, \Omega) \in \mathcal{R} \times \mathcal{E} \times S^2 \\
-							\Omega_{\text{det.}} \cdot{} \nabla_x \phi + \Sigma^{\text{abs}} \phi &= \int_{\mathcal{E}} \int_{S^2} \Sigma^{\text{ion}} \psi \, d \Omega \, d \epsilon \quad \forall x \in \mathcal{R}
-						\end{align*}
-						\begin{align*}
-							\psi &= g_{\text{beam}}^{(i)} \quad \forall n\cdot{}\Omega < 0 \\
-							k^{(ji)} &= \int_{\partial\mathcal{R}} \phi^{(ji)} \, d \Gamma
-						\end{align*}
+					<div style="display:flex; ">
+						<div style="max-width: max-content;">
+							<h5 style="display:inline; ">radiative transfer equation</h5> ($\psi^{(i)}$: electron fluence)
+							<div style="font-size:80%">
+								\begin{align*}
+									\Omega \cdot{} \nabla_x \psi + \Sigma^{\text{tot}} \psi &= \int_{\mathbb{R}^+} \int_{S^2} \Sigma^{\text{scat}} \psi \, d\Omega' \, d\epsilon' \quad \forall (x, \epsilon, \Omega) \in \mathcal{R} \times \mathcal{E} \times S^2 \\
+								\end{align*}
+								\begin{align*}
+									\psi &= g_{\text{beam}}^{(i)} \quad \forall n\cdot{}\Omega < 0 \\
+									k^{(ji)} &= \int_{\mathcal{R}} \Sigma^{\text{x-ray}, (j)}\psi^{(i)} \, d \Gamma
+								\end{align*}
+							</div>
+						</div>
+						<div style="max-width: max-content;">
+							<h5>additivity approximation</h5>
+							<div style="font-size:80%">
+								\begin{equation}
+									\Sigma^{\times}(x, \epsilon, \epsilon', \Omega, \Omega') = \sum_{e=1}^{n_e} \mathcal{N}_e(x) \sigma_e^{\times}(\epsilon, \epsilon', \Omega, \Omega')
+								\end{equation}
+							</div>
+							<h5>csd-approximation</h5>
+							<div style="font-size:80%">
+								\begin{equation}
+									\Sigma \psi = \int_{\mathcal{E}} \Sigma \psi \, d \epsilon  \mapsto -\partial_{\epsilon}( s \psi )
+								\end{equation}
+							</div>
+							</div>
 					</div>
 
-					additivity approximation
-					<div style="font-size:80%">
-						\begin{equation}
-							\Sigma^{\times}(x, \epsilon, \epsilon', \Omega, \Omega') = \sum_{e=1}^{n_e} \mathcal{N}_e(x) \sigma_e^{\times}(\epsilon, \epsilon', \Omega, \Omega')
-						\end{equation}
+					<div style="display:flex; ">
+						<div style="width: max-content; ">
+							<h5>discretization</h5>
+							<div style="font-size:80%">
+								\begin{equation}
+									\psi^\pm(\cdot{}, \cdot{}, \Omega) = \frac{\psi(\cdot{}, \cdot{}, \Omega) \pm \psi(\cdot{}, \cdot{}, -\Omega)}{2}
+								\end{equation}
+								\begin{align}
+									\begin{split}\label{eq:linear_boltzmann_csd_biliner_form}
+										a_p(\psi, \phi) =
+										\textstyle -\langle\partial_\epsilon (s_p \psi) \phi \rangle
+										&+ \langle \Omega \cdot{} \nabla_x \psi^+ \phi^- - \psi^- \Omega \cdot{} \nabla_x \phi^+ \rangle \\
+										&+ \textstyle[|n \cdot{} \Omega| \psi^+ \phi^+]_{\partial_x}
+										+ \langle \Sigma^{\text{el,tot}}_p \psi \phi - \int_{S^2} \Sigma^{\text{el}}_p \psi \, d \Omega' \phi \rangle
+									\end{split}
+								\end{align}
+								\begin{align}
+									b^{(i)}(\phi) &= 2 [n \cdot{} \Omega g^{(i)} \phi^+ ]_{\partial_x^-}.
+								\end{align}
+								\begin{align}
+									c^{(j)}_p(\psi) &= \langle \mathcal{N}_j \sigma^{\text{x-ray}}_j \psi^+ \rangle.
+								\end{align}
+							</div>
+						</div>
+						<div style="width: max-content; ">
+							<ul>
+								<li>$\Omega$: spherical harmonics basis ($P_N$)</li>
+								<li>$x$: mixed Lagrange basis ($L^2_h, H^1_h$)</li>
+								<li>$\epsilon$: staggered implicit trapeziodal/midpoint rule</li>
+								<li>Schur complement (eliminates odd $^-$ variables)</li>
+								<li>MINRES: remaining symmetric system</li>
+								<li>dual consistent discretization </li>
+							</ul>
+						</div>
 					</div>
+					<div style="font-size:80%; ">
+						implementation in julia using: CUDA.jl, Gridap.jl, Krylov.jl, ...
+					</div>
+
 					<div class="r-stretch"></div>
 
 					<ul style="font-size:60%">
@@ -1268,185 +1326,169 @@
 					</ul>
 				</section>
 
-				<section>
-					<section style="text-align: left;">
-						<h3>Outlook: Material Reconstruction in EPMA</h3>
-						<ul>
-							<li>model: (stationary) radiative transfer/linear Boltzmann equation in continuous-slowing-down approximation (CSD)</li>
-							<li>adjoint model: reversed in time and direction(or space) $a_m(\psi, \phi)$ vs. $a_m(\phi, \psi)$</li>
-						</ul>
-						<table>
-							<tr style="border-style: hidden;">
-								<td style="text-align: center; ">
-									<h4>forward $\psi^{(i)}$</h4>
-								</td>
-								<td style="text-align: center; ">
-									<h4>adjoint forward $\lambda^{(j)}$</h4>
-								</td>
-								<td style="text-align: center; ">
-									<h4>gradient $\bar{\rho}_e$</h4>
-								</td>
-							</tr>
-							<tr style="border-style: hidden;">
-								<td style="text-align: center; vertical-align: top;">
-									<video loop data-autoplay style="width: 600px; margin-top: 00px;">
-										<source data-src="figures/adjoint_visualization/forward.webm" type="video/webm">
-									</video>
-								</td>
-								<td style="text-align: center; vertical-align: top;">
-									<video loop data-autoplay style="width: 600px; margin-top: 00px;">
-										<source data-src="figures/adjoint_visualization/adjoint.webm" type="video/webm">
-									</video>
-								</td>
-								<td style="text-align: center; vertical-align: top;">
-									<img src="figures/adjoint_visualization/gradient.svg" style="width: 600px; margin-top: 0px;"> 
-								</td>
-							</tr>
-						</table>
-						<div style="display: flex;">
-							<div style="font-size: 60%; flex:2;">
-								<h4 style="margin-top: 150px; font-size: 150%;">References</h4>
-								<ul>
-									<li>J. Bünger: <em>Three-dimensional modelling of x-ray emission in electron probe microanalysis based on deterministic transport equations</em>. Phd thesis, RWTH Aachen University (2021)<br><a href="https://doi.org/10.18154/RWTH-2021-05180">doi:10.18154/RWTH-2021-05180</a></li>
-									<li>T. Bui-Tanh: <em>Adjoint and Its roles in Sciences, Engineering, and Mathematics: A Tutorial</em>. arXiv (2023)<br><a href="https://doi.org/10.48550/arXiv.2306.09917">doi:10.48550/arXiv.2306.09917</a></li>
-									<li>J.A. Halbleib and J.E. Morel: <em>Adjoint Monte Carlo Electron Transport in the Continuous-Slowing-Down-Approximation</em>. J. Comput. Phys. (1980)<br><a href="https://doi.org/10.1016/0021-9991(80)90106-0">doi:10.1016/0021-9991(80)90106-0</a></li>
-									<li>U. Naumann: <em>The Art of Differentiating Computer Programs: An Introduction to Algorithmic Differentiation</em>. SIAM (2012)<br><a href="https://doi.org/10.1137/1.9781611972078">doi:10.1137/1.9781611972078</a></li>
-									<li>R.E. Plessix: <em> A review of the adjoint-state method for computing the gradient of a functional with geophysical applications</em>. Geophys. J. Int. (2006)<br><a href="https://doi.org/10.1111/j.1365-246X.2006.02978.x">doi:10.1111/j.1365-246X.2006.02978.x</a></li>
-								</ul>
-							</div>
-							<div style="flex:1 ; font-size: 60%"> 
-								<h4 style="margin-top: 150px; ">Slides + Pluto.jl notebook (Poisson example)</h4>
-								<a href="https://github.com/tam724/claus_applying_adjoints_twice_presentation">
-									<img src="figures/tam724_github_qr.png">
-									<br>
-									github.com/tam724
-								</a>
-							</div>
+				<section style="text-align: left;">
+					<h3>Material Reconstruction in EPMA</h3>
+					<div class="fragment fade-in" data-fragment-index="1" style="position:absolute; top:260px; left:1250px; background-color: white;border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; text-align: center; padding:10px; ">
+						<h5>measurements $\Sigma^{(ji)}$</h5>
+						<img width="600px" src="figures/upd_epma/epma_measurements.png">
+					</div>
+					<div style="display:flex; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 10px; margin:20px;">
+						<div style="width:min-content; text-align: center;">
+							<h6>non-adjoint model</h6>
+							<span style="font-size: 80%;">
+								\begin{align*}
+									a_p(u^{(i)}, v) + b^{(i)}(v) &= 0 \, \forall v \in V \\
+									\Sigma^{(ji)} &= c_p^{(j)}(u^{(i)}) 
+								\end{align*}
+							<ul>
+								<li>$P_{21}$ moments ($253$ moments)</li>
+								<li>$40 \times 120$ spatial grid</li>
+								<li>$20$ energy steps</li>
+								<li>$2.5 \times 10^7$ dof</li>
+								
+								<li style="margin-top:40px;">$2(\epsilon) \times 71(x) \times 3(\Omega) = 426 \text{ beams}$</li>
+								<li>$2$ elements</li>
+							</ul>
+						</span>
+
 						</div>
-						<div style="position: absolute; top:700px; left: 500px;">
-							<img src="figures/adjoint_visualization/measurements.svg" style="width:400px;">
+						<div style="text-align: center;">
+							<h6>solution $\int_{S^2}\int_{\mathcal{E}} u^{(i)} \, d\epsilon \,d\Omega$</h6>
+							<img width="600px" src="figures/upd_epma/epma_forward_main.png">
 						</div>
-					</section>
-
-					<section style="text-align: left;">
-						<h3>Material Reconstruction in EPMA: Optimization Example</h3>
+					</div>
+					<div class="fragment fade-in" data-fragment-index="2" style="position: absolute; top: 650px; left:550px; border-radius: 10px; background-color: white; border-color: red; border-width: 2px; border-style: solid; padding: 10px;margin:20px;">
 						<ul>
-							<li>$\mathcal{NN}$ parametrization along a single dimension (but with an angle)</li>
+							<li>$\approx 7\text{min } 6\text{s} (\approx 426\times 1\text{s} + \text{...})$</li>
 						</ul>
-						<img src="figures/jl_6dYjeVKPKV.gif"><br>
+					</div>
+					<div class="r-stretch"> </div>
+					<div class="fragment fade-in" data-fragment-index="2" style="position: absolute; top: 740px; left:700px; border-radius: 10px; background-color: white; border-color: green; border-width: 2px; border-style: solid; padding: 10px;margin:20px;">
 						<ul>
-							<li>final measurements (not perfect..)</li>
-						</ul><br>
-						<img src="figures/final_measurements.svg">
-
-					</section>
-
-					<section style="text-align: left;">
-						<h3>Material Reconstruction in EPMA</h3>
-						<ul>
-							<li>
-								(stationary) radiative transfer/linear boltzmann equation in continuous-slowing-down approximation (CSD) ($x \in \mathcal{R} \subset \mathbb{R}^3$, $\epsilon \in \mathbb{R}^+$, $\Omega \in S^2$)
-								\begin{align}
-									-\partial_\epsilon (s(x, \epsilon) \psi^{(i)}(x, \epsilon, \Omega)) + \Omega \cdot{} \nabla_x \psi^{(i)}(x, \epsilon, \Omega) = \int_{S^2} k(x, \epsilon, \Omega \cdot{} \Omega') \psi^{(i)}(x, \epsilon, \Omega') \, d\Omega' - \tau(x, \epsilon) \psi^{(i)}(x, \epsilon, \Omega)
-								\end{align}
-							</li>
-							<li>
-								beam is modeled by boundary conditions (excitations)
-								\begin{align}
-									\psi^{(i)}(x, \epsilon, \Omega) = g^{(i)}(x, \epsilon, \Omega) \quad \forall x \in \partial \mathcal{R} | n \cdot{} \Omega < 0 
-								\end{align}
-							</li>
-							<li>$i = 1, ..., I$: beam position, beam energy, beam direction</li>
-							<li>
-								additivity approximation (for $\sigma = s$, $k$ and $\tau$), $p \in \mathbb{R}^N$
-								\begin{equation}
-									\sigma(x, \cdot{}) = \sum_{e=1}^{n_e} \rho_{e}(x) \sigma_e(\cdot{})\quad \text{where} \quad (\rho_1, ... \rho_{n_e})^T = \gamma_p
-								\end{equation}
-							</li>
-							<li>
-								x-ray generation and detection (extraction)
-								\begin{align}
-									\Sigma^{(i, j)} = \int_{\mathcal{R}} \int_{0}^{\infty} \sigma^{ion}_j(\epsilon) \rho_j(x) e^{-\int_{d(x)} \sum_{e=1}^{n_e} \mu_e^{(j)} \rho_e(y) \,d y}\int_{S^2} \psi^{(i)}(x, \epsilon, \Omega) \,d \Omega \, d \epsilon \,d  x
-
-								\end{align}
-							</li>
-							<li>$j = 1, ..., J$: number of measured x-ray lines/materials</li>
+							<li>$\approx 2s (\approx 2\times 1\text{s} + \text{...})$</li>
 						</ul>
-					</section>
+					</div>
+					<div style="display:flex; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 10px; margin:20px;">
+						<div style="width:min-content; text-align: center;">
+							<h6>adjoint model</h6>
+							<span style="font-size: 80%;">
+								\begin{align*}
+									a_p(v, \lambda^{(j)}) + c_p^{(j)}(v) = 0 \, \forall v \in U \\
+									\Sigma^{(ji)} = b^{(i)}(\lambda^{(j)}) 
+								\end{align*}
+							</span>
+							<ul>
+								<li>
+									some text...
+								</li>
+							</ul>
+						</div>
+						<div style="text-align: center;">
+							<h6>adjoint solution $\int_{S^2}\int_{\mathcal{E}} \lambda^{(j)} \, d\epsilon \,d\Omega$</h6>
+							<img width="600px" src="figures/upd_epma/epma_forward_adjoint.png">
+						</div>
+						<div style="text-align: center;">
+							<h6>riesz representation $\int_{S^2} \lambda^{(j)} \,d\Omega$</h6>
+							<img width="600px" src="figures/upd_epma/epma_riesz_forward.png">
+						</div>
+					</div>
+				</section>
 
-					<section style="text-align: left;">
-						<h3>Material Reconstruction in EPMA</h3>
-						<ul>
-							<li>compute measurements $\Sigma^{(i, j)}$ with the extraction as the source to the adjoint RT-CSD</li>
-							<li>adjoint RT-CSD: reversed in energy and direction(or space) $a_m(\psi, \phi)$ vs. $a_m(\phi, \psi)$</li>
-							<table>
-								<tr style="border-style: hidden;">
-									<td style="text-align: center; ">
-										<h4>forward $\psi^{(i)}$</h4>
-									</td>
-									<td style="text-align: center; ">
-										<h4>adjoint forward $\lambda^{(j)}$</h4>
-									</td>
-								</tr>
-								<tr style="border-style: hidden;">
-									<td style="text-align: center; ">
-										<video data-autoplay style="width: 800px; margin-top: 40px;">
-											<source data-src="figures/adjoint_visualization/forward.webm" type="video/webm">
-										</video>
-									</td>
-									<td style="text-align: center; ">
-										<video data-autoplay style="width: 800px; margin-top: 40px;">
-											<source data-src="figures/adjoint_visualization/adjoint.webm" type="video/webm">
-										</video>
-									</td>
-								</tr>
-								<tr style="border-style: hidden;">
-									<td style="text-align: center; ">
-										cost: $I \times \mathcal{C}(a) \sim I \times 2\text{min}$
-									</td>
-									<td style="text-align: center; ">
-										cost: $J \times \mathcal{C}(a) \sim J \times 2\text{min}$
-									</td>
-								</tr>
-							</table>
-						</ul>
-						<table>
-							<tr>
-								<td style="width:800px; vertical-align: top;"> 
-									<ul>
-										<li>orange/green marker: measurements from forward</li>
-										<li>green lines: measurements from adjoint forward</li>
-									</ul>
-								</td>
-								<td>
-									<img src="figures/adjoint_visualization/measurements.svg" style="width: 800px;">
-								</td>
-							</tr>
-						</table>
-					</section>
+				<section style="text-align: left;">
+					<h3>Material Reconstruction in EPMA</h3>
+					<div class="fragment fade-in" data-fragment-index="1" style="position:absolute; top:260px; left:1250px; background-color: white;border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; text-align: center; padding:10px; ">
+						<h5>gradient $\Sigma^{(ji)}$</h5>
+						<img width="600px" src="figures/upd_epma/epma_gradient2.png">
+					</div>
+					<div style="display:flex; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 10px; margin:20px;">
+						<div style="width:min-content; text-align: center;">
+							<h6>non-adjoint derivative</h6>
+							<span style="font-size: 80%;">
+								\begin{align*}
+									a_p(v, \dot{\lambda}^{(j)}) + \dot{a}_p(v, \lambda^{(j)}, \dot{p}) + \dot{c}_p(v, \dot{p}) = 0 \\
+									\dot{\Sigma}^{(ji)} = b^{(i)}(\dot{\lambda}^{(j)})
+ 								\end{align*}
+							<ul>
+								
+							</ul>
+						</span>
 
-					<section style="text-align: left;">
-						<h3>Material Reconstruction in EPMA</h3>
+						</div>
+						<div style="text-align: center;">
+							<h6>tangent $\int_{S^2}\int_{\mathcal{E}} \dot{\lambda}^{(j)} \, d\epsilon \,d\Omega$</h6>
+							<img width="600px" src="figures/upd_epma/epma_tangent_nonadjoint.png">
+						</div>
+					</div>
+					<div class="fragment fade-in" data-fragment-index="2" style="position: absolute; top: 650px; left:550px; border-radius: 10px; background-color: white; border-color: red; border-width: 2px; border-style: solid; padding: 10px;margin:20px;">
 						<ul>
-							<li>compute the gradient $\bar{\rho}_e$ using the "adjoint augmented" excitations as the source to the RT-CSD</li>
+							<li>$\approx 2\text{h } 40\text{min} (\approx 4800\times 2\text{s} + \text{...})$</li>
+							<li>$\approx 23\text{d } 16\text{h} (\approx 4800\times 7\text{min } 6\text{s} + \text{...})$</li>
 						</ul>
-						<table>
-							<tr style="border-style: hidden;">
-								<td style="text-align: center; "><h4>adjoint derivative $\bar{\lambda}^{(j)}$</h4></td>
-								<td style="text-align: center; "><h4>gradient $\bar{\rho}_e$</h4></td>
-							</tr>
-							<tr style="border-style: hidden;">
-								<td style="text-align: center; ">
-									<video data-autoplay style="width: 800px; margin-top: 40px;">
-										<source data-src="figures/adjoint_visualization/adjoint_derivative_1.webm" type="video/webm">
-									</video>
-								</td>
-								<td style="text-align: center; ">
-									<img src="figures/adjoint_visualization/gradient.svg" style="width: 800px">
-								</td>
-							</tr>
-						</table>
-					</section>
+					</div>
+					<div class="r-stretch"> </div>
+					<div class="fragment fade-in" data-fragment-index="2" style="position: absolute; top: 740px; left:700px; border-radius: 10px; background-color: white; border-color: green; border-width: 2px; border-style: solid; padding: 10px;margin:20px;">
+						<ul>
+							<li>$\approx 5s (\approx 2\times 2\text{s} + \text{...})$</li>
+						</ul>
+					</div>
+					<div style="display:flex; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 10px; margin:20px;">
+						<div style="width:min-content; text-align: center;">
+							<h6>adjoint derivative</h6>
+							<span style="font-size: 80%;">
+								\begin{align*}
+									a_p(\bar{\lambda}^{(j)}, v) + \bar{\Sigma}^{(ij)}b^{(i)}(v) = 0 \, \forall v \in U \\
+									\bar{p} = \bar{a}_p(\bar{\lambda}^{(j)}, \lambda^{(j)}, 1) + \bar{c}_p(\bar{\lambda}^{(j)}, 1)
+								\end{align*}
+							</span>
+							<ul>
+								<li>
+									some text...
+								</li>
+							</ul>
+						</div>
+						<div style="text-align: center;">
+							<h6>adjoint solution $\int_{S^2}\int_{\mathcal{E}} \lambda^{(j)} \, d\epsilon \,d\Omega$</h6>
+							<img width="600px" src="figures/upd_epma/epma_tangent_adjoint.png">
+						</div>
+						<div style="text-align: center;">
+							<h6>Taylor remainder</h6>
+							<img width="600px" src="figures/upd_epma/epma_taylor_remainder.png">
+						</div>
+					</div>
+				</section>
+
+				<section style="text-align: left;">
+					<h3>Outlook: Material Reconstruction in EPMA</h3>
+					<ul>
+
+					</ul>
+					
+					<div class="r-stretch"></div>
+					<div style="display: flex;">
+						<div style="font-size: 60%; flex:3;">
+							<h4 style="font-size: 150%;">References</h4>
+							<ul>
+								<li>J. Bünger: <b>Three-dimensional modelling of x-ray emission in electron probe microanalysis based on deterministic transport equations</b>. <a href="https://doi.org/10.18154/RWTH-2021-05180">doi:10.18154/RWTH-2021-05180</a></li>
+								<li>T. Bui-Tanh: <b>Adjoint and Its roles in Sciences, Engineering, and Mathematics: A Tutorial</b>. <a href="https://doi.org/10.48550/arXiv.2306.09917">doi:10.48550/arXiv.2306.09917</a></li>
+								<li>J.A. Halbleib and J.E. Morel: <b>Adjoint Monte Carlo Electron Transport in the Continuous-Slowing-Down-Approximation</b>. <a href="https://doi.org/10.1016/0021-9991(80)90106-0">doi:10.1016/0021-9991(80)90106-0</a></li>
+							</ul>
+						</div>
+						
+						<div style="flex:1 ; font-size: 60%; margin-left:3px;"> 
+							<a href="https://github.com/tam724/claus_applying_adjoints_twice_presentation">
+								<div style="display:flex; ">
+									<div>
+										<img width="350px" src="figures/tam724_github_qr.png" style="display: inline;">
+									</div>
+									<div>
+										<h4 style="margin-top: 30px;">Slides + Pluto.jl notebook (Poisson example)</h4>
+										github.com/tam724
+									</div>
+								</div>
+
+							</a>
+						</div>
+					</div>
 				</section>
 			</div>
 		</div>
@@ -1474,7 +1516,7 @@
 
 				// Factor of the display size that should remain empty around
 				// the content
-				margin: 0.1,
+				margin: 0.05,
 
 				// Bounds for smallest/largest possible scale to apply to content
 				minScale: 0.01,
