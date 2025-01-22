@@ -16,7 +16,7 @@
 		<link rel="stylesheet" href="dist/theme/serif.css">
 
 		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+		<link rel="stylesheet" href="plugin/highlight/atom-one-light.css">
 		<style>
 			.fragment.blur {
 				filter: blur(10px);
@@ -30,7 +30,7 @@
 			.reveal .slides{
 				border-style: solid;
 				border-color: gray;
-				border-width: 1px;
+				border-width: 0px;
 			}
 			.tr {
 				border-style: none;
@@ -309,7 +309,7 @@
 						<h4>Generalizations: </h4>
 						<ul>
 							<li>
-								$\boldsymbol A$ is solution of a linear system / linear (partial?) differential equation?
+								$\boldsymbol A$ is solution of a linear system / linear (partial) differential equation?
 								\[
 									\boldsymbol A g^{(i)} = \{u \in U \, | \, a(u, v) + \langle g^{(i)}, v \rangle = 0 \quad \forall v \in V\}
 								\]
@@ -341,7 +341,7 @@
 					<section style="text-align: left";>
 						<h3>An Abstract Adjoint Method in a Computational Context</h3>
 						<p>
-							Definition of the <b>Adjoint</b> ($H, G$ Hilbert spaces, $A: G \to H$ continuous, linear)
+							Definition of the <b>adjoint operator</b> ($H, G$ Hilbert spaces, $A: G \to H$ continuous, linear operator)
 							\[
 								\langle h, A(g) \rangle_H = \langle A^*(h), g \rangle_G \quad \forall h \in H \,,  g \in G
 							\]
@@ -395,7 +395,7 @@
 							</ul>
 						</div>
 						<div class="fragment fade-in" style="background-color: lightgray; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 5px; font-size: 100%; margin:30px;"> 
-							<em>Instead of computing/approximating the "solution" $v^{(i)}= A(g^{(i)})$, we approximate the <b>Riesz representation</b> $\lambda^{(j)}$ of $\cdot \mapsto \langle h^{(j)}, A(\cdot{}) \rangle_H$</em>
+							<em>Instead of computing/approximating the "solution" $v^{(i)}= A(g^{(i)})$, we approximate the <b>Riesz representation</b> $\lambda^{(j)} \in G$ of the linear functional $\cdot \mapsto \langle h^{(j)}, A(\cdot{}) \rangle_H$</em>
 						</div>
 						<!-- <div style="background-color: lightgray; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 5px; font-size: 80%;">
 							Notation: $f_{(\cdot{})}: X \to Y$ non-linear, differentiable
@@ -655,38 +655,70 @@
 
 				<section style="text-align: left">
 					<h3>Abstract Adjoint: Algorithmic Differentiation (AD)</h3>
+					Given a (Frechet-)differentiable operator  $f: \mathcal{X} \to Y, x \mapsto f(x) =: y$ (open $\mathcal{X} \subseteq X$)
+					<div style="font-size: 60%; text-align:right; margin:10px;">
+						(typically in Literature: $X, Y$ finite dimensional Hilbert spaces)
+					</div>
 					<ul>
-						<li>
-							consider $f: \mathcal{X} \to Y, x \mapsto f(x) =: y$ with open $\mathcal{X} \subseteq X $ 
+						<li>Definition of the <b>(Frechet-)derivative</b> (tangent operator) $\dot{f}_x: T_xX \to T_yY$ by
+							<div style="margin-top:-20px; margin-bottom: -20px; font-size:90%">
+								\begin{equation}
+									\lim_{||\dot{x}|| \to 0} \frac{||f(x + \dot{x}) - f(x) - \dot{f}_x(\dot{x})||}{||\dot{x}||} \quad \text{with } \dot{x} \in T_xX
+								\end{equation}
+							</div>
 						</li>
-						<li>define the (Frechet-) derivative (or tangent operator) $\dot{f}_x: T_xX \to T_yY$ by
-							\begin{equation}
-							\lim_{||\dot{x}|| \to 0} \frac{||f(x + \dot{x}) - f(x) - \dot{f}_x(\dot{x})||}{||\dot{x}||} \quad \text{with } \dot{x} \in T_xX
-							\end{equation}
-						</li>
-						<li>assuming that the tangent operator is continuous and $T_xX$, $T_yY$ are Hilbert spaces:
-							\begin{equation}
-							\langle \bar{y}, \dot{f}_x(\dot{x}) \rangle_{T_y Y} = \langle \bar{f}_x(\bar{y}), \dot{x} \rangle_{T_x X} \quad \forall \dot{x} \in T_xX, \bar{y} \in T_yY
-							\end{equation}
+						<li>Definition of the <b>adjoint (tangent) operator</b> ($T_xX$, $T_yY$ Hilbert spaces, $\dot{f}_x$ continuous, linear)
+							<div style="margin-top:-20px; margin-bottom: -20px; font-size:90%">
+								\begin{equation}
+									\langle \bar{y}, \dot{f}_x(\dot{x}) \rangle_{T_y Y} = \langle \bar{f}_x(\bar{y}), \dot{x} \rangle_{T_x X} \quad \forall \dot{x} \in T_xX, \bar{y} \in T_yY
+								\end{equation}
+							</div>
 							<div style="font-size:60%; width:100%; text-align: right; margin-top:-30px;">(notation adopted from AD)</div>
 						</li>
-						<li>Choose cartesian unit vectors for $\bar{y}$ and $\dot{x}$ (seeding), then (glossing over details): 
-							<ul>
-								<li>Non-Adjoint Implementation = tangent mode of AD</li>
-								<li>Adjoint Implementation = adjoint mode of AD</li>
-							</ul>
+						<li class="fragment fade-in">
+							Example: compute the Jacobian $Jf_x$ of $f: \mathbb{R}^I \to \mathbb{R}^J$
+							<div style="margin-top:-20px; margin-bottom: -20px; font-size:90%">
+								\begin{equation}
+									[Jf_x]_{ji} = \underbrace{\langle \color{green}{e_j}, \color{orange}{\dot{f}_x(e_i)} \rangle}_{\small \text{tangent mode (AD)}} = \underbrace{\langle \color{green}{\bar{f}_x(e_j)}, \color{orange}{e_i} \rangle}_{\small\text{adjoint mode (AD)}}
+								\end{equation}
+							</div>
 						</li>
 					</ul>
 
 					<div style="display: flex;">
-						<div class="fragment fade-in" style="flex:3; background-color: lightgray; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 5px; font-size: 100%; margin:30px;">
-							<h4>AD Notation</h4>
+						<div class="fragment fade-in" style="flex:3; background-color: lightgray; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 5px; font-size: 100%; margin:30px; max-height:fit-content;">
+							<h4>Algorithmic Differentation Tools</h4>
+							<div style="font-size:90%; ">
+							automatic composition of "elemental" tangent/adjoint operators $\dot{f}_x(\cdot{})$/$\bar{f}_x(\cdot{})$ based on the chain rule to compute<br>
 							<ul>
-								<li>tangent vectors: $\dot{y} = \dot{f}_x(\dot{x})$</li>
-								<li>adjoint vectors: $\bar{x} = \bar{f}_x(\bar{y})$</li>
-							</ul>
+								<li>tangent vectors: $\dot{y}, \dot{x}$</li>
+								<li>adjoint vectors: $\bar{x}, \bar{y}$</li>
+							</ul><br>
+							where $\langle \bar{y}, \dot{y} \rangle = \langle \bar{x}, \dot{x}\rangle$.
+							</div>
 						</div>
-						<div  class="fragment fade-in" style="flex: 3; background-color: lightgray; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 5px; font-size: 100%; margin:30px;">
+						<div class="fragment fade-in" style="width:1000px;">
+							<pre><code data-trim data-noescape style="max-height:fit-content;" class="language-julia">
+								using ChainRulesCore, Zygote
+								function f(a, b)
+									y = 2*a*a + b
+									return y
+								end
+								
+								function ChainRulesCore.rrule(::typeof(f), a, b)
+									y = 2*a*a + b
+									function f̄(ȳ)
+										ā = 4*a * ȳ
+										b̄ = ȳ
+										return ZeroTangent(), ā, b̄
+									end
+									return y, f̄
+								end
+							
+								Zygote.withgradient(f, 1.0, 2.0) # (val = 4.0, grad = (4.0, 1.0))
+							</code></pre>
+						</div>
+						<!-- <div  class="fragment fade-in" style="flex: 3; background-color: lightgray; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 5px; font-size: 100%; margin:30px;">
 							<h4>Special Case: Implicit Algorithmic Differentiation</h4>
 							<ul>
 								<li>
@@ -697,7 +729,7 @@
 								<li>$\bar{f}_x(\bar{y}) = (\bar{x} \in T_xX : \bar{F}^{(1)}_{x, y}(\bar{v}) = \bar{x} \land \bar{y} = -\bar{F}^{(2)}_{x, y}(\bar{v}) )$
 								</li>
 							</ul>
-						</div>
+						</div> -->
 					</div>
 					
 					<div class="r-stretch"></div>
@@ -711,7 +743,7 @@
 
 				<section style="text-align: left;">
 					<h3>Abstract Adjoint: Example: linear pde (weak form)</h3>
-					$A: G \to H$ is the solution operator of a linear pde ($U, V, G, H$ Hilbert spaces $U\subseteq H$, $V\subseteq G$)
+					Given a solution operator of a linear pde $A: G \to H$  ($U, V, G, H$ Hilbert spaces $U\subseteq H$, $V\subseteq G$)
 					\begin{equation}
 						\color{orange}{A(g) = (u \in U | a(u, v) + \langle v, g\rangle_G = 0\quad \forall v \in V)}
 					\end{equation}
@@ -731,13 +763,13 @@
 							\color{green}{A^*(h) = (\lambda \in V | a(u, \lambda) + \langle h, u \rangle_H = 0 \quad \forall u \in U)}
 						\end{equation}
 					</div>
-					<div class="fragment fade-in" style="flex:3; background-color: lightgray; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 5px; font-size: 100%; margin:50px;">
-						<h5>Duality (from optimization theory)</h5>
+					<!-- <div class="fragment fade-in" style="flex:3; background-color: lightgray; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 5px; font-size: 100%; margin:50px;">
+						<h5>from constrained optimization</h5>
 						<ul>
 							<li>Lagrangian: $\mathcal{L} = \langle h, u \rangle_H + a(u, \lambda) + \langle \lambda, g\rangle_G$</li>
-							<li>Lagrange-multiplyer: $\lambda \in V$</li>
+							<li>Lagrange-multiplier: $\lambda \in V$</li>
 						</ul>
-					</div>
+					</div> -->
 				</section>
 
 				<section style="text-align: left">
@@ -746,33 +778,100 @@
 					<div style="text-align: center;">
 						<em>"The adjoint of the discretized problem is a consistent discretization of the adjoint of the continuous problem."</em>
 					</div>
-					<ul>
-						<li>with $h \in H$, $g \in G$ vectors, $A: G \to H$ continuous operator, $\cdot{}_\Delta$ the consistent discretization</li>
-						<li>if the discretization if dual consistent, the following diagram commutes:</li>
-					</ul>
-					\begin{equation}
+					<h5>Example (neglecting BC):</h5>
+					<div style="display:flex; justify-content: center;">
+						<div style="font-size:80%">
+							\begin{align}
+							L u + g &= 0 \quad \forall x \in \mathcal{R} \\
+							\Sigma &= \int_{\mathcal{R}} h u \, dx
+							\end{align}
+						</div>
+						<div style="vertical-align: center; font-size:80%; margin:40px;">
+							\begin{equation}
+								\text{continuous dual problem} 
+							\end{equation}
+							<div style="margin:-30px;">
+								\begin{equation}
+									\leftrightarrow
+								\end{equation}
+							</div>
+						</div>
+						<div style="font-size:80%">
+							\begin{align}
+							L^* \lambda + h &= 0 \quad \forall x \in \mathcal{R} \\
+							\Sigma &= \int_{\mathcal{R}} g \lambda \, dx
+							\end{align}
+						</div>
+					</div>
+					<div style="display:flex; justify-content: center;">
+						<div style="font-size:80%; display:flex; vertical-align: center; margin:-20px; margin-right:300px; ">
+							<div>
+								\begin{equation}
+									\updownarrow \text{ discretization }
+								\end{equation}
+							</div>
+						</div>
+						<div style="font-size:80%; display:flex; vertical-align: center; margin:-20px; margin-left:300px; ">
+							<div>
+								\begin{equation}
+									\updownarrow \text{ ? }
+								\end{equation}
+							</div>
+						</div>
+					</div>
+					<div style="display:flex; justify-content: center;">
+						<div style="font-size:80%">
+							\begin{align}
+							L_\Delta u_\Delta + g_\Delta &= 0 \\
+							\Sigma_\Delta &= \langle h_\Delta, u_\Delta \rangle
+							\end{align}
+						</div>
+						<div style="vertical-align: center; font-size:80%; margin:40px;">
+							\begin{equation}
+								\text{discrete dual problem}
+							\end{equation}
+							<div style="margin:-30px;">
+								\begin{equation}
+									\leftrightarrow
+								\end{equation}
+							</div>
+						</div>
+						<div style="font-size:80%">
+							\begin{align}
+							L^T_\Delta \lambda_\Delta + h_\Delta &= 0  \\
+							\Sigma_\Delta &= \langle \lambda_\Delta, g_\Delta \rangle
+							\end{align}
+						</div>
+					</div>
+					
+					<!-- \begin{equation}
 						\begin{matrix}
 							\langle h, A(g) \rangle_H & \leftrightarrow & \langle A^*(h), g \rangle_G \\
 							\downarrow_{\Delta} & & \downarrow_{\Delta}\\
 							\langle h_\Delta, A_\Delta \cdot{} g_\Delta \rangle_{H_{\Delta}} & \leftrightarrow & \langle A^T_{\Delta}\cdot{} h_{\Delta}, g_{\Delta} \rangle_{G_{\Delta}}
 						\end{matrix}
-					\end{equation}
-					<ul>
+					\end{equation} -->
+					<ul style="font-size:80%"  class="fragment fade-in">
 						<li>
-							interpretability of the "adjoint solution" $A_\Delta^T \cdot{} h_\Delta$ as the solution of the continuous adjoint equation
+							interpretability: $\lambda_\Delta$ is the approximation of the continuous adjoint equation
 						</li>
 						<li>
-							"superconvergence" of linear functionals $\langle \cdot{}, g_\Delta\rangle_{G_\Delta}$ (convergence order doubling)
+							"superconvergence" of linear functionals $|\Sigma - \Sigma_\Delta|$ (convergence order doubling)
+						</li>
+						<li>no ambiguity between
+							<ul>
+								<li>"optimize-then-discretize" vs. "discretize-then-optimize"</li>
+								<li>"continuous adjoint method" vs. "discrete adjoint method"</li>
+							</ul>
 						</li>
 					</ul>
-
-					<div style="background-color: lightgray; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 10px; font-size: 80%; margin:30px;">
-						<h5>"optimize-then-discretize" vs. "discretize-then-optimize"</h5>
-						<h5>"continuous adjoint method" vs. "discrete adjoint method"</h5>
-						<ul>
-							<li>related concepts from optimization/optimal control literature</li>
-							<li>for a dual consistent discretization both approaches are identical</li>
-						</ul>
+					<div style="background-color: lightgray; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 5px; font-size: 100%; margin:30px; max-height:fit-content; font-size:80%"  class="fragment fade-in">
+					<h5>Examples:</h5>
+					<ul>
+						<li>FD-discretizations: explicit/implicit euler: (not dual consistent), implicit midpoint/trapeziodal rule (with suitable quadrature dual consistent)</li>
+						<li>FE-discretization: (with weak boundary conditions dual consistent)</li>
+						<li>DG/SBP (see literature)</li>
+					</ul>
 					</div>
 					<div class="r-stretch"></div>
 
@@ -795,8 +894,8 @@
 							<ul>
 								<li>parameters $p \in P$</li>
 								<li>parameter-dependent bilinear form $a_p: U \times V (\times P) \to \mathbb{R}$ </li>
-								<li>excitations $b^{(i)} : V \to \mathbb{R}$</li>
-								<li>extractions $c^{(j)}: U \to \mathbb{R}$</li>
+								<li>linear excitations $b^{(i)} : V \to \mathbb{R}$</li>
+								<li>linear extractions $c^{(j)}: U \to \mathbb{R}$</li>
 								<li>observables $\Sigma^{(ji)} \in \mathbb{R}$</li>
 							</ul>
 						</div>
@@ -860,9 +959,9 @@
 						<tr style="border-style: hidden;">
 							<td colspan=2 style="text-align: center;">
 								<div class="fragment fade-in" data-fragment-index="3" style="display: inline-block; text-align: left;">
-									<h4>Algorithmic Differentiation ($\langle \bar{\Sigma}, \dot{\Sigma} \rangle = \langle \bar{p}, \dot{p} \rangle$):</h4>
+									<h4>from AD ($\langle \bar{\Sigma}, \dot{\Sigma} \rangle = \langle \bar{p}, \dot{p} \rangle$):</h4>
 									\begin{align}
-										a_p(\bar{\Sigma}^{(ji)} v, \dot{\lambda}^{(j)}) + \dot{a}_p(\bar{\Sigma}^{(ji)} v, \lambda^{(j)}, \dot{p}) &= 0 \quad \forall v \in U \\
+										a_p(\underbrace{\bar{\Sigma}^{(ji)} v}_{=\bar{\lambda}^{(j)} \small(\text{with fixed } v)}, \dot{\lambda}^{(j)}) + \dot{a}_p(\bar{\Sigma}^{(ji)} v, \lambda^{(j)}, \dot{p}) &= 0 \quad \forall v \in U \\
 										\bar{\Sigma}^{(ji)} \dot{\Sigma}^{(ji)} &= \bar{\Sigma}^{(ji)} b^{(i)}(\dot{\lambda}^{(j)})
 									\end{align}
 								</div>
@@ -874,64 +973,53 @@
 
 				<section style="text-align: left;">
 					<h3>Applying Adjoints Twice: Summary</h3>
-					<table>
-						<tr style="border-style: hidden;">
-							<td style="text-align: center; ">
-								<h4>non-adjoint forward + non-adjoint derivative</h4>
-							</td>
-							<td style="text-align: center; ">
-								<h4>adjoint forward + adjoint derivative</h4>
-							</td>
-						</tr>
-						<tr style="border-style: hidden;">
-							<td style="text-align: center; ">
-								\begin{align*}
-									a_p(u^{(i)}, v) + b^{(i)}(v) &= 0 \quad \forall v \in V \\
-									\Sigma^{(ji)} &= c^ {(j)}(u^{(i)}) \\
-									C &= g(\Sigma^{(\cdot{}\cdot{})}) \\
-									a_p(\dot{u}^{(in)}, v) + \dot{a}_p(u^{(i)}, v, e^{(n)}) &= 0 \quad \forall v \in V\\
-									\dot{\Sigma}^{(jin)} &= c^{(jin)}(\dot{u}^{(in)}) \\
-									(\nabla_p C)^{(n)} &= \dot{g}_{\Sigma^{(\cdot{}\cdot{})}}(\dot{\Sigma}^{(\cdot{}\cdot{}n)})
-								\end{align*}
-							</td>
-							<td style="text-align: center; ">
-								\begin{align}
-									a_p(v, \lambda^{(j)}) + c^{(j)}(v) &= 0 \quad \forall v \in U\\
-									\Sigma^{(ji)} &= b^{(i)}(\lambda^{(j)}) \\
-									C &= g(\Sigma^{(\cdot{}\cdot{})}) \\
-									\bar{\Sigma}^{(\cdot{}\cdot{})} &= \bar{g}_{\Sigma^{(\cdot{}\cdot{})}}(\bar{C})\\
-									a_p(\bar{\lambda}^{(j)}, v) + \bar{\Sigma}^{(ji)} b^{(i)}(v) &= 0 \quad \forall v \in V \\
-									(\nabla_p C)^{(n)} &= \langle \bar{a}_p(\bar{\lambda}^{(j)}, \lambda^{(j)}, 1), e^{(n)}\rangle
-								\end{align}
-							</td>
-						</tr>
-						<tr style="border-style: hidden;">
-							<td>
-								<ul>
-									<li>$(I + IN)\times \mathcal{C}(a_p(\cdot{}, \cdot{})) + ... $</li>
-								</ul>
-							</td>
-							<td>
-								<ul>
-									<li>$2J \times \mathcal{C}(a_p(\cdot{}, \cdot{})) + ... $</li>
-								</ul>
-							</td>
-						</tr>
-					</table>
-					<h4>Generalization:</h4>
-					<ul style="width: 100%;">
-						<li>parameter-dependent $b_p^{(i)}(v)$ and $c_p^{(j)}(u)$</li>
-						\begin{equation}
-						\bar{p} = \bar{a}_p(\bar{\lambda}^{(j)}, \lambda^{(j)}, 1) + \bar{c}_p^{(j)}(\bar{\lambda}^{(j)}, 1) + \bar{b}^{(i)}_p(\lambda^{(j)}, \bar{\Sigma}^{(ji)})
-						\end{equation}
-					</ul>
-					<h4 style="margin-top: 20px;">Assumptions:</h4>
-					<ul>
-						<li>$\mathcal{C}(a_p(\cdot{}, \cdot{})) \gg \mathcal{C}(b^{(i)}), \mathcal{C}(c^{(j)}), ...$ </li>
-						<li>$a_p(\cdot{}, \cdot{})$ cannot be solved directly (e.g. LU)</li>
-						<li>$I > J$, $N > J$, $C \in \mathbb{R}$</li>
-					</ul>
-					</ul>
+					<div style="font-size:80%">with objective function $g: \mathbb{R}^{J\times I} \to \mathbb{R}, \Sigma \mapsto C$ and parameters $p \in P = \mathbb{R}^N$</div>
+					<div style="display: flex; justify-content: space-around;">
+						<div style="border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 10px; margin:20px; font-size:90%;">
+							<h4>non-adjoint forward + non-adjoint derivative</h4>
+							\begin{align*}
+								a_p(u^{(i)}, v) + b^{(i)}(v) &= 0 \quad \forall v \in V \\
+								\Sigma^{(ji)} &= c^ {(j)}(u^{(i)}) \\
+								C &= g(\Sigma^{(\cdot{}\cdot{})}) \\
+								a_p(\dot{u}^{(in)}, v) + \dot{a}_p(u^{(i)}, v, e^{(n)}) &= 0 \quad \forall v \in V\\
+								\dot{\Sigma}^{(jin)} &= c^{(j)}(\dot{u}^{(in)}) \\
+								(\nabla_p C)^{(n)} &= \dot{g}_{\Sigma^{(\cdot{}\cdot{})}}(\dot{\Sigma}^{(\cdot{}\cdot{}n)})
+							\end{align*}
+							<ul>
+								<li>cost: $(I + IN)\times \mathcal{C}(a_p(\cdot{}, \cdot{})) + ... $</li>
+							</ul>
+						</div>
+						<div style="border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 10px; margin:20px; font-size:90%; ">
+							<h4>adjoint forward + adjoint derivative</h4>
+							\begin{align}
+								a_p(v, \lambda^{(j)}) + c^{(j)}(v) &= 0 \quad \forall v \in U\\
+								\Sigma^{(ji)} &= b^{(i)}(\lambda^{(j)}) \\
+								C &= g(\Sigma^{(\cdot{}\cdot{})}) \\
+								\bar{\Sigma}^{(\cdot{}\cdot{})} &= \bar{g}_{\Sigma^{(\cdot{}\cdot{})}}(\bar{C})\\
+								a_p(\bar{\lambda}^{(j)}, v) + \bar{\Sigma}^{(ji)} b^{(i)}(v) &= 0 \quad \forall v \in V \\
+								(\nabla_p C)^{(n)} &= \langle \bar{a}_p(\bar{\lambda}^{(j)}, \lambda^{(j)}, 1), e^{(n)}\rangle
+							\end{align}
+							<ul>
+								<li>cost: $2J \times \mathcal{C}(a_p(\cdot{}, \cdot{})) + ... $</li>
+							</ul>
+						</div>
+					</div>
+					<div class="fragment fade-in">
+						<h4>Generalization:</h4>
+						<ul style="width: 100%;">
+							<li>parameter-dependent $b_p^{(i)}(v)$ and $c_p^{(j)}(u)$
+								\begin{equation}
+									\bar{p} = \bar{a}_p(\bar{\lambda}^{(j)}, \lambda^{(j)}, 1) + \bar{c}_p^{(j)}(\bar{\lambda}^{(j)}, 1) + \bar{b}^{(i)}_p(\lambda^{(j)}, \bar{\Sigma}^{(ji)})
+								\end{equation}
+							</li>
+						</ul>
+						<h4 style="margin-top: 20px;">Assumptions:</h4>
+						<ul>
+							<li>$\mathcal{C}(a_p(\cdot{}, \cdot{})) \gg \mathcal{C}(b^{(i)}), \mathcal{C}(c^{(j)}), ...$ </li>
+							<li>$a_p(\cdot{}, \cdot{})$ cannot be solved directly (e.g. LU)</li>
+							<li>$I > J$, $N > J$</li>
+						</ul>
+					</div>
 				</section>
 
 				<!-- Poisson Example -->
@@ -961,7 +1049,7 @@
 										</li>
 										<li>$I, N \gg J$ (many bc $g^{(i)}$, many parameters $p \in \mathbb{R}^N$, some extractions $h^{(j)}$)</li>
 										<li>here: $I=200$, $N=2972$, $J=7$</li>
-										<li>FE-framework: Gridap.jl, linsol: gmres + ilu</li>
+										<li>FE-framework: Gridap.jl, Linear Solver: gmres + ilu</li>
 									</ul>
 								</td>
 							</tr>
@@ -987,14 +1075,23 @@
 					</section>
 
 					<section>
-						<h3>Example: Derivation</h3>
+						<h3>Derivation: An inverse problem based on the Poisson equation</h3>
 						<h4>weak forms</h4>
 						\begin{align*}
-							a_m(u, v) &= \int_{\mathcal{R}} m \nabla u \cdot{} \nabla v dx - \int_{\partial \mathcal{R}} m \nabla_n u v + u \nabla_n v \, d\Gamma + \int_{\partial \mathcal{R}} \alpha u v \, d \Gamma \\
-							b^{(i)}(v) &= \int_{\partial \mathcal{R}} \nabla_n v  g^{(i)} \, d\Gamma - \int_{\partial \mathcal{R}} \alpha g^{(i)} v \, d\Gamma\\
+							a_p(u, v) &= \int_{\mathcal{R}} m_p \nabla u \cdot{} \nabla v dx - \int_{\partial \mathcal{R}} m_p \nabla_n u v + u \nabla_n v \, d\Gamma + \int_{\partial \mathcal{R}} \alpha_h u v \, d \Gamma \\
+							b^{(i)}(v) &= \int_{\partial \mathcal{R}} \nabla_n v  g^{(i)} \, d\Gamma - \int_{\partial \mathcal{R}} \alpha_h g^{(i)} v \, d\Gamma\\
 							c^{(j)}(u) &= \int_{\mathcal{R}} h^{(j)} u \, dx
 						\end{align*}
-						<h4>adjoint forward</h4>
+						<h4>tangent and adjoint operators</h4>
+						\begin{align*}
+							\dot{a}_p(u, v, \dot{p}) &= \int_{\mathcal{R}} \dot{m}_p(\dot{p}) \nabla u \cdot{} \nabla v \,d x - \int_{\partial \mathcal{R}} \dot{m}_p(\dot{p}) \nabla_n u v \,d \Gamma \\
+							\bar{a}_p(u, v, \bar{C}) &= \bar{C}\int_{\mathcal{R}} \partial_p m_p \nabla u \cdot{} \nabla v \,d x - \bar{C}\int_{\partial \mathcal{R}} \partial_p m_p \nabla_n u v \,d \Gamma
+						\end{align*}
+						where $\partial_p m_p$ is the parameter-gradient of the field $m$ defined by
+						\begin{equation}
+							\dot{m}_p(\dot{p})(x) = \langle \partial_p m_p(x), \dot{p} \rangle
+						\end{equation}
+						<!-- <h4>adjoint forward</h4>
 						\begin{align*}
 							a_m(u, \lambda^{(j)}) + c^{(j)}(u) = 0 \quad \forall u\\
 							\int_{\mathcal{R}} m \nabla u \cdot{} \nabla \lambda^{(j)} dx - \int_{\partial \mathcal{R}} m \nabla_n u \lambda^{(j)} + u \nabla_n \lambda^{(j)} \, d\Gamma + \int_{\partial \mathcal{R}} \alpha u \lambda^{(j)} \, d \Gamma + \int_{\mathcal{R}} \mu^{(j)} u \, dx = 0 \quad \forall u 
@@ -1005,7 +1102,7 @@
 								-\nabla m \cdot{} \nabla \lambda^{(j)} = -h^{(j)} \quad &\forall x \in \mathcal{R}\\
 								\lambda^{(j)} = 0 \quad &\forall x \in \partial \mathcal{R}
 							\end{cases}
-						\end{align*}
+						\end{align*} -->
 					</section>
 					<section>
 						<h3>Example: Derivation</h3>
@@ -1059,10 +1156,10 @@
 									&\Sigma^{(ji)} = \int_{\mathcal{R}} h^{(j)} u^{(i)} dx\\
 								\end{align*}
 							</span>
-							<ul>
-								<li>
-									some text...
-								</li>
+							<ul style="font-size:80%">
+								<li>$I = 200$ excitations</li>
+								<li>$J = 7$ extractions</li>
+								<li>$N = 2972$ grid cells</li>
 							</ul>
 						</div>
 						<div style="text-align: center;">
@@ -1093,9 +1190,12 @@
 									&\Sigma^{(ji)} = \int_{\partial \mathcal{R}} \nabla_n \lambda^{(j)} g^{(i)} \, d x\\
 								\end{align*}
 							</span>
-							<ul>
+							<ul style="font-size:80%">
 								<li>
-									some text...
+									strong form not required for implementation
+								</li>
+								<li>
+									riesz representation $\nabla_n \lambda$ has all information to compute measurements for arbitrary $g^{(i)}$
 								</li>
 							</ul>
 						</div>
@@ -1130,10 +1230,8 @@
 									&\dot{C} = \frac{1}{IJ} \sum_{i, j=1}^{I,J} (\Sigma^{(ji)} - \tilde{\Sigma}^{(ji)})\dot{\Sigma}^{(ji)}
 								\end{align*}
 							</span>
-							<ul>
-								<li>
-									some text...
-								</li>
+							<ul style="font-size:80%; ">
+								<li>$m(x) = 0.5$</li>
 							</ul>
 						</div>
 						<div style="text-align: center;">
@@ -1167,11 +1265,7 @@
 
 								\end{align*}
 							</span>
-							<ul>
-								<li>
-									some text...
-								</li>
-							</ul>
+
 						</div>
 						<div style="text-align: center;">
 							<h5>adjoint solution $\bar{\lambda}^{(j)}$</h5>
@@ -1214,10 +1308,10 @@
 								<li>no "inverse crime": 
 									<ul>
 										<li>$2972$ vs $72965$ grid cells</li>
-										<li>additive noise $\mathcal{N}(\mu=0, \sigma=1e-5)$</li>
+										<li>additive noise $\mathcal{N}(\mu=0, \sigma=1\times 10^{-5})$</li>
 									</ul>
 								</li>
-								<li>L-BFGS</li>
+								<li>L-BFGS (Optim.jl), NN (Lux.jl), AD (Zygote.jl) + custom adjoint</li>
 							</ul>
 						</div>
 					</div>
@@ -1248,9 +1342,10 @@
 				</section>
 
 				<!--Material Reconstruction in EPMA-->
+				<section>
 				<section style="text-align: left;">
 					<h3>Material Reconstruction in EPMA</h3>
-					<div style="display:flex; ">
+					<div style="display:flex; justify-content: space-between; border-radius: 10px; border-color: gray; background-color: lightgray; border-width: 2px; border-style: dashed; padding: 10px; font-size:90%;">
 						<div style="max-width: max-content;">
 							<h5 style="display:inline; ">radiative transfer equation</h5> ($\psi^{(i)}$: electron fluence)
 							<div style="font-size:80%">
@@ -1259,71 +1354,135 @@
 								\end{align*}
 								\begin{align*}
 									\psi &= g_{\text{beam}}^{(i)} \quad \forall n\cdot{}\Omega < 0 \\
-									k^{(ji)} &= \int_{\mathcal{R}} \Sigma^{\text{x-ray}, (j)}\psi^{(i)} \, d \Gamma
 								\end{align*}
 							</div>
+							<h5 style="display:inline; ">observations</h5> <span style="font-size:80%; ">$\Sigma^{(ji)} = \int_{\mathcal{R}} \Sigma^{\text{x-ray}, (j)}\psi^{(i)} \, d \Gamma$ </span>
+							<br>
+							<h5 style="display:inline; ">objective</h5> <span style="font-size:80%; ">$C = \frac{1}{IJ} \sum_{i,j=1}^{I, J} (\Sigma^{(ji)} - \tilde{\Sigma}^{(ji)})^2$</span>
+
+
 						</div>
 						<div style="max-width: max-content;">
-							<h5>additivity approximation</h5>
+							<h5>additivity approximation for scattering kernels $\Sigma^\star$</h5>
 							<div style="font-size:80%">
 								\begin{equation}
-									\Sigma^{\times}(x, \epsilon, \epsilon', \Omega, \Omega') = \sum_{e=1}^{n_e} \mathcal{N}_e(x) \sigma_e^{\times}(\epsilon, \epsilon', \Omega, \Omega')
+									\Sigma^{\star}(x, \epsilon, \epsilon', \Omega, \Omega') = \sum_{e=1}^{n_e} \mathcal{N}_e(x) \sigma_e^{\star}(\epsilon, \epsilon', \Omega, \Omega')
 								\end{equation}
 							</div>
-							<h5>csd-approximation</h5>
+							<h5>continuous slowing down (csd)-approximation</h5>
 							<div style="font-size:80%">
 								\begin{equation}
-									\Sigma \psi = \int_{\mathcal{E}} \Sigma \psi \, d \epsilon  \mapsto -\partial_{\epsilon}( s \psi )
+									\Sigma \psi - \int_{\mathcal{E}} \Sigma \psi \, d \epsilon \approx -\partial_{\epsilon}( s \psi )
 								\end{equation}
 							</div>
 							</div>
 					</div>
 
-					<div style="display:flex; ">
+					<div style="display:flex; font-size:90%; padding: 10px;">
 						<div style="width: max-content; ">
 							<h5>discretization</h5>
 							<div style="font-size:80%">
-								\begin{equation}
-									\psi^\pm(\cdot{}, \cdot{}, \Omega) = \frac{\psi(\cdot{}, \cdot{}, \Omega) \pm \psi(\cdot{}, \cdot{}, -\Omega)}{2}
-								\end{equation}
-								\begin{align}
-									\begin{split}\label{eq:linear_boltzmann_csd_biliner_form}
-										a_p(\psi, \phi) =
-										\textstyle -\langle\partial_\epsilon (s_p \psi) \phi \rangle
-										&+ \langle \Omega \cdot{} \nabla_x \psi^+ \phi^- - \psi^- \Omega \cdot{} \nabla_x \phi^+ \rangle \\
-										&+ \textstyle[|n \cdot{} \Omega| \psi^+ \phi^+]_{\partial_x}
-										+ \langle \Sigma^{\text{el,tot}}_p \psi \phi - \int_{S^2} \Sigma^{\text{el}}_p \psi \, d \Omega' \phi \rangle
-									\end{split}
-								\end{align}
-								\begin{align}
-									b^{(i)}(\phi) &= 2 [n \cdot{} \Omega g^{(i)} \phi^+ ]_{\partial_x^-}.
-								\end{align}
-								\begin{align}
-									c^{(j)}_p(\psi) &= \langle \mathcal{N}_j \sigma^{\text{x-ray}}_j \psi^+ \rangle.
-								\end{align}
+								<ul>
+									<li>even/odd splitting
+										\begin{equation}
+											\psi^\pm(\cdot{}, \cdot{}, \Omega) = \frac{\psi(\cdot{}, \cdot{}, \Omega) \pm \psi(\cdot{}, \cdot{}, -\Omega)}{2}
+										\end{equation}
+									</li>
+									<li>
+										weak form of radiative transfer
+										\begin{align}
+											\begin{split}\label{eq:linear_boltzmann_csd_biliner_form}
+												a_p(\psi, \phi) =
+												\textstyle -\langle\partial_\epsilon (s_p \psi) \phi \rangle
+												&+ \langle \Omega \cdot{} \nabla_x \psi^+ \phi^- - \psi^- \Omega \cdot{} \nabla_x \phi^+ \rangle \\
+												&+ \textstyle[|n \cdot{} \Omega| \psi^+ \phi^+]_{\partial_x}
+												+ \langle \Sigma^{\text{el,tot}}_p \psi \phi - \int_{S^2} \Sigma^{\text{el}}_p \psi \, d \Omega' \phi \rangle
+											\end{split}
+										\end{align}
+										\begin{align}
+											b^{(i)}(\phi) &= 2 [n \cdot{} \Omega g^{(i)} \phi^+ ]_{\partial_x^-}.
+										\end{align}
+										\begin{align}
+											c^{(j)}_p(\psi) &= \langle \mathcal{N}_j \sigma^{\text{x-ray}}_j \psi^+ \rangle.
+										\end{align}
+									</li>
+								</ul>
 							</div>
 						</div>
-						<div style="width: max-content; ">
+						<div style="width: max-content; font-size:80%; margin-top:100px;">
 							<ul>
 								<li>$\Omega$: spherical harmonics basis ($P_N$)</li>
 								<li>$x$: mixed Lagrange basis ($L^2_h, H^1_h$)</li>
 								<li>$\epsilon$: staggered implicit trapeziodal/midpoint rule</li>
 								<li>Schur complement (eliminates odd $^-$ variables)</li>
-								<li>MINRES: remaining symmetric system</li>
+								<li>MINRES: solves remaining symmetric system</li>
+								<li>"matrix-free" method</li>
+								<li>"kronecker trick" $(B^T \otimes A)\text{vec}(X) = AXB$</li>
 								<li>dual consistent discretization </li>
 							</ul>
 						</div>
 					</div>
 					<div style="font-size:80%; ">
-						implementation in julia using: CUDA.jl, Gridap.jl, Krylov.jl, ...
+						implementation in julia using: CUDA.jl, Gridap.jl, Krylov.jl, Optim.jl, Lux.jl, ...
 					</div>
 
 					<div class="r-stretch"></div>
 
 					<ul style="font-size:60%">
-						<li>Egger, H., & Schlottbom, M. (2012). A Mixed Variational Framework For The Radiative Transfer Equation. <a href="https://doi.org/10.1142/s021820251150014x">doi:10.1142/s021820251150014x</a></li>
-						<li>Egger, H., & Schlottbom, M. (2014). Numerical methods for parameter identification in stationary radiative transfer. <a href="https://doi.org/10.1007/s10589-014-9657-9">doi:10.1007/s10589-014-9657-9</a></li>
+						<li>Egger, H., & Schlottbom, M. (2012). <b>A Mixed Variational Framework For The Radiative Transfer Equation</b>. <a href="https://doi.org/10.1142/s021820251150014x">doi:10.1142/s021820251150014x</a></li>
+						<li>Egger, H., & Schlottbom, M. (2014). <b>Numerical methods for parameter identification in stationary radiative transfer</b>. <a href="https://doi.org/10.1007/s10589-014-9657-9">doi:10.1007/s10589-014-9657-9</a></li>
+						<li>Egger, H., & Schlottbom, M. (2016). <b>A class of Galerkin Schemes for Time-Dependent Radiative Transfer</b>. <a href="https://doi.org/10.1137/15M1051336">doi:/10.1137/15M1051336</a></li>
 					</ul>
+				</section>
+
+				<section style="text-align: left;">
+					<h3>Derivation: Material Reconstruction in EPMA</h3>
+					<div style="font-size: 70%;">
+						\begin{equation}
+							\psi(x, \epsilon_i, \Omega) \approx \underbrace{\begin{pmatrix}\mathcal{X}^+(x)^T & \mathcal{X}^-(x)^T\end{pmatrix}}_{=\mathcal{X}(x)^T} \begin{pmatrix} \Psi^+_i & 0 \\ 0 & \Psi^-_i\end{pmatrix} \underbrace{\begin{pmatrix} \Upsilon^+(\Omega) \\ \Upsilon^-(\Omega) \end{pmatrix}}_{=\Upsilon(\Omega)},
+						\end{equation}
+						<div style="display:flex; justify-content: space-around;">
+							<div>
+							\begin{align}
+								\boldsymbol{N}_e^\pm &= \int_{\mathcal{R}} \mathcal{X}^\pm \mathcal{N}_e (\mathcal{X}^\pm)^T \, d x \in \mathbb{R}^{n_x^\pm \times n_x^\pm}\\
+								\boldsymbol{\nabla}_d &= \int_{\mathcal{R}} \nabla_{x_d} \mathcal{X}^+ (\mathcal{X}^-)^T \, d x \in \mathbb{R}^{n_x^+ \times n_x^-}\\
+								\boldsymbol{\partial}_d &= \int_{\partial \mathcal{R}} |n_d| \mathcal{X}^+ (\mathcal{X}^+)^T \, d \Gamma \in \mathbb{R}^{n_x^+ \times n_x^+}
+							\end{align}
+							</div>
+							<div>
+							\begin{align}
+								\boldsymbol{I}^\pm &= \int_{S^2} \Upsilon^\pm (\Upsilon^\pm)^T \, d \Omega = I \in \mathbb{R}^{n_\Omega^\pm \times n_\Omega^\pm} \\
+								\boldsymbol{\Omega}_d &= \int_{S^2} \Omega_d \Upsilon^- (\Upsilon^+)^T \, d \Omega \in \mathbb{R}^{n_\Omega^- \times n_\Omega^+}\\
+								\boldsymbol{|\Omega|}_d &= \int_{S^2} |\Omega_d| \Upsilon^+ (\Upsilon^+)^T \, d \Omega \in \mathbb{R}^{n_\Omega^+ \times n_\Omega^+}
+							\end{align}
+							</div>
+						</div>
+						<div>
+							\begin{equation}
+							\boldsymbol{k}_e^\pm = \int_{S^2} \int_{S^2} k_e(\Omega \cdot{} \Omega') \Upsilon^\pm \, d \Omega' (\Upsilon^\pm)^T \, d \Omega \in \mathbb{R}^{n_\Omega^\pm \times n_\Omega^\pm}
+						\end{equation}
+						</div>
+						\begin{align}
+							\begin{split}
+							\boldsymbol{a}(\Psi, \Phi) = \sum_{i=0}^{N-1} \,&
+							[-\boldsymbol{N}_e^+ \frac{s_e^{i+1} \Psi^+_{i+1} - s_e^{i}\Psi^+_{i}}{\Delta \epsilon} \boldsymbol{I}^+ 
+							-\boldsymbol{\nabla}_d \frac{\Psi^-_{i} + \Psi^-_{i+1}}{2} \boldsymbol{\Omega}_d
+							+\boldsymbol{\partial}_d \frac{\Psi^+_{i} + \Psi^+_{i+1}}{2} \boldsymbol{|\Omega|}_d \\
+							&\quad +\boldsymbol{N}_e^+ \frac{\tau_e^{i}\Psi^+_{i} + \tau_e^{i+1}\Psi^+_{i+1}}{2} (\boldsymbol{I}^+ - \boldsymbol{k}_e^+)]\cdot{} \Phi^+_{i + \frac{1}{2}}\Delta \epsilon\\
+							+\,&[-\boldsymbol{N}_e^- \frac{s_e^{i+1} \Psi^-_{i+1} - s_e^{i}\Psi^-_{i}}{\Delta \epsilon} \boldsymbol{I}^- 
+							+\boldsymbol{\nabla}^T_d \frac{\Psi^+_{i} + \Psi^+_{i+1}}{2} \boldsymbol{\Omega}^T_d \\
+							&\quad +\boldsymbol{N}_e^- \frac{\tau_e^{i}\Psi^-_{i} + \tau_e^{i+1}\Psi^-_{i+1}}{2}(\boldsymbol{I}^- - \boldsymbol{k}_e^-)] \cdot \Phi^-_{i+\frac{1}{2}}\Delta \epsilon
+							\end{split}
+						\end{align}
+						\begin{align}
+							\boldsymbol{b}^{(j)}(\Phi) \, = \sum_{i=0}^{N-1}\frac{\boldsymbol{g}^+_{i} + \boldsymbol{g}^+_{i+1}}{2} \cdot{} \Phi_{i+\frac{1}{2}}^+\Delta \epsilon \text{ with } \boldsymbol{g}^+_{i} = 2 \int_{\partial \mathcal{R}} \int_{n \cdot{} \Omega < 0} n \cdot{} \Omega \, g^{(j)}(x, \epsilon_i, \Omega) \Upsilon^+(\Omega) \mathcal{X}^+(x)^T  \, d \Omega \, d \Gamma
+						\end{align}
+						\begin{align}
+							\boldsymbol{c}^{(j)}(\Psi) \, = \sum_{i=0}^{N-1} \frac{ \boldsymbol{h}^+_{i} \cdot{} \Psi^+_{i} + \boldsymbol{h}^+_{i+1}\cdot{}\Psi^+_{i+1}}{2} \Delta \epsilon \text{ with } \boldsymbol{h}^+_{i} = \int_{\mathcal{R}} \int_{S^2} \mathcal{N}_j(x) \sigma^{\text{x-ray}}(\epsilon_i) \Upsilon^+(\Omega) \mathcal{X}^+(x)^T \, d \Omega \, d x.
+						\end{align}
+
+					</div>
+				</section>
 				</section>
 
 				<section style="text-align: left;">
@@ -1344,7 +1503,6 @@
 								<li>$P_{21}$ moments ($253$ moments)</li>
 								<li>$40 \times 120$ spatial grid</li>
 								<li>$20$ energy steps</li>
-								<li>$2.5 \times 10^7$ dof</li>
 								
 								<li style="margin-top:40px;">$2(\epsilon) \times 71(x) \times 3(\Omega) = 426 \text{ beams}$</li>
 								<li>$2$ elements</li>
@@ -1368,7 +1526,7 @@
 							<li>$\approx 2s (\approx 2\times 1\text{s} + \text{...})$</li>
 						</ul>
 					</div>
-					<div style="display:flex; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 10px; margin:20px;">
+					<div style="display:flex; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 10px; margin:20px; justify-content: space-between;">
 						<div style="width:min-content; text-align: center;">
 							<h6>adjoint model</h6>
 							<span style="font-size: 80%;">
@@ -1377,11 +1535,6 @@
 									\Sigma^{(ji)} = b^{(i)}(\lambda^{(j)}) 
 								\end{align*}
 							</span>
-							<ul>
-								<li>
-									some text...
-								</li>
-							</ul>
 						</div>
 						<div style="text-align: center;">
 							<h6>adjoint solution $\int_{S^2}\int_{\mathcal{E}} \lambda^{(j)} \, d\epsilon \,d\Omega$</h6>
@@ -1405,11 +1558,13 @@
 							<h6>non-adjoint derivative</h6>
 							<span style="font-size: 80%;">
 								\begin{align*}
-									a_p(v, \dot{\lambda}^{(j)}) + \dot{a}_p(v, \lambda^{(j)}, \dot{p}) + \dot{c}_p(v, \dot{p}) = 0 \\
-									\dot{\Sigma}^{(ji)} = b^{(i)}(\dot{\lambda}^{(j)})
+									a_p(v, \dot{\lambda}^{(j)}) +& \dot{a}_p(v, \lambda^{(j)}, \dot{p}) \\
+									 &+ \dot{c}_p(v, \dot{p}) = 0 \\
+									\dot{\Sigma}^{(ji)} &= b^{(i)}(\dot{\lambda}^{(j)})
  								\end{align*}
 							<ul>
-								
+								<li>parameter dependent $c$</li>
+								<li>$\mathcal{N}_e(x) = 0.5$</li>
 							</ul>
 						</span>
 
@@ -1419,14 +1574,14 @@
 							<img width="600px" src="figures/upd_epma/epma_tangent_nonadjoint.png">
 						</div>
 					</div>
-					<div class="fragment fade-in" data-fragment-index="2" style="position: absolute; top: 650px; left:550px; border-radius: 10px; background-color: white; border-color: red; border-width: 2px; border-style: solid; padding: 10px;margin:20px;">
+					<div class="fragment fade-in" data-fragment-index="2" style="position: absolute; top: 600px; left:470px; border-radius: 10px; background-color: white; border-color: red; border-width: 2px; border-style: solid; padding: 10px;margin:20px;">
 						<ul>
 							<li>$\approx 2\text{h } 40\text{min} (\approx 4800\times 2\text{s} + \text{...})$</li>
 							<li>$\approx 23\text{d } 16\text{h} (\approx 4800\times 7\text{min } 6\text{s} + \text{...})$</li>
 						</ul>
 					</div>
 					<div class="r-stretch"> </div>
-					<div class="fragment fade-in" data-fragment-index="2" style="position: absolute; top: 740px; left:700px; border-radius: 10px; background-color: white; border-color: green; border-width: 2px; border-style: solid; padding: 10px;margin:20px;">
+					<div class="fragment fade-in" data-fragment-index="2" style="position: absolute; top: 740px; left:760px; border-radius: 10px; background-color: white; border-color: green; border-width: 2px; border-style: solid; padding: 10px;margin:20px;">
 						<ul>
 							<li>$\approx 5s (\approx 2\times 2\text{s} + \text{...})$</li>
 						</ul>
@@ -1440,14 +1595,9 @@
 									\bar{p} = \bar{a}_p(\bar{\lambda}^{(j)}, \lambda^{(j)}, 1) + \bar{c}_p(\bar{\lambda}^{(j)}, 1)
 								\end{align*}
 							</span>
-							<ul>
-								<li>
-									some text...
-								</li>
-							</ul>
 						</div>
 						<div style="text-align: center;">
-							<h6>adjoint solution $\int_{S^2}\int_{\mathcal{E}} \lambda^{(j)} \, d\epsilon \,d\Omega$</h6>
+							<h6>adjoint solution $\int_{S^2}\int_{\mathcal{E}} \bar{\lambda}^{(j)} \, d\epsilon \,d\Omega$</h6>
 							<img width="600px" src="figures/upd_epma/epma_tangent_adjoint.png">
 						</div>
 						<div style="text-align: center;">
@@ -1458,10 +1608,39 @@
 				</section>
 
 				<section style="text-align: left;">
-					<h3>Outlook: Material Reconstruction in EPMA</h3>
+					<h3>Material Reconstruction in EPMA</h3>
+					<div style="display:flex; justify-content: center;">
+						<div class="fragment highlight-red" data-fragment-index="1" style="text-align: center;">
+							<h5 style="margin-top:25px;">measurements $\Sigma^{(ji)}$</h5>
+							<video loop data-autoplay style="width: 500px; margin-top:10px;">
+								<source data-src="figures/upd_epma/epma_opti_measurements_noisy.mp4" type="video/mp4">
+							</video>
+						</div>
+						<div class="fragment highlight-red" data-fragment-index="1" style="text-align: center;">
+							<h5 style="margin-top:25px;">optimized material $\mathcal{N}_e(x)$</h5>
+							<video loop data-autoplay style="width: 1000px; margin-top:10px;">
+								<source data-src="figures/upd_epma/epma_opti_material_noisy.mp4" type="video/mp4">
+							</video>
+						</div>
+					</div>
+					<h5>EPMA Outlook</h5>
+					<!-- <div>EPMA:</div> -->
 					<ul>
-
+						<li>more realistic physics (scattering cross section, x-ray absorption, secondary flourescence)</li>
+						<li>more realistic test-cases (multiple phases)</li>
+						<li>uncertainty quantification of the inversion result (Hessian)</li>
+						<li>improve radiative transfer solver (dynamical low-rank)</li>
+						<li>3D?</li>
 					</ul>
+					<!-- <div>Adjoint:</div>
+					<ul>
+						<li>
+							(simple) dual consistent time stepping (without half-step staggering)?
+						</li>
+						<li> 
+
+						</li>
+					</ul> -->
 					
 					<div class="r-stretch"></div>
 					<div style="display: flex;">
