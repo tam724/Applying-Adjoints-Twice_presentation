@@ -655,10 +655,10 @@
 				</section>
 
 				<section style="text-align: left">
-					<h3>Abstract Adjoint: Algorithmic Differentiation (AD)</h3>
+					<h3>Adjoint<sup>2</sup> Ingredients: Algorithmic Differentiation (AD)</h3>
 					Given a (Frechet-)differentiable operator  $f: \mathcal{X} \to Y, x \mapsto f(x) =: y$ (open $\mathcal{X} \subseteq X$)
 					<div style="font-size: 60%; text-align:right; margin:10px;">
-						(typically in Literature: $X, Y$ finite dimensional Hilbert spaces)
+						(typically in AD-literature: $X, Y$ finite dimensional Hilbert spaces)
 					</div>
 					<ul>
 						<li>Definition of the <b>(Frechet-)derivative</b> (tangent operator) $\dot{f}_x: T_xX \to T_yY$ by
@@ -743,7 +743,7 @@
 				</section>
 
 				<section style="text-align: left;">
-					<h3>Abstract Adjoint: Example: linear pde (weak form)</h3>
+					<h3>Adjoint<sup>2</sup> Ingredients: Example: linear pde (weak form)</h3>
 					Given a solution operator of a linear pde $A: G \to H$  ($U, V, G, H$ Hilbert spaces $U\subseteq H$, $V\subseteq G$)
 					\begin{equation}
 						\color{orange}{A(g) = (u \in U | a(u, v) + \langle v, g\rangle_G = 0\quad \forall v \in V)}
@@ -774,7 +774,7 @@
 				</section>
 
 				<section style="text-align: left">
-					<h3>Abstract Adjoint: Dual/Adjoint Consistency</h3>
+					<h3>Adjoint<sup>2</sup> Ingredients: Dual/Adjoint Consistency</h3>
 					A discretization is <b>dual consistent</b>, if:
 					<div style="text-align: center;">
 						<em>"The adjoint of the discretized problem is a consistent discretization of the adjoint of the continuous problem."</em>
@@ -974,7 +974,7 @@
 
 				<section style="text-align: left;">
 					<h3>Applying Adjoints Twice: Summary</h3>
-					<div style="font-size:80%">with objective function $g: \mathbb{R}^{J\times I} \to \mathbb{R}, \Sigma \mapsto C$ and parameters $p \in P = \mathbb{R}^N$</div>
+					<div style="font-size:80%">with objective function $g: \mathbb{R}^{J\times I} \to \mathbb{R}, \Sigma \mapsto g(\Sigma) = C$ and parameters $p \in P = \mathbb{R}^N$</div>
 					<div style="display: flex; justify-content: space-around;">
 						<div style="border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 10px; margin:20px; font-size:90%;">
 							<h4>non-adjoint forward + non-adjoint derivative</h4>
@@ -1372,11 +1372,12 @@
 							</div>
 							<h5>continuous slowing down (csd)-approximation</h5>
 							<div style="font-size:80%">
-								\begin{equation}
-									\Sigma \psi - \int_{\mathcal{E}} \Sigma \psi \, d \epsilon \approx -\partial_{\epsilon}( s \psi )
-								\end{equation}
+								\begin{align}
+									\Sigma \psi - \int_{\mathcal{E}} \Sigma \psi \, d \epsilon \approx -\partial_{\epsilon}( s \psi ) \\
+									\psi(\epsilon=\epsilon_{\text{max}}) = 0
+								\end{align}
 							</div>
-							</div>
+						</div>
 					</div>
 
 					<div style="display:flex; font-size:90%; padding: 10px;">
