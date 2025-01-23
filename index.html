@@ -66,7 +66,7 @@
 								<p style="text-align: center; "><em>"Material imaging based on characteristic x-ray emission"</em></p>
 								<ul style="margin-top: 0px;">
 									<li>Material Science, Quality control, Mineralogy, Semiconductors</li>
-									<li>Ionization of material sample using high-energy focused electron beam</li>
+									<li>Ionization of material sample using focused electron beam</li>
 									<li>Wavelength-dispersive spectrometers measure characteristic x-radiation</li>
 
 								</ul>
@@ -118,13 +118,14 @@
 									<!-- <li class="fragment fade-in" data-fragment-index="4">Measure wavelength-dispersive x-ray intensity</li> -->
 									<li class="fragment fade-in" data-fragment-index="4">Spatial information gained via different beam positions (linescan), <span class="fragment fade-in" data-fragment-index="5">beam angles </span> <span class="fragment fade-in" data-fragment-index="6">and beam energies</span></li>
 									<li class="fragment fade-in" data-fragment-index=7"><em>inverse problem of material reconstruction</em>
-										<span class="fragment fade-in" data-fragment-index="7">
+										<div class="fragment fade-in" data-fragment-index="7" style="margin-bottom:-20px; margin-top:-20px;">
 											\begin{equation}
 												p^* = \underset{p \in P}{\text{arg min}} \underbrace{|| \Sigma(p)  - \tilde{\Sigma} ||^2}_{=C(p)}
 											\end{equation}
-										</span>
+										</div>
 									</li>
 									<li class="fragment fade-in" data-fragment-index="8">gradient-based iterative methods (Steepest Descent, BFGS, or HMC)</li>
+									<li class="fragment fade-in" data-fragment-index="9"><pre><code>while (∇ₚC != 0) foreach δp foreach beam solve_pde() end end end</code></pre></li>
 									<li class="fragment fade-in" data-fragment-index="9"><em>we focus on computing $\nabla_p C(p)$ efficiently via adjoints</em></li>
 								</ul>
 							</div>
@@ -206,7 +207,7 @@
 							&   &   \\
 							& \Sigma^{(ji)} &   \\
 							&   &   \end{pmatrix}^{\color{white}{T}}}_{J \times I} = 
-							\color{blue}{\Bigg(}
+							\color{green}{\Bigg(}
 							\underbrace{\begin{pmatrix}
 							— & h^{(1)} & — \\
 							— & h^{(j)} & — \\
@@ -215,7 +216,7 @@
 							\cdot{}
 							\color{white}{\Bigg(}
 							\underbrace{\boldsymbol{A}^{\color{white}{*}}}_{N \times N}
-							\color{blue}{\Bigg)
+							\color{green}{\Bigg)
 							}
 							\cdot{}
 							\underbrace{
@@ -238,7 +239,7 @@
 							— & h^{(J)} & — \\
 							\end{pmatrix}}_{J \times N} 
 							\cdot{}
-							\color{red}{\Bigg(}
+							\color{orange}{\Bigg(}
 							\underbrace{\boldsymbol{A}^{\color{white}{*}}}_{N \times N}
 							\color{white}{\Bigg)
 							}
@@ -249,23 +250,23 @@
 								g^{(1)} &  g^{(i)} & g^{(I)} \\
 								| & | & | \\
 							\end{pmatrix}}_{N \times I}
-							\color{red}{\Bigg)}
+							\color{orange}{\Bigg)}
 						\]</span>
 						<span class="fragment fade-in" data-fragment-index="3">\[
 							\underbrace{\begin{pmatrix}
 							&   &   \\
 							& \Sigma^{(ji)} &   \\
 							&   &   \end{pmatrix}^{\color{white}{T}}}_{J \times I} = 
-							\color{blue}{\Bigg(}
+							\color{green}{\Bigg(}
 							\underbrace{\begin{pmatrix}
 							— & h^{(1)} & — \\
 							— & h^{(j)} & — \\
 							— & h^{(J)} & — \\
 							\end{pmatrix}}_{J \times N} 
 							\cdot{}
-							\color{red}{\Bigg(}
+							\color{orange}{\Bigg(}
 							\underbrace{\boldsymbol{A}^{\color{white}{*}}}_{N \times N}
-							\color{blue}{\Bigg)
+							\color{green}{\Bigg)
 							}
 							\cdot{}
 							\underbrace{
@@ -274,7 +275,7 @@
 								g^{(1)} &  g^{(i)} & g^{(I)} \\
 								| & | & | \\
 							\end{pmatrix}}_{N \times I}
-							\color{red}{\Bigg)}
+							\color{orange}{\Bigg)}
 						\]</span>
 						<!-- <span style="background-color:#fff;" class="fragment fade-in" data-fragment-index="6">\[
 							\underbrace{\begin{pmatrix}
@@ -303,7 +304,7 @@
 					</div>
 					<h4 style="display:inline;">Where to bracket?</h4>
 					<span style="text-align: center" class="fragment fade-in" data-fragment-index="3">
-						computational costs: $\color{red}{I\times N^2 + IJ\times N} \text{ or } \color{blue}{J\times N^2 + IJ\times N}$
+						computational costs: $\color{orange}{I\times N^2 + IJ\times N} \text{ or } \color{green}{J\times N^2 + IJ\times N}$
 					</span>
 					<span class="fragment fade-in" data-fragment-index="4">
 						<h4>Generalizations: </h4>
@@ -311,7 +312,7 @@
 							<li>
 								$\boldsymbol A$ is solution of a linear system / linear (partial) differential equation?
 								\[
-									\boldsymbol A g^{(i)} = \{u \in U \, | \, a(u, v) + \langle g^{(i)}, v \rangle = 0 \quad \forall v \in V\}
+									\boldsymbol A g^{(i)} = (u \in U \, | \, a(u, v) + \langle g^{(i)}, v \rangle = 0 \quad \forall v \in V)
 								\]
 							</li>
 							<li>
@@ -323,10 +324,10 @@
 						</ul>
 					</span>
 					<span class="fragment fade-in" data-fragment-index="5">
-						<p><h4 style="display:inline;">Two equivalent formulations</h4> using the <em>adjoint</em> operator $\boldsymbol A ^*$</p>
-							\[
-							\underbrace{\Sigma}_{J \times I} = \underbrace{H}_{J \times \infty} \cdot{}  \underbrace{\boldsymbol A}_{\infty \times \infty} \cdot{} \underbrace{G}_{\infty \times I} \quad \Leftrightarrow \quad \underbrace{\Sigma^T}_{I \times J} = \underbrace{G^T}_{I \times \infty} \cdot{}  \underbrace{\boldsymbol A^*}_{\infty \times \infty} \cdot{} \underbrace{H^T}_{\infty \times J}
-							\]
+						<p><h4 style="display:inline;">Two equivalent formulations</h4> using the <em>adjoint</em> operator $\boldsymbol A ^*$.</p>
+							<!-- \[
+							\underbrace{\Sigma}_{J \times I} = \underbrace{H}_{J \times \star} \cdot{}  \underbrace{\boldsymbol A}_{\star \times \ast} \cdot{} \underbrace{G}_{\ast \times I} \quad \Leftrightarrow \quad \underbrace{\Sigma^T}_{I \times J} = \underbrace{G^T}_{I \times \ast} \cdot{}  \underbrace{\boldsymbol A^*}_{\ast \times \star} \cdot{} \underbrace{H^T}_{\star \times J}
+							\] -->
 						
 					</span>
 					<!-- <div class="r-stretch"></div>
@@ -774,7 +775,7 @@
 
 				<section style="text-align: left">
 					<h3>Abstract Adjoint: Dual/Adjoint Consistency</h3>
-					A <b>discretization</b> is dual consistent, if:
+					A discretization is <b>dual consistent</b>, if:
 					<div style="text-align: center;">
 						<em>"The adjoint of the discretized problem is a consistent discretization of the adjoint of the continuous problem."</em>
 					</div>
@@ -858,7 +859,7 @@
 						<li>
 							"superconvergence" of linear functionals $|\Sigma - \Sigma_\Delta|$ (convergence order doubling)
 						</li>
-						<li>no ambiguity between
+						<li>no ambiguity between:
 							<ul>
 								<li>"optimize-then-discretize" vs. "discretize-then-optimize"</li>
 								<li>"continuous adjoint method" vs. "discrete adjoint method"</li>
@@ -868,8 +869,8 @@
 					<div style="background-color: lightgray; border-radius: 10px; border-color: gray; border-width: 2px; border-style: dashed; padding: 5px; font-size: 100%; margin:30px; max-height:fit-content; font-size:80%"  class="fragment fade-in">
 					<h5>Examples:</h5>
 					<ul>
-						<li>FD-discretizations: explicit/implicit euler: (not dual consistent), implicit midpoint/trapeziodal rule (with suitable quadrature dual consistent)</li>
-						<li>FE-discretization: (with weak boundary conditions dual consistent)</li>
+						<li>ODE/FD-discretizations: explicit/implicit euler: (not dual consistent), implicit midpoint/trapeziodal rule (with suitable quadrature + staggered variables dual consistent)</li>
+						<li>FE-discretization: (with weak boundary conditions + suitable/no stabilization dual consistent)</li>
 						<li>DG/SBP (see literature)</li>
 					</ul>
 					</div>
