@@ -1,6 +1,6 @@
 # Applying Adjoints Twice (presentation repository)
 This presentation was held (in slightly varied/updated form) at:
-- [IGPM, RWTH Aachen, (IGPM Oberseminar) Applying Adjoints Twice: Efficient Gradients for Inverse Modeling with Radiative Transfer in EPMA]
+- IGPM, RWTH Aachen, 2025 (IGPM Oberseminar) Applying Adjoints Twice: Efficient Gradients for Inverse Modeling with Radiative Transfer in EPMA
 - ECCOMAS, 2024 (Computational Methods for Inverse Problems) [Applying Adjoints Twice: An Efficient Gradient Implementation for Models with Linear Structure with Applications in Reconstruction for EPMA](https://eccomas2024.org/event/contribution/cf58b481-b160-11ee-ac5b-000c29ddfc0c)
 - ACoM, RWTH Aachen, 2024 (Lunch Seminar) [Applying Adjoints Twice: An Efficient Gradient Implementation for Models with Linear Structure with Applications in Reconstruction for EPMA](https://www.acom.rwth-aachen.de/research/lunch-seminars/archive/title:applying-adjoints-twice-an-efficient-gradient-implementation-for-models-with-linear-structure-with-applications-in-reconstruction-for-epma)
 
@@ -9,6 +9,9 @@ The latest version is on `main` ([view here](https://tam724.github.io/Applying-A
 $ git checkout <branch>
 ```
 and have a look at `index.html` with your webbrowser.
+
+# Example Code
+Example code for the poisson example is provided in [tam724/Applying-Adjoints-Twice_Poisson-Example](https://github.com/tam724/Applying-Adjoints-Twice_Poisson-Example).
 
 # 
 Built using the HTML Presentation Framework [reveal.js](https://revealjs.com/)
