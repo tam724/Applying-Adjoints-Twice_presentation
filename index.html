@@ -35,6 +35,12 @@
 			.tr {
 				border-style: none;
 			}
+			.dashed-boundary{
+				border-radius: 10px;
+				border-color: gray; 
+				border-width: 2px;
+				border-style: dashed;
+			}
 		  </style>
 	</head>
 	<body>
@@ -338,6 +344,169 @@
 
 				</section>
 
+				<!--Computational Modeling in EPMA -->
+				<section>
+					<section style="text-align: left;">
+						<h3>Computational Modeling in EPMA</h3>
+						<div class="dashed-boundary" style="padding:20px; display:flex; justify-content: center; ">
+							<div style="flex-grow: 1;">
+								<img src="/figures/computational_modeling_epma/particle_distribution.png" width="400"></img>
+							</div>
+							<div style="flex-grow: 10;">
+								Particle at time \(t\): position $x$ and momentum $p$ (state space)
+								\[N = \int_{\mathcal{R} \times \mathcal{P}} n \,dx\, dp \]
+								$n(x, p)$ number density of particles $\Rightarrow$ $\psi(x, p) = v n(x, p)$ fluence/flux
+								\[\Omega \cdot{} \nabla_x \psi + \Sigma^{\text{tot}} \psi = \int_{S^2} \Sigma^{\text{scat}} \psi \, d\Omega + q \]
+							</div>
+						</div>
+						<div class="dashed-boundary" style="margin-top:40px;">
+							<div style="padding: 20px; padding-bottom: 0px; display: flex; justify-content: left;">
+								<div style="flex-grow: 1; align-self: center;">
+									<ul>
+										<li>Finite Elements ($x$)</li>
+										<li>Spherical Harmonics ($\Omega$)</li>
+										<li>Energy Stepping ($\epsilon$)</li>
+									</ul>
+								</div>
+								<div style="flex-grow: 1; align-self: center;">
+									<img src="/figures/computational_modeling_epma/basis_functions.png" width="1000"></img>
+								</div>
+							</div>
+							<div style="padding: 20px; padding-top:0px; display: flex; justify-content: left;">
+								<div style="">
+									<ul>
+										<li>weak-form using a mixed variational framework based on e/o-parity splitting of $\psi$</li>
+										<li>large <b>linear</b> system $\mathcal{A}$ for $\Psi = \{\Psi^+_m, \Psi^-_m\}$</li>
+										<li>$\mathcal{A}$ has tensor product structure $\mathcal{A} \cdot{} \Psi = \sum (\mathcal{X} \otimes \mathcal{W}) \cdot \text{vec}(\Psi)$</li>
+										<li>Implementation: iterative linear solver, GPU Acceleration, in julia</li>
+									</ul>
+								</div>
+							</div>
+							
+						</div>
+
+					<div class="r-stretch"></div>
+					<ul style="font-size:60%">
+						<li>Egger, H., & Schlottbom, M. (2012). <b>A Mixed Variational Framework For The Radiative Transfer Equation</b>. <a href="https://doi.org/10.1142/s021820251150014x">doi:10.1142/s021820251150014x</a></li>
+						<li>Egger, H., & Schlottbom, M. (2014). <b>Numerical methods for parameter identification in stationary radiative transfer</b>. <a href="https://doi.org/10.1007/s10589-014-9657-9">doi:10.1007/s10589-014-9657-9</a></li>
+						<li>Egger, H., & Schlottbom, M. (2016). <b>A class of Galerkin Schemes for Time-Dependent Radiative Transfer</b>. <a href="https://doi.org/10.1137/15M1051336">doi:/10.1137/15M1051336</a></li>
+					</ul>
+					</section>
+
+					<section style="text-align: left;">
+						<h3>Computational Modeling in EPMA (Examples)</h3>
+						<div style="display: flex; padding: 10px; justify-content: center;">
+							<div class="dashed-boundary" style="margin: 10px; padding: 10px;">
+								<h5>$\phi(\rho z)$-Profiles</h5>
+								<img src="/figures/computational_modeling_epma/examples/1D_phirhoz.png" width="400"></img>
+							</div>
+							<div class="dashed-boundary" style="margin: 10px; padding: 10px;">
+								<h5>Backscattered Electrons (vs. MC)</h5>
+								<img src="/figures/computational_modeling_epma/examples/backscatter_yield_nife.png" width="350"></img>
+								<img src="/figures/computational_modeling_epma/examples/backscatter_yield_wti.png" width="350"></img>
+							</div>
+							<div class="dashed-boundary" style="margin: 10px; padding: 10px;">
+								<h5>Electron Fluence (vs. MC)</h5>
+								<img src="/figures/computational_modeling_epma/examples/MC_result.jpg" width="300"></img>
+								<img src="/figures/computational_modeling_epma/examples/PN_result.jpg" width="300"></img>
+							</div>
+						</div>
+						<div style="display: flex; padding: 10px; justify-content: center;">
+							<div class="dashed-boundary" style="margin: 10px; padding: 10px;">
+								<h5>Backscatter map</h5>
+								<img src="/figures/computational_modeling_epma/examples/backscatter3D.png" width="500"></img>
+							</div>
+							<div class="dashed-boundary" style="margin: 10px; padding: 10px;">
+								<h5>K-ratio maps</h5>
+								<img src="/figures/computational_modeling_epma/examples/k_ratios_all.png" width="400"></img>
+							</div>
+							<div class="dashed-boundary" style="margin: 10px; padding: 10px;">
+								<h5>K-ratio linescans</h5>
+								<img src="/figures/computational_modeling_epma/examples/epma_measurements.png" width="400"></img>
+							</div>
+						</div>
+						<div style="display: flex; padding: 10px; justify-content: center;">
+							<div class="dashed-boundary" style="margin: 10px; padding: 10px;">
+								<div style="display: flex;">
+									<div>
+										<h5>EPMAfem.jl</h5>
+										Research/experimental code for:
+										<ul>
+											<li>
+												numerical discretization/solution of radiative transfer
+											</li>
+											<li>
+												testbed to explore adjoint (transport) equations/methods
+											</li>
+											<li>
+												testbed for material inversion in EPMA (needs differentiation)
+											</li>
+										</ul>
+									</div>
+									<div>
+										<img src="/figures/computational_modeling_epma/examples/epmafem_intro.png" width="700"></img>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<section style="text-align: left;">
+						<h3>Gradient-based optimization for EPMA</h3>
+						<div style="display: flex;">
+							<div>
+								<span style="font-size: 80%;">
+									$$p^* = \text{argmin}_{p} \underbrace{|| (\Sigma \circ \gamma)(p) - \Sigma^{\text{meas}}||^2}_{=J(p)}$$
+								</span>
+								<ul>
+									<li>material parameters $p$</li>
+									<li>parametrization $\gamma: p \mapsto \gamma(p) = m$</li>
+									<li>material description $m$</li>
+									<li>epma model $\Sigma: m \mapsto \Sigma(m) = \Sigma^{\text{model}}$</li>
+									<li>measurements $\Sigma^{\text{meas}}$</li>
+								</ul>
+								</br>
+								$\rightarrow$ objective function $J(p)$
+								<ul>
+									<li>mininize using gradient-based optimization</li>
+								</ul>
+								<span style="font-size: 80%;">
+									\[p^{i+1} = p^i - \eta\frac{d}{dp}J(p)\]
+								</span>
+							</div>
+							<div>
+								<img src="/figures/gd.png" width="750"></img>
+							</div>
+						</div>
+						<div style="display: flex;">
+							<div class="dashed-boundary" style="margin:10px; padding: 10px;">
+								<h5>epma model $\Sigma(m)$</h5>
+								<img src="/figures/computational_modeling_epma/epma_opti_example/epma_forward_main.png"></img>
+							</div>
+							<div class="dashed-boundary" style="margin:10px; padding: 10px;">
+								<h5>measurements $\Sigma^{\text{meas}}$</h5>
+								<img src="/figures/computational_modeling_epma/epma_opti_example/epma_opti_measurements.png"></img>
+							</div>
+							<div class="dashed-boundary" style="margin:10px; padding: 10px;">
+								<h5>gradient $\frac{d}{dm} \Sigma(m)$</h5>
+								<img src="/figures/computational_modeling_epma/epma_opti_example/epma_gradient1.png"></img>
+							</div>
+						</div>
+					</section>
+
+					<section style="text-align: left;">
+						<h3>EPMA Optimization Example</h3>
+						<ul>
+							<li>Succesful optimization using a neural network as the material parametrization $\gamma(p)$</li>
+						</ul>
+						<img src="/figures/computational_modeling_epma/epma_opti_example/epma_opti_material_combined.png"></img>
+						<ul>
+							<li>Runtime is (still) an issue</li>
+							<li>This is example uses non-physical material parameters $\rightarrow$ faster solves</li>
+							<li>Better radiative transfer solver required and/or model reduction of the transport model</li>
+						</ul>
+					</section>
+				</section>			
 				
 
 				<!-- Adjoint AD = computing the riesz representation -->
